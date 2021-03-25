@@ -12,6 +12,12 @@
     "ts-node": "^9.1.1",
     "typescript": "^4.2.3"
   },
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "nodemon server.ts",
+    "build": "tsc -p .",
+    "start": " node server.js"
+  },
   "devDependencies": {
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.7"

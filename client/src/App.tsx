@@ -1,4 +1,6 @@
 import { Switch, Route } from "react-router-dom";
+import Dashboard from "./Components/Dashboard";
+import Error from "./Components/Error";
 import Home from "./Components/Home";
 import Login from "./Components/Login";
 import Nav from "./Components/Nav";
@@ -20,11 +22,17 @@ const App = () => {
         <Route path="/login" exact>
           <Login />
         </Route>
-        <Route path="/join" exact>
+        <Route path="/join/:code?" exact>
           <JoinTeam />
         </Route>
         <Route path="/create" exact>
           <CreateTeam />
+        </Route>
+        <Route path="/dashboard" exact>
+          <Dashboard />
+        </Route>
+        <Route path="/">
+          <Error />
         </Route>
       </Switch>
     </div>

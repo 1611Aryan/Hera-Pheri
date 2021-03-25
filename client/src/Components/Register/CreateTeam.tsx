@@ -1,8 +1,42 @@
+import axios from "axios";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Flex, BgImg, Overlay, Section } from "../../Style";
-import bg from "./../../Media/registerBg.jpg";
+import bg from "./../../Media/bokeh1.jpg";
 
 const CreateTeam: React.FC = () => {
+  //URL
+  const URL =
+    process.env.NODE_ENV === "production"
+      ? "/team/create"
+      : "http://localhost:5000/team/create";
+
+  //State
+  const [input, setInput] = useState({
+    team: "",
+    name: "",
+    email: "",
+    number: 0,
+    password: "",
+  });
+  const [message, setMessage] = useState<string | null>(null);
+
+  //Handlers
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(URL, input);
+      console.log(res.data);
+      setMessage(res.data);
+    } catch (err) {
+      setMessage(err.response.data);
+    }
+  };
+
   return (
     <StyledCreateTeam>
       <picture>
@@ -10,13 +44,29 @@ const CreateTeam: React.FC = () => {
         <img src={bg} alt="colors" />
       </picture>
       <div className="overlay"></div>
-      <form>
-        <label htmlFor="teamName">Team Name: </label>
-        <input type="text" name="teamName" required autoFocus />
-        <label htmlFor="teamLeader">Name: </label>
-        <input type="text" name="teamLeader" required />
-        <label htmlFor="phone">Phone Number: </label>
-        <input type="text" name="phone" required />
+      <form onSubmit={submitHandler}>
+        {message && <p className="err">{message}</p>}
+        <label htmlFor="team">Team Name: </label>
+        <input
+          type="text"
+          name="team"
+          required
+          autoFocus
+          onChange={changeHandler}
+        />
+        <label htmlFor="name">Name: </label>
+        <input type="text" name="name" required onChange={changeHandler} />
+        <label htmlFor="email">Email: </label>
+        <input type="text" name="email" required onChange={changeHandler} />
+        <label htmlFor="number">Phone Number: </label>
+        <input type="text" name="number" required onChange={changeHandler} />
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          name="password"
+          onChange={changeHandler}
+          required
+        />
         <button>Create Team</button>
       </form>
     </StyledCreateTeam>
@@ -26,7 +76,7 @@ const CreateTeam: React.FC = () => {
 const StyledCreateTeam = styled.section`
   ${Section()}
   font-family: var(--content);
-
+  color: white;
   position: relative;
   ${Flex()};
   picture {
@@ -45,14 +95,24 @@ const StyledCreateTeam = styled.section`
     backdrop-filter: blur(5px);
     padding: 1rem 2rem;
     ${Flex(1, "space-evenly", "flex-start")};
+    .err {
+      color: red;
+      font-size: 0.8rem;
+    }
+    label {
+      font-size: 1.2rem;
+    }
     input {
       width: 100%;
-      padding: 0.5rem;
+      padding: 0.6rem;
       border-radius: 5px;
       border: 0;
+      &:focus {
+        outline: 0;
+      }
     }
     button {
-      padding: 0.5rem;
+      padding: 0.6rem;
       border-radius: 5px;
       border: 0;
     }

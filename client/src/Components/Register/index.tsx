@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Flex, BgImg, Overlay, Section } from "../../Style";
-import bg from "./../../Media/registerBg.jpg";
+import bg from "./../../Media/bokeh1.jpg";
 
 const Register: React.FC = () => {
   //
