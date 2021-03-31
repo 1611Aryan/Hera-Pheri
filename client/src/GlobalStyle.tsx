@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
 :root{
     --heading:'Happy Monkey', cursive;
     --content: 'Lato', sans-serif;
-    --navHeight:8vh;
+    --navHeight:10vh;
 }
 body{
     width:100vw;

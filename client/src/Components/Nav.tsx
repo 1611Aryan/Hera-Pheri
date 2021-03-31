@@ -6,7 +6,18 @@ const Nav: React.FC = () => {
     <StyledHeader>
       <nav>
         <h1>
-          <Link to="/">Hera Pheri</Link>
+          <Link to="/">
+            <span>H</span>
+            <span>e</span>
+            <span>r</span>
+            <span>a</span>
+            <span> </span>
+            <span>P</span>
+            <span>h</span>
+            <span>e</span>
+            <span>r</span>
+            <span>i</span>
+          </Link>
         </h1>
         <ul>
           <li>
@@ -23,8 +34,10 @@ const Nav: React.FC = () => {
 
 const StyledHeader = styled.header`
   width: 100vw;
-  background: linear-gradient(to right, #141e30, #243b55);
+  background: linear-gradient(to right, #134e5e, #71b280);
+
   height: var(--navHeight);
+
   nav {
     width: 100%;
     height: 100%;
@@ -34,6 +47,15 @@ const StyledHeader = styled.header`
     align-items: center;
     color: white;
     font-family: var(--heading);
+    h1 {
+      font-size: clamp(1.25rem, 3vw, 1.65rem);
+      transition: color ease-out0.4s;
+      span {
+        &:hover {
+          color: yellow;
+        }
+      }
+    }
   }
   ul {
     list-style-type: none;
@@ -42,6 +64,7 @@ const StyledHeader = styled.header`
     align-items: center;
     li {
       margin-right: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1.25rem);
     }
   }
 `;

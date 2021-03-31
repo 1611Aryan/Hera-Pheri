@@ -21,14 +21,15 @@ height:100%;
 object-fit:cover;
 `;
 
-export const Overlay = (blur = 2, color = "rgba(0,0,0,0.3)") => `
+export const Overlay = (blur = 2, color = "#000000") => `
 position:absolute;
 top:0;
 left:0;
 width:100%;
 height:100%;
-background:${color};
+background:${color}80;
 backdrop-filter:blur(${blur}px);
+
 `;
 
 export const Section = () => `
