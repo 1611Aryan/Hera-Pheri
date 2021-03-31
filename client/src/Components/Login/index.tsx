@@ -129,7 +129,7 @@ const StyledLogin = styled.section`
       font-size: 10em;
       letter-spacing: 15px;
       text-transform: uppercase;
-      color: #cfcd3a;
+      color: #b3b031;
 
       text-shadow: 1px 1px hsl(50, 50%, 45%), 2px 2px hsl(50, 50%, 40%),
         3px 3px hsl(50, 50%, 35%), 4px 4px hsl(50, 50%, 34%),
