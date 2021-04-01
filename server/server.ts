@@ -24,11 +24,19 @@ const TeamRouter = require(path.join(__dirname, "./Routes/team.routes"));
 app.use("/team", TeamRouter);
 
 if (process.env.NODE_ENV === "production") {
-  console.log("Production");
   app.use(express.static(path.join(__dirname, "..", "..", "client", "build")));
-  app.use("/register", express.static(path.join(__dirname, "Client")));
-  app.use("/login", express.static(path.join(__dirname, "Client")));
-  app.use("/dashboard", express.static(path.join(__dirname, "Client")));
+  app.use(
+    "/register",
+    express.static(path.join(__dirname, "..", "..", "client", "build"))
+  );
+  app.use(
+    "/login",
+    express.static(path.join(__dirname, "..", "..", "client", "build"))
+  );
+  app.use(
+    "/dashboard",
+    express.static(path.join(__dirname, "..", "..", "client", "build"))
+  );
 }
 
 app.listen(PORT, () => console.log(`Server running on Port ${PORT}`));
