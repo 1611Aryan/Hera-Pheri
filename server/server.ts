@@ -26,25 +26,36 @@ app.use("/team", TeamRouter);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "..", "..", "client", "build")));
   app.use(
-    "/register",
-    express.static(path.join(__dirname, "..", "..", "client", "build"))
+    "/static",
+    express.static(
+      path.join(__dirname, "..", "..", "client", "build", "static")
+    )
   );
-  app.use(
-    "/register/join",
-    express.static(path.join(__dirname, "..", "..", "client", "build"))
-  );
-  app.use(
-    "/register/create",
-    express.static(path.join(__dirname, "..", "..", "client", "build"))
-  );
-  app.use(
-    "/login",
-    express.static(path.join(__dirname, "..", "..", "client", "build"))
-  );
-  app.use(
-    "/dashboard",
-    express.static(path.join(__dirname, "..", "..", "client", "build"))
-  );
+  app.get("*", (req, res) => {
+    res.sendFile("index.html", {
+      root: path.join(__dirname, "..", "..", "client", "build"),
+    });
+  });
+  // app.use(
+  //   "/register",
+  //   express.static(path.join(__dirname, "..", "..", "client", "build"))
+  // );
+  // app.use(
+  //   "/register/join",
+  //   express.static(path.join(__dirname, "..", "..", "client", "build"))
+  // );
+  // app.use(
+  //   "/register/create",
+  //   express.static(path.join(__dirname, "..", "..", "client", "build"))
+  // );
+  // app.use(
+  //   "/login",
+  //   express.static(path.join(__dirname, "..", "..", "client", "build"))
+  // );
+  // app.use(
+  //   "/dashboard",
+  //   express.static(path.join(__dirname, "..", "..", "client", "build"))
+  // );
 }
 
 app.listen(PORT, () => console.log(`Server running on Port ${PORT}`));
