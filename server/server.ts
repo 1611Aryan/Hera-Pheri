@@ -30,6 +30,14 @@ if (process.env.NODE_ENV === "production") {
     express.static(path.join(__dirname, "..", "..", "client", "build"))
   );
   app.use(
+    "/register/join",
+    express.static(path.join(__dirname, "..", "..", "client", "build"))
+  );
+  app.use(
+    "/register/create",
+    express.static(path.join(__dirname, "..", "..", "client", "build"))
+  );
+  app.use(
     "/login",
     express.static(path.join(__dirname, "..", "..", "client", "build"))
   );

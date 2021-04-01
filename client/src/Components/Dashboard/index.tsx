@@ -10,7 +10,10 @@ const Dashboard: React.FC = () => {
   const { user } = useUser();
   const history = useHistory();
   const linkRef = useRef<HTMLInputElement>(null);
-  const link = `http://localhost:3000/register/join/${user?.joinCode}`;
+  const link =
+    process.env.NODE_ENV === "production"
+      ? `https://hera-pheri.herokuapp.com/register/join/${user?.joinCode}`
+      : `http://localhost:3000/register/join/${user?.joinCode}`;
 
   useEffect(() => {
     if (user === null) {
