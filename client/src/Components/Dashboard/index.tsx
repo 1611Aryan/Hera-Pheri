@@ -4,17 +4,27 @@ import { Flex, Section } from "../../Style";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import { useUser } from "./../../Context/userProvider";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const Dashboard: React.FC = () => {
   const { user } = useUser();
   const history = useHistory();
+  const linkRef = useRef<HTMLInputElement>(null);
+  const link = `http://localhost:3000/register/join/${user?.joinCode}`;
 
   useEffect(() => {
     if (user === null) {
       history.push("/login");
     }
   }, [user, history]);
+
+  const copy = () => {
+    if (linkRef) {
+      linkRef.current?.select();
+      linkRef.current?.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+    }
+  };
 
   return (
     <StyledDashboard>
@@ -44,9 +54,10 @@ const Dashboard: React.FC = () => {
             <h1>Invite</h1>
             <div className="link-container">
               <div className="link">
-                http://localhost:3000/join/{user?.joinCode}
+                {link}
+                <input type="text" value={link} ref={linkRef} readOnly />
               </div>
-              <button>
+              <button onClick={copy}>
                 <FontAwesomeIcon icon={faCopy} />
               </button>
             </div>
@@ -135,7 +146,14 @@ const StyledDashboard = styled.section`
           background: #fff;
           padding: 0.5rem 1rem;
           font-size: 1rem;
+          border: 0;
+          input {
+            position: absolute;
+            top: -9999px;
+            left: -99999px;
+          }
         }
+
         button {
           padding: 0.5rem;
           background: #424242;

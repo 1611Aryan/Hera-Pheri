@@ -1,8 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Flex, BgImg, Overlay, Section } from "../../Style";
-import bg from "./../../Media/bokeh1.jpg";
+import { Flex, Section } from "../../Style";
 
 const CreateTeam: React.FC = () => {
   //URL
@@ -39,36 +38,67 @@ const CreateTeam: React.FC = () => {
 
   return (
     <StyledCreateTeam>
-      <picture>
-        <source srcSet={bg} type="image/jpg" />
-        <img src={bg} alt="colors" />
-      </picture>
-      <div className="overlay"></div>
-      <form onSubmit={submitHandler}>
-        {message && <p className="err">{message}</p>}
-        <label htmlFor="team">Team Name: </label>
-        <input
-          type="text"
-          name="team"
-          required
-          autoFocus
-          onChange={changeHandler}
-        />
-        <label htmlFor="name">Name: </label>
-        <input type="text" name="name" required onChange={changeHandler} />
-        <label htmlFor="email">Email: </label>
-        <input type="text" name="email" required onChange={changeHandler} />
-        <label htmlFor="number">Phone Number: </label>
-        <input type="text" name="number" required onChange={changeHandler} />
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          name="password"
-          onChange={changeHandler}
-          required
-        />
-        <button>Create Team</button>
-      </form>
+      <div className="column left">
+        <h1>
+          <span>C</span>
+          <span>R</span>
+          <span>E</span>
+          <span>A</span>
+          <span>T</span>
+          <span>E</span>
+        </h1>
+      </div>
+      <div className="column right">
+        <form onSubmit={submitHandler}>
+          {message && <p className="err">{message}</p>}
+          <div className="row">
+            <div>
+              <label htmlFor="team">Team Name: </label>
+              <input
+                type="text"
+                name="team"
+                required
+                autoFocus
+                onChange={changeHandler}
+              />
+            </div>
+            <div>
+              {" "}
+              <label htmlFor="name">Name: </label>
+              <input
+                type="text"
+                name="name"
+                required
+                onChange={changeHandler}
+              />
+            </div>
+          </div>
+
+          <div className="fieldContainer">
+            <label htmlFor="email">Email: </label>
+            <input type="text" name="email" required onChange={changeHandler} />
+          </div>
+          <div className="fieldContainer">
+            <label htmlFor="number">Phone Number: </label>
+            <input
+              type="text"
+              name="number"
+              required
+              onChange={changeHandler}
+            />
+          </div>
+          <div className="fieldContainer">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              name="password"
+              onChange={changeHandler}
+              required
+            />
+          </div>
+          <button>Create Team</button>
+        </form>
+      </div>
     </StyledCreateTeam>
   );
 };
@@ -76,25 +106,43 @@ const CreateTeam: React.FC = () => {
 const StyledCreateTeam = styled.section`
   ${Section()}
   font-family: var(--content);
+  background: transparent;
   color: white;
   position: relative;
   ${Flex()};
-  picture {
-    ${BgImg()};
-    z-index: -1;
+  .column {
+    flex: 0.5;
+    position: relative;
+    z-index: 3;
   }
-  .overlay {
-    ${Overlay(5)};
-    z-index: -1;
+
+  .left {
+    ${Flex()}
+    h1 {
+      ${Flex(1)};
+      font-size: 5rem;
+      line-height: 1;
+      color: #2c2c2c;
+    }
   }
   form {
     width: 40vw;
     height: 60vh;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(158, 158, 158, 0.4);
     border-radius: 20px;
     backdrop-filter: blur(5px);
     padding: 1rem 2rem;
     ${Flex(1, "space-evenly", "flex-start")};
+    .row {
+      ${Flex(0, "space-between")};
+      width: 100%;
+      div {
+        flex: 0.47;
+      }
+    }
+    .fieldContainer {
+      width: 100%;
+    }
     .err {
       color: red;
       font-size: 0.8rem;
@@ -103,6 +151,7 @@ const StyledCreateTeam = styled.section`
       font-size: 1.2rem;
     }
     input {
+      margin-top: 1rem;
       width: 100%;
       padding: 0.6rem;
       border-radius: 5px;
@@ -112,7 +161,10 @@ const StyledCreateTeam = styled.section`
       }
     }
     button {
-      padding: 0.6rem;
+      font-size: 1rem;
+      background: white;
+      color: #2c2c2c;
+      padding: 0.8rem;
       border-radius: 5px;
       border: 0;
     }

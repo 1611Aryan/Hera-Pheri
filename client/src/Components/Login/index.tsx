@@ -3,7 +3,6 @@ import styled from "styled-components";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
-import bg from "./../../Media/bokeh1.jpg";
 import { Section, Flex } from "../../Style";
 import { useUser } from "../../Context/userProvider";
 
@@ -66,8 +65,8 @@ const Login: React.FC = () => {
               y2="150"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#134E5E" />
-              <stop offset="1" stop-color="#71B280" />
+              <stop stopColor="#134E5E" />
+              <stop offset="1" stopColor="#71B280" />
             </linearGradient>
           </defs>
         </svg>
@@ -129,8 +128,8 @@ const StyledLogin = styled.section`
       font-size: 10em;
       letter-spacing: 15px;
       text-transform: uppercase;
-      color: #b3b031;
-
+      color: #dddb49;
+      filter: brightness(120%) contrast(90%);
       text-shadow: 1px 1px hsl(50, 50%, 45%), 2px 2px hsl(50, 50%, 40%),
         3px 3px hsl(50, 50%, 35%), 4px 4px hsl(50, 50%, 34%),
         5px 5px hsl(50, 50%, 33%), 6px 6px hsl(50, 50%, 32%),
@@ -179,7 +178,7 @@ const StyledLogin = styled.section`
     }
     button {
       font-size: 1rem;
-      padding: 0.7rem 1.2rem;
+      padding: 0.7rem 2rem;
       border-radius: 10px;
       border: 2px solid #f5f23d;
     }

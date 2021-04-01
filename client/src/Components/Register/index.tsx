@@ -1,9 +1,12 @@
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { useHistory, Switch, Route } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Flex, BgImg, Overlay, Section } from "../../Style";
+import { Flex, Section } from "../../Style";
 import bg from "./../../Media/svg.png";
+import Error from "../Error";
+import JoinTeam from "./JoinTeam";
+import CreateTeam from "./CreateTeam";
 
 const Register: React.FC = () => {
   //
@@ -16,16 +19,32 @@ const Register: React.FC = () => {
 
   return (
     <StyledRegister>
-      <StyledRegisterCard onClick={() => clickHandler("/join")}>
-        <FontAwesomeIcon icon={faUsers} />
-        <h3>Join a Team</h3>
-      </StyledRegisterCard>
-      <StyledRegisterCard onClick={() => clickHandler("/create")}>
-        <FontAwesomeIcon icon={faPlus} />
-        <h3>Create a Team</h3>
-      </StyledRegisterCard>
-
       <img className="footer" src={bg} alt="waves " />
+      <Switch>
+        <Route path="/register" exact>
+          <>
+            <StyledRegisterCard onClick={() => clickHandler("/register/join")}>
+              <FontAwesomeIcon icon={faUsers} />
+              <h3>Join a Team</h3>
+            </StyledRegisterCard>
+            <StyledRegisterCard
+              onClick={() => clickHandler("/register/create")}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+              <h3>Create a Team</h3>
+            </StyledRegisterCard>
+          </>
+        </Route>
+        <Route path="/register/join/:code?" exact>
+          <JoinTeam />
+        </Route>
+        <Route path="/register/create" exact>
+          <CreateTeam />
+        </Route>
+        <Route path="/register">
+          <Error />
+        </Route>
+      </Switch>
     </StyledRegister>
   );
 };

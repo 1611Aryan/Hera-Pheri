@@ -2,8 +2,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Flex, BgImg, Overlay, Section } from "../../Style";
-import bg from "./../../Media/bokeh1.jpg";
+import { Flex, Section } from "../../Style";
 
 const JoinTeam: React.FC = () => {
   //URL
@@ -53,71 +52,92 @@ const JoinTeam: React.FC = () => {
 
   return (
     <StyledJoinTeam>
-      <picture>
-        <source srcSet={bg} type="image/jpg" />
-        <img src={bg} alt="colors" />
-      </picture>
-      <div className="overlay"></div>
+      <div className="column left">
+        <h1>
+          <span>J</span>
+          <span>O</span>
+          <span>I</span>
+          <span>N</span>
+        </h1>
+      </div>
+      <div className="column">
+        <form onSubmit={submitHandler}>
+          {message && <p className="err">{message}</p>}
+          <div className="row">
+            <div className="fieldContainer">
+              <label htmlFor="code">Team Code: </label>
+              <input
+                type="text"
+                name="code"
+                required
+                autoFocus
+                onChange={changeHandler}
+                value={input.code}
+              />
+            </div>
+            <div className="fieldContainer">
+              <label htmlFor="name">Name: </label>
+              <input
+                type="text"
+                name="name"
+                required
+                onChange={changeHandler}
+                value={input.name}
+              />
+            </div>
+          </div>
 
-      <form onSubmit={submitHandler}>
-        {message && <p className="err">{message}</p>}
-        <label htmlFor="code">Team Code: </label>
-        <input
-          type="text"
-          name="code"
-          required
-          autoFocus
-          onChange={changeHandler}
-          value={input.code}
-        />
-        <label htmlFor="name">Name: </label>
-        <input
-          type="text"
-          name="name"
-          required
-          onChange={changeHandler}
-          value={input.name}
-        />
-        <label htmlFor="email">Email: </label>
-        <input
-          type="text"
-          name="email"
-          required
-          onChange={changeHandler}
-          value={input.email}
-        />
-        <label htmlFor="number">Phone Number: </label>
-        <input
-          type="text"
-          name="number"
-          required
-          onChange={changeHandler}
-          value={input.number}
-        />
-        <button>Join Team</button>
-      </form>
+          <div className="fieldContainer">
+            <label htmlFor="email">Email: </label>
+            <input
+              type="text"
+              name="email"
+              required
+              onChange={changeHandler}
+              value={input.email}
+            />
+          </div>
+          <div className="fieldContainer">
+            <label htmlFor="number">Phone Number: </label>
+            <input
+              type="text"
+              name="number"
+              required
+              onChange={changeHandler}
+              value={input.number}
+            />
+          </div>
+          <button>Join Team</button>
+        </form>
+      </div>
     </StyledJoinTeam>
   );
 };
 
 const StyledJoinTeam = styled.section`
   ${Section()}
+  background: transparent;
   font-family: var(--content);
   position: relative;
   ${Flex()}
-  picture {
-    ${BgImg()}
-    z-index: -1;
-  }
-  .overlay {
-    ${Overlay(5)}
-    z-index: -1;
-  }
   color: white;
+  .column {
+    flex: 0.5;
+    position: relative;
+    z-index: 3;
+  }
+  .left {
+    ${Flex()}
+    h1 {
+      ${Flex(1)};
+      font-size: 5rem;
+      color: #2c2c2c;
+    }
+  }
   form {
     width: 40vw;
     height: 60vh;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(158, 158, 158, 0.4);
     border-radius: 20px;
     backdrop-filter: blur(5px);
     padding: 1rem 2rem;
@@ -126,10 +146,21 @@ const StyledJoinTeam = styled.section`
       color: red;
       font-size: 0.8rem;
     }
+    .row {
+      ${Flex(0, "space-between")};
+      width: 100%;
+      div {
+        flex: 0.47;
+      }
+    }
+    .fieldContainer {
+      width: 100%;
+    }
     label {
       font-size: 1.2rem;
     }
     input {
+      margin-top: 1rem;
       width: 100%;
       padding: 0.6rem;
       border-radius: 5px;
@@ -139,7 +170,10 @@ const StyledJoinTeam = styled.section`
       }
     }
     button {
-      padding: 0.6rem;
+      font-size: 1rem;
+      background: white;
+      color: #2c2c2c;
+      padding: 0.8rem;
       border-radius: 5px;
       border: 0;
     }
