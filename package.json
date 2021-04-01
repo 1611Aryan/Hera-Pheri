@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "start": "cd server/build node server.js",
-    "devstart": "cd server nodemon server",
+    "start": "cd server/build && node server.js",
+    "devstart": "cd server && nodemon server",
     "build-client": "cd client && yarn run build",
     "install-client": "cd client && yarn",
     "install-server": "cd server && yarn",
