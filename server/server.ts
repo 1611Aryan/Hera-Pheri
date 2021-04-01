@@ -24,6 +24,7 @@ const TeamRouter = require(path.join(__dirname, "./Routes/team.routes"));
 app.use("/team", TeamRouter);
 
 if (process.env.NODE_ENV === "production") {
+  console.log("Production");
   app.use(express.static(path.join(__dirname, "..", "..", "client", "build")));
   app.use("/register", express.static(path.join(__dirname, "Client")));
   app.use("/login", express.static(path.join(__dirname, "Client")));
