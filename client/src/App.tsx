@@ -6,6 +6,7 @@ import Home from "./Components/Home";
 import Login from "./Components/Login";
 import Nav from "./Components/Nav";
 import Register from "./Components/Register";
+import Footer from "./Components/Footer";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Error />
         </Route>
       </Switch>
+      <Footer />
     </div>
   );
 };
