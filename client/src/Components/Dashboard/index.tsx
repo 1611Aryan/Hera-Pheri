@@ -4,9 +4,10 @@ import { Flex, Section } from "../../Style";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import { useUser } from "./../../Context/userProvider";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Dashboard: React.FC = () => {
+  const [copied, setCopied] = useState(false);
   const { user } = useUser();
   const history = useHistory();
   const linkRef = useRef<HTMLInputElement>(null);
@@ -26,6 +27,8 @@ const Dashboard: React.FC = () => {
       linkRef.current?.select();
       linkRef.current?.setSelectionRange(0, 99999);
       document.execCommand("copy");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
     }
   };
 
@@ -64,6 +67,7 @@ const Dashboard: React.FC = () => {
                 <FontAwesomeIcon icon={faCopy} />
               </button>
             </div>
+            {copied && <span className="message">Copied</span>}
           </div>
         </div>
       </div>
@@ -171,6 +175,12 @@ const StyledDashboard = styled.section`
             outline: 0;
           }
         }
+      }
+      .message {
+        display: inline-block;
+        padding: 0.5rem;
+
+        font-size: 0.8rem;
       }
     }
   }

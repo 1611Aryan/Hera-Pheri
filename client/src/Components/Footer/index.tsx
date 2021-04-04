@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
     <StylledFooter>
       <div
         className={
-          location.pathname === "/login"
+          location.pathname === "/"
             ? "login"
             : location.pathname === "/register" ||
               location.pathname === "/register/join" ||
@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
             ? "register"
             : location.pathname === "/dashboard"
             ? "dashboard"
-            : ""
+            : "hide"
         }
       >
         <img className="img" src={bg} alt="waves " />
@@ -91,6 +91,9 @@ const StylledFooter = styled.footer`
   font-family: var(--content);
   overflow: hidden;
   //border-top: 1px solid red;
+  .hide {
+    display: none;
+  }
   .login {
     width: 100%;
     height: 100%;
@@ -227,6 +230,7 @@ const StylledFooter = styled.footer`
     justify-content: space-between;
     padding: 1rem 2rem;
     h1 {
+      z-index: 2;
       color: black;
       font-size: 3rem;
       font-weight: 500;
@@ -242,6 +246,7 @@ const StylledFooter = styled.footer`
       display: none;
     }
     .numbers {
+      z-index: 2;
       width: 100%;
       display: flex;
       flex-wrap: wrap;
@@ -256,11 +261,13 @@ const StylledFooter = styled.footer`
       }
     }
     .socials {
+      z-index: 2;
       width: 100%;
       display: flex;
       align-items: center;
       list-style-type: none;
       li {
+        z-index: 2;
         font-size: 1.5rem;
         padding: 1rem 2rem 1rem 0;
         color: #2d2d2d;

@@ -70,7 +70,6 @@ const Login: React.FC = () => {
             </linearGradient>
           </defs>
         </svg>
-
         <h1>Login</h1>
       </div>
       <div className="column right">
@@ -99,6 +98,8 @@ const Login: React.FC = () => {
 };
 
 const StyledLogin = styled.section`
+  padding: 0;
+  margin: 0;
   position: relative;
   ${Section()}
   font-family: var(--content);
@@ -125,7 +126,7 @@ const StyledLogin = styled.section`
     h1 {
       position: relative;
       z-index: 2;
-      font-size: 10em;
+      font-size: clamp(3rem, 12vw, 10rem);
       letter-spacing: 15px;
       text-transform: uppercase;
       color: #dddb49;
@@ -147,27 +148,22 @@ const StyledLogin = styled.section`
     width: 40vw;
     height: 60vh;
     background: teal;
-    background-blend-mode: multiply, multiply;
-    background-size: cover;
-    background-position: left center;
     border-radius: 20px;
-    backdrop-filter: blur(5px);
-    padding: 1rem 2rem;
+    padding: 1rem clamp(0.5rem, 3vw, 2rem);
     ${Flex(1, "space-evenly", "flex-start")};
-
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3),
       5px -5px 10px rgba(0, 0, 0, 0.3);
     .err {
       color: red;
-      font-size: 0.8rem;
+      font-size: clamp(0.6, 2vw, 0.8rem);
     }
     label {
       color: white;
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 3vw, 1.2rem);
     }
     input {
       width: 100%;
-      padding: 0.6rem;
+      padding: clamp(0.4rem, 2vw, 0.6rem);
       border-radius: 10px;
       border: 0;
       border-bottom: 3px solid #f5f23d;
@@ -177,10 +173,53 @@ const StyledLogin = styled.section`
       }
     }
     button {
-      font-size: 1rem;
-      padding: 0.7rem 2rem;
-      border-radius: 10px;
-      border: 2px solid #f5f23d;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      padding: 0.7rem clamp(1.3rem, 3vw, 2rem);
+      border-radius: 3px;
+      background: linear-gradient(to left, #fff, #eee);
+      border: 0;
+      &:focus {
+        outline: 0;
+      }
+    }
+  }
+
+  @media (max-width: 850px) {
+    .left {
+      flex: 0.4;
+      svg {
+        transform: translate(-50%, -50%) scale(0.9);
+      }
+    }
+    .right {
+      flex: 0.6;
+    }
+    form {
+      width: 45vw;
+    }
+  }
+  @media (max-width: 650px) {
+    .left {
+      display: none;
+      svg {
+        display: none;
+      }
+      h1 {
+        text-shadow: none;
+        color: #cacc43;
+      }
+    }
+    .right {
+      width: 100%;
+      flex: 1;
+      //padding: 0 2rem;
+      justify-content: center !important;
+      form {
+        width: 80%;
+        button {
+          border-radius: 5px;
+        }
+      }
     }
   }
 `;
