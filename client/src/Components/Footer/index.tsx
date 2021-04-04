@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
   return (
     <StylledFooter>
       <div
-        className={
+        className={`footer ${
           location.pathname === "/"
             ? "login"
             : location.pathname === "/register" ||
@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
             : location.pathname === "/dashboard"
             ? "dashboard"
             : "hide"
-        }
+        }`}
       >
         <img className="img" src={bg} alt="waves " />
         <h1>
@@ -42,12 +42,12 @@ const Footer: React.FC = () => {
           <span>h</span>
         </h1>
         <ul className="numbers">
-          <li>Anmol Ghai: +91 75892 05575</li>
-          <li>Parth Sood: +91 79868 10284</li>
-          <li>Anushka Khera: +91 62837 29736</li>
-          <li>Prachi Bhardwaj: +91 78142 17576</li>
-          <li>Aryan Gupta: +91 81467 40057</li>
-          <li>Pratham Thakur: +91 97603 98187</li>
+          <li>Anmol Ghai: 7589205575</li>
+          <li>Parth Sood: 7986810284</li>
+          <li>Anushka Khera: 6283729736</li>
+          <li>Prachi Bhardwaj: 7814217576</li>
+          <li>Aryan Gupta: 8146740057</li>
+          <li>Pratham Thakur: 9760398187</li>
         </ul>
         <div>
           <ul className="socials">
@@ -92,21 +92,20 @@ const StylledFooter = styled.footer`
   overflow: hidden;
   //border-top: 1px solid red;
   .hide {
-    display: none;
+    display: none !important;
   }
-  .login {
+
+  .footer {
     width: 100%;
     height: 100%;
     position: relative;
-    background: linear-gradient(to right, #fff, #ddd);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 1rem 2rem;
+    padding: 1rem clamp(1rem, 3vw, 2rem);
     h1 {
-      color: teal;
-      font-size: 3rem;
-      text-shadow: 1px 1px 3px yellow;
+      z-index: 2;
+      font-size: clamp(2rem, 4vw, 3rem);
       span {
         display: inline-block;
         transition: transform ease-in-out 0.1s;
@@ -115,17 +114,17 @@ const StylledFooter = styled.footer`
         }
       }
     }
-    img {
-      display: none;
-    }
     .numbers {
       width: 100%;
       display: flex;
+      justify-content: space-between;
       flex-wrap: wrap;
       list-style-type: none;
       li {
-        width: 50%;
+        z-index: 2;
+        width: 48%;
         padding: 1rem 0;
+        font-size: clamp(0.8rem, 2vw, 1rem);
         height: auto;
         &:hover {
           text-decoration: underline;
@@ -138,7 +137,7 @@ const StylledFooter = styled.footer`
       align-items: center;
       list-style-type: none;
       li {
-        font-size: 1.5rem;
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
         padding: 1rem 2rem 1rem 0;
         color: teal;
         transition: all ease 0.3s;
@@ -151,26 +150,28 @@ const StylledFooter = styled.footer`
       }
     }
   }
-  .register {
-    width: 100%;
-    height: 100%;
-    position: relative;
+
+  .login {
     background: linear-gradient(to right, #fff, #ddd);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 1rem 2rem;
+
+    h1 {
+      color: teal;
+      text-shadow: 1px 1px 3px yellow;
+    }
+    img {
+      display: none;
+    }
+    .socials {
+      li {
+        color: teal;
+      }
+    }
+  }
+
+  .register {
+    background: linear-gradient(to right, #fff, #ddd);
     h1 {
       color: #3d3d3d;
-      z-index: 2;
-      font-size: 3rem;
-      span {
-        display: inline-block;
-        transition: transform ease-in-out 0.1s;
-        &:hover {
-          transform: scale(1.2);
-        }
-      }
     }
     img {
       position: absolute;
@@ -180,104 +181,34 @@ const StylledFooter = styled.footer`
       height: auto;
       transform: rotateX(180deg);
       z-index: 1;
+      @media (max-width: 650px) {
+        transform: scale(1.5, 5) rotateX(180deg);
+      }
     }
     .numbers {
-      z-index: 2;
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      list-style-type: none;
       li {
-        width: 50%;
-        padding: 1rem 0;
-        height: auto;
         color: #2d2d2d;
-        &:hover {
-          text-decoration: underline;
-        }
       }
     }
     .socials {
-      z-index: 2;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      list-style-type: none;
       li {
-        z-index: 2;
-        font-size: 1.5rem;
-        padding: 1rem 2rem 1rem 0;
-        color: teal;
         color: #2d2d2d;
-        transition: all ease 0.3s;
-        cursor: pointer;
-        &:hover {
-          transform: scale(1.5);
-        }
-      }
-      li + li {
-        padding: 1rem 2rem;
       }
     }
   }
+
   .dashboard {
-    width: 100%;
-    height: 100%;
-    position: relative;
     background: #d0dffc;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 1rem 2rem;
     h1 {
-      z-index: 2;
       color: black;
-      font-size: 3rem;
-      font-weight: 500;
-      span {
-        display: inline-block;
-        transition: transform ease-in-out 0.1s;
-        &:hover {
-          transform: scale(1.2);
-        }
-      }
+      z-index: 500;
     }
     img {
       display: none;
     }
-    .numbers {
-      z-index: 2;
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      list-style-type: none;
-      li {
-        width: 50%;
-        padding: 1rem 0;
-        height: auto;
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
     .socials {
-      z-index: 2;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      list-style-type: none;
       li {
-        z-index: 2;
-        font-size: 1.5rem;
-        padding: 1rem 2rem 1rem 0;
         color: #2d2d2d;
-        transition: all ease 0.3s;
-        &:hover {
-          transform: scale(1.5);
-        }
-      }
-      li + li {
-        padding: 1rem 2rem;
       }
     }
   }

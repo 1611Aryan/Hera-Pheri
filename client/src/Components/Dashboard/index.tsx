@@ -83,7 +83,7 @@ const StyledDashboard = styled.section`
   padding: 1rem;
   h1 {
     font-weight: 500;
-    font-size: 1.25rem;
+    font-size: clamp(1.15rem, 3vw, 1.25rem);
     margin-bottom: 1rem;
   }
   .divider {
@@ -101,9 +101,9 @@ const StyledDashboard = styled.section`
     width: 40%;
     height: 100%;
     ${Flex(1, "space-between", "flex-start")}
-    padding:1rem 0 2rem 0;
+    padding: 1rem 0 clamp(1rem, 3vw, 2rem) 0;
     span {
-      font-size: 2rem;
+      font-size: clamp(1.45rem, 3vw, 2rem);
     }
     .members {
       margin-top: 2.2rem;
@@ -115,7 +115,7 @@ const StyledDashboard = styled.section`
         width: 100%;
         padding: 1.5rem;
         list-style-position: inside;
-        font-size: 1.2rem;
+        font-size: clamp(1rem, 3vw, 1.2rem);
         li + li {
           margin-top: 2rem;
         }
@@ -126,33 +126,34 @@ const StyledDashboard = styled.section`
     width: 40%;
     height: 100%;
     ${Flex(1, "flex-start", "flex-start")}
-    padding:1rem 0 2rem 0;
+    padding: 1rem 0 clamp(1rem, 3vw, 2rem) 0;
     .code {
       width: 100%;
       height: 40%;
       p {
-        font-size: 1.15rem;
+        font-size: clamp(1rem, 3vw, 1.15rem);
       }
       span {
-        font-size: 2rem;
+        font-size: clamp(1.45rem, 3vw, 2rem);
       }
     }
     .invite {
       width: 100%;
       padding: 0 2rem 0 0;
       h1 {
-        font-size: 1.5rem;
+        font-size: clamp(1.15rem, 3vw, 1.5rem);
       }
       .link-container {
         margin-top: 1rem;
         width: 100%;
         ${Flex()};
         height: 2rem;
+        overflow: hidden;
         .link {
           width: 100%;
           background: #fff;
-          padding: 0.5rem 1rem;
-          font-size: 1rem;
+          padding: 0.5rem 0.5rem;
+          font-size: clamp(0.8rem, 2vw, 1rem);
           border: 0;
           input {
             position: absolute;
@@ -169,7 +170,7 @@ const StyledDashboard = styled.section`
           border-radius: 0;
           svg {
             color: white;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.2rem);
           }
           &:focus {
             outline: 0;
@@ -182,6 +183,21 @@ const StyledDashboard = styled.section`
 
         font-size: 0.8rem;
       }
+    }
+  }
+  @media (max-width: 650px) {
+    .content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .team {
+      width: 100%;
+      .members {
+        width: 100%;
+      }
+    }
+    .share {
+      width: 100%;
     }
   }
 `;

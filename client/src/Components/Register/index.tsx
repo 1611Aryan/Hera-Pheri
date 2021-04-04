@@ -62,13 +62,18 @@ const StyledRegister = styled.div`
     width: 100%;
     height: auto;
   }
+  @media (max-width: 650px) {
+    flex-direction: column;
+    .footer {
+      transform: scale(1.5, 5);
+    }
+  }
 `;
 
 const StyledRegisterCard = styled.div`
-  width: 25%;
+  width: 25vw;
   height: 60%;
   z-index: 2;
-
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(1px);
   display: flex;
@@ -79,8 +84,6 @@ const StyledRegisterCard = styled.div`
   cursor: pointer;
   position: relative;
   transform-style: preserve-3d;
-  //transform: rotate(-5deg) skew(-7deg, 6.5deg);
-
   &:after {
     content: "";
     position: absolute;
@@ -106,10 +109,15 @@ const StyledRegisterCard = styled.div`
     transform-origin: top;
   }
   svg {
-    font-size: 5rem;
+    font-size: clamp(3rem, 5vw, 5rem);
   }
   h3 {
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+  @media (max-width: 650px) {
+    width: 60vw;
+    height: 50vw;
+    z-index: 2;
   }
 `;
 

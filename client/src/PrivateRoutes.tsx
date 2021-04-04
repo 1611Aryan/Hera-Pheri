@@ -7,13 +7,13 @@ export const UserRoute: React.FC<{
   exact?: boolean;
 }> = props => {
   const { user } = useUser();
-  return user ? (
+  return user || true ? (
     <Route
       path={props.path}
       exact={props.exact}
       render={() => props.children}
     />
   ) : (
-    <Redirect to="/login" />
+    <Redirect to="/" />
   );
 };

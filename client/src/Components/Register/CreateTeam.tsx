@@ -120,7 +120,7 @@ const StyledCreateTeam = styled.section`
     ${Flex()}
     h1 {
       ${Flex(1)};
-      font-size: 5rem;
+      font-size: clamp(2.5rem, 5vw, 5rem);
       line-height: 1;
       color: #2c2c2c;
     }
@@ -131,7 +131,7 @@ const StyledCreateTeam = styled.section`
     background: rgba(158, 158, 158, 0.4);
     border-radius: 20px;
     backdrop-filter: blur(5px);
-    padding: 1rem 2rem;
+    padding: 1rem clamp(1rem, 3vw, 2rem);
     ${Flex(1, "space-evenly", "flex-start")};
     .row {
       ${Flex(0, "space-between")};
@@ -164,9 +164,34 @@ const StyledCreateTeam = styled.section`
       font-size: 1rem;
       background: white;
       color: #2c2c2c;
-      padding: 0.8rem;
+      padding: 0.6rem;
       border-radius: 5px;
       border: 0;
+    }
+  }
+  @media (max-width: 650px) {
+    flex-direction: column;
+    justify-content: space-evenly;
+    .left {
+      width: 100%;
+      flex: 0 !important;
+      justify-content: flex-start;
+      padding: 0 2rem;
+      h1 {
+        flex-direction: row;
+        color: #494949;
+      }
+    }
+    .right {
+      flex: 0;
+      width: 100%;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 0 2rem;
+    }
+    form {
+      width: 100%;
+      background: rgba(116, 116, 116, 0.4);
     }
   }
 `;

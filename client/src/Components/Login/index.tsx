@@ -174,10 +174,11 @@ const StyledLogin = styled.section`
     }
     button {
       font-size: clamp(0.8rem, 2vw, 1rem);
-      padding: 0.7rem clamp(1.3rem, 3vw, 2rem);
-      border-radius: 3px;
+      padding: 0.6rem clamp(1.3rem, 3vw, 2rem);
+      border-radius: 5px;
       background: linear-gradient(to left, #fff, #eee);
       border: 0;
+      border-bottom: 3px solid #f5f23d;
       &:focus {
         outline: 0;
       }
@@ -199,26 +200,26 @@ const StyledLogin = styled.section`
     }
   }
   @media (max-width: 650px) {
+    display: flex;
+    flex-direction: column;
+    // justify-content: space-around;
     .left {
-      display: none;
+      flex: 0.2;
       svg {
         display: none;
       }
       h1 {
-        text-shadow: none;
-        color: #cacc43;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        color: teal;
       }
     }
     .right {
       width: 100%;
-      flex: 1;
-      //padding: 0 2rem;
-      justify-content: center !important;
+      flex: 0.7;
+      align-items: flex-start;
       form {
         width: 80%;
-        button {
-          border-radius: 5px;
-        }
+        height: 50vh;
       }
     }
   }
