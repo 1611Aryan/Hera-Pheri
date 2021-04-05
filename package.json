@@ -6,6 +6,8 @@
     "install-client": "cd client && yarn",
     "install-server": "cd server && yarn",
     "build-server": "cd server && yarn run build",
-    "heroku-postbuild": "yarn run install-server && yarn run build-server && yarn run install-client && yarn run build-client"
+    "heroku-postbuild": "yarn run install-server && yarn run build-server && yarn run install-client && yarn run build-client",
+    "pushRepo": "git push repo master",
+    "pushHeroku": "git push heroku master"
   }
 }

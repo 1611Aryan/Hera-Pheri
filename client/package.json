@@ -30,9 +30,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "pushRepo": "git push repo master",
-    "pushHeroku": "git push heroku master"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
