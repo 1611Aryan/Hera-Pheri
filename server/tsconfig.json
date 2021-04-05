@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
+    "lib": ["ESNext"],
     "types": ["node"],
-    "outDir": "build"
+    "outDir": "build",
+    "target": "ESNext",
+    "strict": true
   }
 }

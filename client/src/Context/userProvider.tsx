@@ -12,6 +12,7 @@ interface user {
     };
     members: { name: string; email: string; number: string }[];
     password: string;
+    _id: string;
   } | null;
   setUser: React.Dispatch<
     React.SetStateAction<{
@@ -28,6 +29,7 @@ interface user {
         number: string;
       }[];
       password: string;
+      _id: string;
     } | null>
   >;
 }

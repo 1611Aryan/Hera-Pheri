@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 
 const Dashboard: React.FC = () => {
   const [copied, setCopied] = useState(false);
+  const [teamStatus, setTeamStatus] = useState(false);
   const { user } = useUser();
   const history = useHistory();
   const linkRef = useRef<HTMLInputElement>(null);
@@ -19,7 +20,9 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     if (user === null) {
       history.push("/login");
-    }
+    } else
+      user?.members.length < 3 ? setTeamStatus(false) : setTeamStatus(true);
+    console.log(user?.members.length);
   }, [user, history]);
 
   const copy = () => {
@@ -38,7 +41,12 @@ const Dashboard: React.FC = () => {
       <div className="divider"></div>
       <div className="content">
         <div className="team">
-          <span>My Team</span>
+          <span className="myTeam">My Team</span>
+          {!teamStatus && (
+            <span className="teamMessage">
+              You need a full team of four to participate!
+            </span>
+          )}
           <div className="members">
             <ol>
               <li>{user?.leader.name}</li>
@@ -102,8 +110,12 @@ const StyledDashboard = styled.section`
     height: 100%;
     ${Flex(1, "space-between", "flex-start")}
     padding: 1rem 0 clamp(1rem, 3vw, 2rem) 0;
-    span {
+    .myTeam {
       font-size: clamp(1.45rem, 3vw, 2rem);
+    }
+    .teamMessage {
+      font-size: clamp(0.7rem, 1vw, 0.8rem);
+      color: red;
     }
     .members {
       margin-top: 2.2rem;
@@ -111,6 +123,7 @@ const StyledDashboard = styled.section`
       flex-grow: 1;
       background: #fff;
       border-radius: 0 25px 25px 0;
+
       ol {
         width: 100%;
         padding: 1.5rem;

@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
     else return "hide";
   };
   return (
-    <StylledFooter>
+    <StyledFooter>
       <div className={`footer ${urlMatcher()}`}>
         <img className="img" src={bg} alt="waves " />
         <h1>
@@ -80,11 +80,11 @@ const Footer: React.FC = () => {
           </ul>
         </div>
       </div>
-    </StylledFooter>
+    </StyledFooter>
   );
 };
 
-const StylledFooter = styled.footer`
+const StyledFooter = styled.footer`
   width: 100%;
   height: 60vh;
   font-family: var(--content);

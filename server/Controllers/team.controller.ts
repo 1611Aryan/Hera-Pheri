@@ -3,14 +3,44 @@ const Teams = require("./../Models/team.model");
 const bcrypt = require("bcrypt");
 
 interface res {
-  status: (i: number) => { send };
-  send: (i: any) => {};
+  send: (i: any) => { status: (i: any) => {} | {} };
+  status: (i: number) => { send: (i: any) => {} | {} };
   sendStatus: (i: number) => {};
 }
 
+interface req {
+  body: {
+    team: string;
+    name: string;
+    email: string;
+    number: string;
+    password: string;
+    code: string;
+  };
+}
+
+const generateSet = (num: number) => {
+  switch (num % 6) {
+    case 0:
+      return "A";
+    case 1:
+      return "B";
+    case 2:
+      return "C";
+    case 3:
+      return "D";
+    case 4:
+      return "E";
+    case 5:
+      return "F";
+    default:
+      return undefined;
+  }
+};
+
 const randomCode = () => Math.random().toString(36).substring(2, 10);
 
-exports.create = async (req: any, res: res) => {
+exports.create = async (req: req, res: res) => {
   const team = req.body.team;
   const name = req.body.name;
   const email = req.body.email;
@@ -20,9 +50,11 @@ exports.create = async (req: any, res: res) => {
       $or: [{ teamName: team }, { "leader.email": email }],
     });
     if (Team) return res.status(409).send("Team Name/Email Already Exists");
+    const set = generateSet(await Teams.count());
     const password = await bcrypt.hash(req.body.password, 10);
     Team = new Teams({
       teamName: team,
+      set,
       joinCode: randomCode(),
       leader: {
         name,
@@ -38,7 +70,7 @@ exports.create = async (req: any, res: res) => {
   }
 };
 
-exports.join = async (req: any, res: res) => {
+exports.join = async (req: req, res: res) => {
   const code = req.body.code;
   const name = req.body.name;
   const email = req.body.email;
@@ -61,7 +93,7 @@ exports.join = async (req: any, res: res) => {
   }
 };
 
-exports.login = async (req: any, res: res) => {
+exports.login = async (req: req, res: res) => {
   const teamName = req.body.team;
   const password = req.body.password;
   try {

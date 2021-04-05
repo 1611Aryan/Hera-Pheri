@@ -13,15 +13,26 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 //DataBase
-mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  autoIndex: true,
+});
 const connection = mongoose.connection;
 connection.once("open", () => console.log("Database is Connected"));
 
 //Routers
-const TeamRouter = require(path.join(__dirname, "./Routes/team.routes"));
+const TeamRouter = require(path.join(__dirname, "Routes", "team.routes"));
+const QuestionsRouter = require(path.join(
+  __dirname,
+  "Routes",
+  "questions.routes"
+));
 
 //Routes
 app.use("/team", TeamRouter);
+app.use("/questions", QuestionsRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "..", "..", "client", "build")));
@@ -31,31 +42,11 @@ if (process.env.NODE_ENV === "production") {
       path.join(__dirname, "..", "..", "client", "build", "static")
     )
   );
-  app.get("*", (req, res) => {
+  app.get("*", (req: any, res: any) => {
     res.sendFile("index.html", {
       root: path.join(__dirname, "..", "..", "client", "build"),
     });
   });
-  // app.use(
-  //   "/register",
-  //   express.static(path.join(__dirname, "..", "..", "client", "build"))
-  // );
-  // app.use(
-  //   "/register/join",
-  //   express.static(path.join(__dirname, "..", "..", "client", "build"))
-  // );
-  // app.use(
-  //   "/register/create",
-  //   express.static(path.join(__dirname, "..", "..", "client", "build"))
-  // );
-  // app.use(
-  //   "/login",
-  //   express.static(path.join(__dirname, "..", "..", "client", "build"))
-  // );
-  // app.use(
-  //   "/dashboard",
-  //   express.static(path.join(__dirname, "..", "..", "client", "build"))
-  // );
 }
 
 app.listen(PORT, () => console.log(`Server running on Port ${PORT}`));
