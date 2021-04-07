@@ -102,8 +102,8 @@ const StyledFooter = styled.footer`
     flex-direction: column;
     justify-content: space-between;
     padding: 1rem clamp(1rem, 3vw, 2rem);
+    z-index: 2;
     h1 {
-      z-index: 2;
       font-size: clamp(2rem, 4vw, 3rem);
       span {
         display: inline-block;
@@ -171,6 +171,7 @@ const StyledFooter = styled.footer`
     background: linear-gradient(to right, #fff, #ddd);
     h1 {
       color: #3d3d3d;
+      z-index: 2;
     }
     img {
       position: absolute;

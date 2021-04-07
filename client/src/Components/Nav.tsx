@@ -1,24 +1,34 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import logoPng from "./../Media/Logo.png";
+import logowebp from "./../Media/Logo.webp";
 
 const Nav: React.FC = () => {
   return (
     <StyledHeader>
       <nav>
-        <h1>
-          <Link to="/">
-            <span>H</span>
-            <span>e</span>
-            <span>r</span>
-            <span>a</span>
-            <span> </span>
-            <span>P</span>
-            <span>h</span>
-            <span>e</span>
-            <span>r</span>
-            <span>i</span>
-          </Link>
-        </h1>
+        <div className="logo">
+          <picture>
+            <source srcSet={logowebp} type="image/webp" />
+            <source srcSet={logoPng} type="image/png" />
+            <img src={logoPng} alt="logo" />
+          </picture>
+          <h1>
+            <Link to="/">
+              <span>H</span>
+              <span>e</span>
+              <span>r</span>
+              <span>a</span>
+              <span> </span>
+              <span>P</span>
+              <span>h</span>
+              <span>e</span>
+              <span>r</span>
+              <span>i</span>
+            </Link>
+          </h1>
+        </div>
+
         <ul>
           <li>
             <Link to="/register">Register</Link>
@@ -44,12 +54,27 @@ const StyledHeader = styled.header`
     align-items: center;
     color: white;
     font-family: var(--heading);
-    h1 {
-      font-size: clamp(1.25rem, 3vw, 1.65rem);
-      transition: color ease-out0.4s;
-      span {
-        &:hover {
-          color: yellow;
+    .logo {
+      height: 100%;
+      width: auto;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      picture {
+        height: 80%;
+        margin-right: 1rem;
+      }
+      img {
+        height: 100%;
+        object-fit: cover;
+      }
+      h1 {
+        font-size: clamp(1.25rem, 3vw, 1.65rem);
+        transition: color ease-out0.4s;
+        span {
+          &:hover {
+            color: yellow;
+          }
         }
       }
     }

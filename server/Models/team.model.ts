@@ -7,6 +7,8 @@ const teamSchema = new Schema(
     teamName: { type: String, required: true },
     joinCode: { type: String },
     set: { type: String, required: true },
+    score: { type: Number, default: 0 },
+    hints: { type: Number, default: 3 },
     leader: {
       name: { type: String, required: true },
       email: { type: String, required: true },
@@ -22,23 +24,6 @@ const teamSchema = new Schema(
     },
     answers: {
       type: Array,
-      default: [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-      ],
     },
   },
   { timestamps: true }

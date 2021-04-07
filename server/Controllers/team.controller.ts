@@ -50,7 +50,7 @@ exports.create = async (req: req, res: res) => {
       $or: [{ teamName: team }, { "leader.email": email }],
     });
     if (Team) return res.status(409).send("Team Name/Email Already Exists");
-    const set = generateSet(await Teams.count());
+    const set = generateSet(await Teams.countDocuments());
     const password = await bcrypt.hash(req.body.password, 10);
     Team = new Teams({
       teamName: team,
@@ -61,6 +61,23 @@ exports.create = async (req: req, res: res) => {
         email,
         number,
       },
+      answers: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
       password,
     });
     await Team.save();

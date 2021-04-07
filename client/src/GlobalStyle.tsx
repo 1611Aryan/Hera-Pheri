@@ -15,6 +15,7 @@ body{
     width:100vw;
     height:100%;
     overflow-x:hidden;
+  font-family: 'Lato', sans-serif;
 }
 a{
     text-decoration:none;
