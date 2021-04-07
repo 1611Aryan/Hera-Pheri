@@ -29,10 +29,12 @@ const QuestionsRouter = require(path.join(
   "Routes",
   "questions.routes"
 ));
+const AdminsRouter = require(path.join(__dirname, "Routes", "admin.routes"));
 
 //Routes
 app.use("/team", TeamRouter);
 app.use("/questions", QuestionsRouter);
+app.use("/admin", AdminsRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "..", "..", "client", "build")));

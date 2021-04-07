@@ -128,3 +128,15 @@ exports.login = async (req: req, res: res) => {
     res.status(500).send(err);
   }
 };
+
+exports.view = async (req: req, res: res) => {
+  try {
+    const teams = await Teams.find(
+      {},
+      { joinCode: 0, members: 0, answers: 0, password: 0, set: 0 }
+    ).sort({ score: -1 });
+    res.status(200).send(teams);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};

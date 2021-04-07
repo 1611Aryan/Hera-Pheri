@@ -1,6 +1,13 @@
 const router = require("express").Router();
 
-const { create, join, login } = require("./../Controllers/team.controller");
+const {
+  create,
+  join,
+  login,
+  view,
+} = require("./../Controllers/team.controller");
+
+router.route("/").get(view);
 
 router.route("/create").post(create);
 

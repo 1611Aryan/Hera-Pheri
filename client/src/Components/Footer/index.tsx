@@ -10,8 +10,10 @@ import bg from "./../../Media/svg.png";
 
 const Footer: React.FC = () => {
   const location = useLocation();
+
   const urlMatcher = () => {
     const pattern = new RegExp("/register/join");
+
     if (location.pathname === "/") return "login";
     else if (
       location.pathname === "/register" ||
@@ -22,7 +24,9 @@ const Footer: React.FC = () => {
     else if (location.pathname === "/dashboard") return "dashboard";
     else return "hide";
   };
-  return (
+
+  return location.pathname === "/admin" ||
+    location.pathname === "/admin/dashboard" ? null : (
     <StyledFooter>
       <div className={`footer ${urlMatcher()}`}>
         <img className="img" src={bg} alt="waves " />
