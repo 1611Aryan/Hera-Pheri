@@ -1,38 +1,13 @@
 export { };
 const Teams = require("./../Models/team.model");
-const { Request, Response } = require("express");
+import { Request, Response, NextFunction } from "express-serve-static-core";
+import { nextTick } from "node:process";
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
-
-interface res {
-  send: (i: any) => { status: (i: any) => {} | {} };
-  status: (
-    i: number
-  ) => {
-    send: (i: any) => {};
-    header: (
-      tokenName: string,
-      tokenValue: string
-    ) => { send: (j: any) => {} | {} };
-  };
-  sendStatus: (i: number) => {};
-  header: (tokenName: string, tokenValue: string) => {};
-}
-
-interface req {
-  body: {
-    team: string;
-    name: string;
-    email: string;
-    number: string;
-    password: string;
-    code: string;
-    ques: number;
-    ans: string;
-  };
-  header: (string) => {};
+interface req extends Request {
   team: any;
+  ans: boolean
 }
 
 const generateSet = (num: number) => {
@@ -61,7 +36,7 @@ const quesURL =
     ? "/questions"
     : "http://localhost:5000/questions";
 
-exports.verifyToken = async (req: req, res: res, next: any) => {
+exports.verifyToken = async (req: req, res: Response, next: NextFunction) => {
   const token = req.header("authToken");
   if (!token) return res.status(401).send("access denied");
   try {
@@ -73,12 +48,9 @@ exports.verifyToken = async (req: req, res: res, next: any) => {
   }
 };
 
-exports.getTeamData = async (req: req, res: res) => {
+exports.getTeamData = async (req: req, res: Response) => {
   try {
-    console.log("fetching");
-    console.log(req);
     const team = await Teams.findOne({ _id: req.team.team });
-    console.log(team);
     if (team) return res.status(200).send({ team, auth: true });
     return res.status(404).send("Team Not Found");
   } catch (err) {
@@ -86,7 +58,7 @@ exports.getTeamData = async (req: req, res: res) => {
   }
 };
 
-exports.create = async (req: req, res: res) => {
+exports.create = async (req: req, res: Response) => {
   const team = req.body.team;
   const name = req.body.name;
   const email = req.body.email;
@@ -133,7 +105,7 @@ exports.create = async (req: req, res: res) => {
   }
 };
 
-exports.join = async (req: req, res: res) => {
+exports.join = async (req: req, res: Response) => {
   const code = req.body.code;
   const name = req.body.name;
   const email = req.body.email;
@@ -156,7 +128,8 @@ exports.join = async (req: req, res: res) => {
   }
 };
 
-exports.login = async (req: req, res: res) => {
+exports.login = async (req: req, res: Response) => {
+  console.log(1)
   const teamName = req.body.team;
   const password = req.body.password;
   try {
@@ -179,7 +152,7 @@ exports.login = async (req: req, res: res) => {
   }
 };
 
-exports.view = async (req: req, res: res) => {
+exports.view = async (req: req, res: Response) => {
   try {
     const teams = await Teams.find(
       {},
@@ -191,7 +164,12 @@ exports.view = async (req: req, res: res) => {
   }
 };
 
-exports.changeScore = async (req: req, res: res) => {
+exports.changeScore = async (req: req, res: Response) => {
+  const ans = req.ans;
+  return ans ? res.send('Correct') : res.send('Incorrect')
+};
+
+exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
   const quesNumber = req.body.ques;
   const answer = req.body.ans;
   const id = req.team.team;
@@ -205,12 +183,18 @@ exports.changeScore = async (req: req, res: res) => {
       const set = team.set;
       const questions = await axios.get(`${quesURL}/${set}`);
       if (questions) {
-        if (questions.data.questions[quesNumber].ans === answer)
-          return res.send("Correct");
-        else return res.send("Incorrect");
+        if (questions.data.questions[quesNumber].ans === answer) {
+          req.ans = true;
+          next()
+        }
+        else {
+          req.ans = false;
+          next()
+        }
       } else return res.sendStatus(500);
     } else return res.sendStatus(404);
   } catch (err) {
     res.status(500).send(err);
   }
-};
+}
+

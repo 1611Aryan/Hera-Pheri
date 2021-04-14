@@ -5,14 +5,25 @@ import { faTrophy, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useUser } from "../../Context/userProvider";
 import { Flex } from "../../Style";
 import RuleBook from "./RuleBook";
+import axios from "axios";
+import { useToken } from "../../Context/tokenProvider";
 
 const Game = () => {
   //URL
+  const URL =
+    process.env.NODE_ENV === "production"
+      ? "/team/answer"
+      : "http://localhost:5000/team/answer";
 
   //
   const { user } = useUser();
+  const { token } = useToken();
   const progressRef = useRef<HTMLInputElement>(null);
+
+  //Sttate
   const [rulebook, setRulebook] = useState(false);
+  const [input, setInput] = useState<string | null>(null);
+  const [message, setMessage] = useState<string>(" ");
 
   //Handlers
   const questionNumber = () => {
@@ -21,10 +32,6 @@ const Game = () => {
         if (user?.answers[i] === false) return i;
       }
     return 0;
-  };
-
-  const SubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
   };
 
   const ProgressHandler = () => {
@@ -36,6 +43,25 @@ const Game = () => {
 
   const RulebookHandler = () => {
     setRulebook(!rulebook);
+  };
+
+  const ChangeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+  };
+
+  const SubmitAnswer = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        URL,
+        { ques: questionNumber(), ans: input },
+        { headers: { authToken: token } }
+      );
+      setMessage(res.data);
+      setTimeout(() => setMessage(""), 2500);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   //Component did mount
@@ -61,8 +87,9 @@ const Game = () => {
         </div>
         <p> Currently on Question Number: {questionNumber() + 1}</p>
       </div>
-      <form className="answer" onSubmit={SubmitHandler}>
-        <textarea name="" id=""></textarea>
+      <form className="answer" onSubmit={SubmitAnswer}>
+        <p>{message}</p>
+        <textarea name="" id="" onChange={ChangeHandler} required></textarea>
         <button>Submit Answer</button>
       </form>
       {rulebook && <RuleBook setRulebook={setRulebook} />}
@@ -124,6 +151,9 @@ const StyledGame = styled.section`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    p {
+      height: 1.2rem;
+    }
     textarea {
       width: 100%;
       flex: 1;

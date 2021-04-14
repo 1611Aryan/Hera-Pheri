@@ -7,6 +7,7 @@ const {
   join,
   login,
   view,
+  verifyAnswer,
   changeScore,
 } = require("./../Controllers/team.controller");
 
@@ -22,6 +23,6 @@ router.route("/authenticate").post(verifyToken, getTeamData);
 
 router.route("/dashboard").post(verifyToken, getTeamData);
 
-router.route("/answer").post(verifyToken, changeScore);
+router.route("/answer").post(verifyToken, verifyAnswer, changeScore);
 
 module.exports = router;
