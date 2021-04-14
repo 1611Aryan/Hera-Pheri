@@ -22,7 +22,6 @@ const Team = () => {
       history.push("/login");
     } else
       user?.members.length < 3 ? setTeamStatus(false) : setTeamStatus(true);
-    console.log(user?.members.length);
   }, [user, history]);
 
   const copy = () => {
@@ -32,6 +31,21 @@ const Team = () => {
       document.execCommand("copy");
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
+    }
+  };
+
+  const Share = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "Hera Pheri Invite",
+          text: `Join My Team ${user?.teamName}`,
+          url: link,
+        });
+        console.log("Successfully Shared");
+      } else copy();
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -68,7 +82,7 @@ const Team = () => {
               {link}
               <input type="text" value={link} ref={linkRef} readOnly />
             </div>
-            <button onClick={copy}>
+            <button onClick={Share}>
               <FontAwesomeIcon icon={faCopy} />
             </button>
           </div>

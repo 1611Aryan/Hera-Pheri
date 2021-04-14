@@ -9,8 +9,8 @@ const Login = () => {
   //URL
   const URL =
     process.env.NODE_ENV === "production"
-      ? "/admin/login"
-      : "http://localhost:5000/admin/login";
+      ? "/adminserver/login"
+      : "http://localhost:5000/adminserver/login";
 
   //State
   const [input, setInput] = useState({

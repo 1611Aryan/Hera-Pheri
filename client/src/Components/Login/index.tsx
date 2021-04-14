@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 
 import { Section, Flex } from "../../Style";
 import { useUser } from "../../Context/userProvider";
+import { useToken } from "../../Context/tokenProvider";
 
 const Login: React.FC = () => {
   //URL
@@ -23,6 +24,7 @@ const Login: React.FC = () => {
   //
   const history = useHistory();
   const { setUser } = useUser();
+  const { setToken } = useToken();
 
   //Handlers
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +36,9 @@ const Login: React.FC = () => {
     try {
       const res = await axios.post(URL, input);
       if (res.data.auth) {
+        console.log(res.data.team);
         setUser(res.data.team);
+        setToken(res.headers.authtoken);
         history.push("/dashboard");
       }
     } catch (err) {

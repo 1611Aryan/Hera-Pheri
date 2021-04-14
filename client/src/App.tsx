@@ -1,5 +1,5 @@
 import { Switch, Route } from "react-router-dom";
-import { UserRoute } from "./PrivateRoutes";
+import { NormalRoute, UserRoute } from "./PrivateRoutes";
 import Dashboard from "./Components/Dashboard";
 import Error from "./Components/Error";
 import Login from "./Components/Login";
@@ -13,12 +13,12 @@ const App = () => {
     <div className="App">
       <Nav />
       <Switch>
-        <Route path="/" exact>
+        <NormalRoute path="/" exact>
           <Login />
-        </Route>
-        <Route path="/register">
+        </NormalRoute>
+        <NormalRoute path="/register">
           <Register />
-        </Route>
+        </NormalRoute>
         <UserRoute path="/dashboard" exact>
           <Dashboard />
         </UserRoute>

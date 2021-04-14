@@ -1,11 +1,23 @@
-export {};
+export { };
 const Teams = require("./../Models/team.model");
+const { Request, Response } = require("express");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const axios = require("axios");
 
 interface res {
   send: (i: any) => { status: (i: any) => {} | {} };
-  status: (i: number) => { send: (i: any) => {} | {} };
+  status: (
+    i: number
+  ) => {
+    send: (i: any) => {};
+    header: (
+      tokenName: string,
+      tokenValue: string
+    ) => { send: (j: any) => {} | {} };
+  };
   sendStatus: (i: number) => {};
+  header: (tokenName: string, tokenValue: string) => {};
 }
 
 interface req {
@@ -16,7 +28,11 @@ interface req {
     number: string;
     password: string;
     code: string;
+    ques: number;
+    ans: string;
   };
+  header: (string) => {};
+  team: any;
 }
 
 const generateSet = (num: number) => {
@@ -39,6 +55,36 @@ const generateSet = (num: number) => {
 };
 
 const randomCode = () => Math.random().toString(36).substring(2, 10);
+
+const quesURL =
+  process.env.NODE_ENV === "production"
+    ? "/questions"
+    : "http://localhost:5000/questions";
+
+exports.verifyToken = async (req: req, res: res, next: any) => {
+  const token = req.header("authToken");
+  if (!token) return res.status(401).send("access denied");
+  try {
+    const verified = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    req.team = verified;
+    next();
+  } catch (err) {
+    res.status(400).send("Invalid Token");
+  }
+};
+
+exports.getTeamData = async (req: req, res: res) => {
+  try {
+    console.log("fetching");
+    console.log(req);
+    const team = await Teams.findOne({ _id: req.team.team });
+    console.log(team);
+    if (team) return res.status(200).send({ team, auth: true });
+    return res.status(404).send("Team Not Found");
+  } catch (err) {
+    res.sendStatus(500);
+  }
+};
 
 exports.create = async (req: req, res: res) => {
   const team = req.body.team;
@@ -117,7 +163,11 @@ exports.login = async (req: req, res: res) => {
     const team = await Teams.findOne({ teamName });
     if (team) {
       if (await bcrypt.compare(password, team.password)) {
-        return res.status(202).send({
+        const token = jwt.sign(
+          { team: team._id },
+          process.env.ACCESS_TOKEN_SECRET
+        );
+        return res.status(202).header("authToken", token).send({
           team,
           auth: true,
         });
@@ -136,6 +186,30 @@ exports.view = async (req: req, res: res) => {
       { joinCode: 0, members: 0, answers: 0, password: 0, set: 0 }
     ).sort({ score: -1 });
     res.status(200).send(teams);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
+exports.changeScore = async (req: req, res: res) => {
+  const quesNumber = req.body.ques;
+  const answer = req.body.ans;
+  const id = req.team.team;
+  try {
+    const team = await Teams.findOne(
+      { _id: id },
+      { members: 0, password: 0, leader: 0 }
+    );
+
+    if (team) {
+      const set = team.set;
+      const questions = await axios.get(`${quesURL}/${set}`);
+      if (questions) {
+        if (questions.data.questions[quesNumber].ans === answer)
+          return res.send("Correct");
+        else return res.send("Incorrect");
+      } else return res.sendStatus(500);
+    } else return res.sendStatus(404);
   } catch (err) {
     res.status(500).send(err);
   }

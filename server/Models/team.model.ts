@@ -25,6 +25,15 @@ const teamSchema = new Schema(
     answers: {
       type: Array,
     },
+    /*
+     *  Date and time when Team was created
+     *  Members joined
+     *  Transaction History
+     */
+    logs: {
+      type: Array,
+      default: [],
+    },
   },
   { timestamps: true }
 );

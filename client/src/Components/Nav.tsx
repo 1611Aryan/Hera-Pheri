@@ -1,9 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { useToken } from "../Context/tokenProvider";
+import { useUser } from "../Context/userProvider";
 import logoPng from "./../Media/Logo.png";
 import logowebp from "./../Media/Logo.webp";
 
 const Nav: React.FC = () => {
+  const history = useHistory();
+  const { user, setUser } = useUser();
+  const { setToken } = useToken();
+
+  //Handlers
+  const logout = () => {
+    setUser(null);
+    setToken(null);
+    history.push("/");
+  };
+
   return (
     <StyledHeader>
       <nav>
@@ -30,9 +43,13 @@ const Nav: React.FC = () => {
         </div>
 
         <ul>
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
+          {user ? (
+            <li onClick={logout}>Logout</li>
+          ) : (
+            <li>
+              <Link to="/register">Register</Link>
+            </li>
+          )}
         </ul>
       </nav>
     </StyledHeader>
@@ -85,6 +102,7 @@ const StyledHeader = styled.header`
     justify-content: space-between;
     align-items: center;
     li {
+      cursor: pointer;
       margin-right: 1rem;
       font-size: clamp(0.9rem, 3vw, 1.25rem);
     }

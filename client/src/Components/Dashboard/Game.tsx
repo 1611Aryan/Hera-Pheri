@@ -7,10 +7,13 @@ import { Flex } from "../../Style";
 import RuleBook from "./RuleBook";
 
 const Game = () => {
+  //URL
+
   //
   const { user } = useUser();
   const progressRef = useRef<HTMLInputElement>(null);
   const [rulebook, setRulebook] = useState(false);
+
   //Handlers
   const questionNumber = () => {
     if (user)
@@ -25,7 +28,6 @@ const Game = () => {
   };
 
   const ProgressHandler = () => {
-    console.log(1);
     if (progressRef.current)
       progressRef.current.style.transform = `translateX(${
         (50 / 7) * (questionNumber() - 14)

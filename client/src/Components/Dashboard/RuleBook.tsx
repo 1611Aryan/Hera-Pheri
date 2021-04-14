@@ -16,23 +16,37 @@ const RuleBook: React.FC<{
 
       <h1>Rulebook</h1>
       <ol>
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-        <li>Nulla et justo et risus dictum vehicula.</li>
-        <li>In sed nisl at tortor ullamcorper euismod bibendum vitae arcu.</li>
         <li>
-          Aenean molestie sapien ut lectus interdum, ac accumsan nisl ornare.
+          You all are requested to follow all IIChE pages and login to the site.
         </li>
-        <li>Etiam ultrices lectus ac egestas maximus.</li>
-        <li>Fusce id nisl a leo interdum mollis.</li>
         <li>
-          Nullam sit amet tellus tincidunt, ultricies urna dapibus, pretium
-          libero.
+          This game involves puzzles and hints After solving them you will be
+          able to reach the other riddle.
         </li>
-        <li>In eleifend odio pulvinar urna condimentum rutrum.</li>
         <li>
-          Sed mollis nibh vitae lacus ultrices, et sollicitudin purus rutrum.
+          All the riddles are scattered in internet you have to reach it
+          yourself.
         </li>
-        <li>Suspendisse quis nisi bibendum, pretium lectus in, eleifend mi.</li>
+        <li>There are only 5 social media to be used in this game</li>
+        <li>Only official pages are used in these media.</li>
+        <li>
+          First hint will be public and will be provided by your respective
+          supervisor.
+        </li>
+        <li>
+          After solving try reaching the second riddle and paste the link of
+          that post to your leaderboard to see the score.
+        </li>
+        <li>Repeat for other riddles and reach the final page.</li>
+        <li>
+          Score is time based as fast as you solve you will be awarded maximum
+          marks.
+        </li>
+        <li>First one to reach the final page will be announce as winner.</li>
+        <li>
+          If no team reaches the final page the team with maximum points will be
+          announced winner.
+        </li>
       </ol>
     </StyledRulebook>
   );
@@ -45,7 +59,7 @@ const StyledRulebook = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(3px);
   padding: 2rem;
   color: white;
@@ -64,15 +78,18 @@ const StyledRulebook = styled.div`
   ol {
     flex: 1;
     list-style-position: inside;
-    background: rgba(179, 204, 253, 0.6);
-    color: black;
+    background: rgba(18, 28, 49, 0.8);
     width: 100%;
     height: auto;
-    padding: 1rem 0;
-    border-radius: 5px;
+    padding: 2rem 1rem;
+    border-radius: 10px;
     overflow: hidden auto;
+    border: 5px solid white;
+    ${Flex(1, "space-evenly", "flex-start")}
     li {
-      font-size: 1rem;
+      font-size: 1.2rem;
+      flex: 1;
+      font-weight: 200;
     }
     li + li {
       margin-top: 1rem;
