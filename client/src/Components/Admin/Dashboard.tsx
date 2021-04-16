@@ -43,7 +43,7 @@ const Dashboard = () => {
         console.log(err);
       }
     })();
-  }, []);
+  }, [URL]);
 
   return (
     <StyledDashboard>

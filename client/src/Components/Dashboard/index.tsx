@@ -17,23 +17,26 @@ const Dashboard: React.FC = () => {
   const { user, setUser } = useUser();
   const { token } = useToken();
 
+  const UpdateData = async () => {
+    try {
+      const res = await axios.post(
+        URL,
+        {},
+        {
+          headers: {
+            authToken: token,
+          },
+        }
+      );
+      setUser(res.data.team);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await axios.post(
-          URL,
-          {},
-          {
-            headers: {
-              authToken: token,
-            },
-          }
-        );
-        setUser(res.data.team);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
+    UpdateData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -41,7 +44,7 @@ const Dashboard: React.FC = () => {
       <h1>Hello {user?.teamName}</h1>
       <div className="divider"></div>
       <Team />
-      <Game />
+      <Game UpdateData={UpdateData} />
     </StyledDashboard>
   );
 };

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { Flex, Section } from "../../Style";
+import { Flex } from "../../Style";
 
 const Hint: React.FC<{
   teams:

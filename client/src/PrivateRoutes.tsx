@@ -58,6 +58,7 @@ export const UserRoute: React.FC<{
   exact?: boolean;
 }> = props => {
   const { user } = useUser();
+
   return user ? (
     <Route
       path={props.path}

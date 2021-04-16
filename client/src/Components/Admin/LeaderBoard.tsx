@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Flex, Section } from "../../Style";
+import { Flex } from "../../Style";
 
 const Leaderboard: React.FC<{
   teams:

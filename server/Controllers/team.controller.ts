@@ -8,6 +8,7 @@ const axios = require("axios");
 interface req extends Request {
   team: any;
   ans: boolean
+  time: Date
 }
 
 const generateSet = (num: number) => {
@@ -50,7 +51,7 @@ exports.verifyToken = async (req: req, res: Response, next: NextFunction) => {
 
 exports.getTeamData = async (req: req, res: Response) => {
   try {
-    const team = await Teams.findOne({ _id: req.team.team });
+    const team = await Teams.findOne({ _id: req.team.team }, { password: 0, logs: 0 });
     if (team) return res.status(200).send({ team, auth: true });
     return res.status(404).send("Team Not Found");
   } catch (err) {
@@ -102,6 +103,7 @@ exports.create = async (req: req, res: Response) => {
     return res.status(201).send("Team Created");
   } catch (err) {
     console.log(err);
+    res.status(500).send(err)
   }
 };
 
@@ -129,7 +131,7 @@ exports.join = async (req: req, res: Response) => {
 };
 
 exports.login = async (req: req, res: Response) => {
-  console.log(1)
+
   const teamName = req.body.team;
   const password = req.body.password;
   try {
@@ -164,10 +166,13 @@ exports.view = async (req: req, res: Response) => {
   }
 };
 
-exports.changeScore = async (req: req, res: Response) => {
-  const ans = req.ans;
-  return ans ? res.send('Correct') : res.send('Incorrect')
-};
+
+/*
+ * Scoring Mechanic
+ * First Verify Answer
+ * If correct increment the score based on time taken to answer
+ * Then change the team's  answer array
+ */
 
 exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
   const quesNumber = req.body.ques;
@@ -184,6 +189,7 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
       const questions = await axios.get(`${quesURL}/${set}`);
       if (questions) {
         if (questions.data.questions[quesNumber].ans === answer) {
+          req.time = team.updatedAt;
           req.ans = true;
           next()
         }
@@ -194,7 +200,44 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
       } else return res.sendStatus(500);
     } else return res.sendStatus(404);
   } catch (err) {
+
     res.status(500).send(err);
   }
 }
 
+const calculateScore = (quesNumber: number, time: Date) => {
+  const prev = time;
+  const now = new Date();
+  const diff = Math.abs(Math.floor((now.valueOf() - prev.valueOf()) / (1000 * 60)))
+  if (quesNumber === 0 || diff <= 2) return 500;
+  else if (diff <= 4) return 400
+  else if (diff <= 6) return 300
+  else if (diff <= 8) return 200
+  else if (diff >= 10) return 100
+
+}
+
+exports.changeScore = async (req: req, res: Response) => {
+  const quesNumber = req.body.ques;
+  const ans = req.ans;
+  const id = req.team.team;
+
+  if (!ans) return res.send('Incorrect')
+
+  try {
+
+    const score = calculateScore(quesNumber, req.time);
+
+    await Teams.updateOne({ _id: id }, {
+      $set: { [`answers.${quesNumber}`]: true }, $inc: {
+        score
+      }
+    })
+
+    return res.send('Correct')
+  } catch (err) {
+
+    return res.status(500).send(err)
+  }
+
+};

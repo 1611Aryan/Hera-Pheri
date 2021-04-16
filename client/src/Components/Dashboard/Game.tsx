@@ -8,7 +8,9 @@ import RuleBook from "./RuleBook";
 import axios from "axios";
 import { useToken } from "../../Context/tokenProvider";
 
-const Game = () => {
+const Game: React.FC<{ UpdateData: () => Promise<void> }> = ({
+  UpdateData,
+}) => {
   //URL
   const URL =
     process.env.NODE_ENV === "production"
@@ -31,7 +33,7 @@ const Game = () => {
       for (let i = 0; i < 15; i++) {
         if (user?.answers[i] === false) return i;
       }
-    return 0;
+    return 14;
   };
 
   const ProgressHandler = () => {
@@ -51,13 +53,15 @@ const Game = () => {
 
   const SubmitAnswer = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setInput(null);
     try {
       const res = await axios.post(
         URL,
         { ques: questionNumber(), ans: input },
         { headers: { authToken: token } }
       );
-      setMessage(res.data);
+      if (res.data === "Correct") UpdateData();
+      else setMessage(res.data);
       setTimeout(() => setMessage(""), 2500);
     } catch (err) {
       console.log(err);
@@ -67,7 +71,9 @@ const Game = () => {
   //Component did mount
   useEffect(() => {
     ProgressHandler();
-  }, []);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <StyledGame>
@@ -89,7 +95,13 @@ const Game = () => {
       </div>
       <form className="answer" onSubmit={SubmitAnswer}>
         <p>{message}</p>
-        <textarea name="" id="" onChange={ChangeHandler} required></textarea>
+        <textarea
+          name=""
+          id=""
+          onChange={ChangeHandler}
+          value={input || ""}
+          required
+        ></textarea>
         <button>Submit Answer</button>
       </form>
       {rulebook && <RuleBook setRulebook={setRulebook} />}
