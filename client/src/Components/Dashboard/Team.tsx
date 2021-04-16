@@ -98,15 +98,16 @@ const StyledTeam = styled.section`
   height: calc(100vh - var(--navHeight));
   flex-grow: 1;
   ${Flex(0, "space-between")}
+  padding: 1rem;
   .team {
     width: 40%;
     height: 100%;
     ${Flex(1, "space-between", "flex-start")}
-    padding: 1rem 0 clamp(1rem, 3vw, 2rem) 0;
     .myTeam {
       font-size: clamp(1.45rem, 3vw, 2rem);
     }
     .teamMessage {
+      margin-top: clamp(0.5rem, 2vw, 1rem);
       font-size: clamp(0.7rem, 1vw, 0.8rem);
       color: red;
     }
@@ -132,10 +133,11 @@ const StyledTeam = styled.section`
     width: 40%;
     height: 100%;
     ${Flex(1, "flex-start", "flex-start")}
-    padding: 1rem 0 clamp(1rem, 3vw, 2rem) 0;
+
     .code {
       width: 100%;
       height: 40%;
+
       p {
         font-size: clamp(1rem, 3vw, 1.15rem);
       }
@@ -145,8 +147,9 @@ const StyledTeam = styled.section`
     }
     .invite {
       width: 100%;
-      padding: 0 2rem 0 0;
+
       h1 {
+        padding: 0;
         font-size: clamp(1.15rem, 3vw, 1.5rem);
       }
       .link-container {
@@ -203,6 +206,9 @@ const StyledTeam = styled.section`
     }
     .share {
       width: 100%;
+      .code {
+        padding-top: 1rem;
+      }
     }
   }
 `;

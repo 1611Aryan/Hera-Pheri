@@ -115,9 +115,12 @@ const StyledGame = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  padding: 1rem;
   h1 {
+    padding: 0;
+    width: 100%;
     svg {
-      font-size: clamp(3rem, 5vw, 5rem);
+      font-size: clamp(4rem, 5vw, 5rem);
       color: #ffffff;
       transition: transform ease 0.5s;
       &:hover {
@@ -197,6 +200,22 @@ const StyledGame = styled.section`
         outline: 0;
         background: #ffffbd;
       }
+    }
+  }
+
+  @media (max-width: 650px) {
+    .progress {
+      .progressBar {
+        width: 100%;
+      }
+    }
+    form {
+      width: 80%;
+    }
+  }
+  @media (max-width: 450px) {
+    form {
+      width: 100%;
     }
   }
 `;

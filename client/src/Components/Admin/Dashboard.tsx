@@ -104,8 +104,9 @@ const StyledDashboard = styled.section`
       height: 100%;
       li {
         width: 100%;
-        padding: 2rem;
+        padding: clamp(1.5rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem);
         border-bottom: 2px solid #f7f3e9;
+
         cursor: pointer;
         transition: transform ease 0.3s, color ease 0.1s, background ease 0.1s;
         &:hover {
@@ -124,6 +125,15 @@ const StyledDashboard = styled.section`
   .right {
     width: 75%;
     height: 100%;
+  }
+
+  @media (max-width: 450px) {
+    .left {
+      width: 30%;
+    }
+    .right {
+      width: 70%;
+    }
   }
 `;
 

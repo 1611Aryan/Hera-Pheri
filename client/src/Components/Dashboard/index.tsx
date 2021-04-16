@@ -56,16 +56,18 @@ const StyledDashboard = styled.section`
   ${Flex(1, "flex-start", "flex-start")}
   font-family: var(--content);
   background: #d0dffc;
-  padding: 1rem;
+
   h1 {
     font-weight: 500;
     font-size: clamp(1.15rem, 3vw, 1.25rem);
-    margin-bottom: 1rem;
+    width: 100%;
+    padding: 1rem 1rem 0 1rem;
   }
   .divider {
     width: 100%;
     height: 2px;
     background: #fff;
+    margin: 1rem;
   }
 `;
 

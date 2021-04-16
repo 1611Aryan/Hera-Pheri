@@ -30,7 +30,7 @@ const Hint: React.FC<{
   return (
     <StyledHint>
       <h1>Hint</h1>
-      <div>
+      <div className="formContainer">
         <form>
           <label htmlFor="team">Team</label>
 
@@ -56,13 +56,13 @@ const StyledHint = styled.div`
   width: 100%;
   height: 100%;
   background: #f7f3e9;
-
   color: #f05945;
   h1 {
     padding: 1rem;
+    font-size: 2rem;
   }
   ${Flex(1, "flex-start", "flex-start")}
-  div {
+  .formContainer {
     width: 100%;
     flex: 1;
     ${Flex()};
@@ -71,22 +71,24 @@ const StyledHint = styled.div`
       height: 40%;
       ${Flex(1, "space-between", "flex-start")};
       label {
-        font-size: 1.25rem;
+        font-size: clamp(1rem, 2vw, 1.25rem);
       }
       input {
         width: 100%;
-        padding: 0.6rem;
+        padding: clamp(0.4rem, 1vw, 0.6rem);
         border-radius: 10px;
         border: 2px solid #000;
+        font-size: clamp(0.8rem, 1.5vw, 1.15rem);
         &:focus {
           outline: 0;
         }
       }
       select {
         width: 100%;
-        padding: 0.6rem;
+        padding: clamp(0.4rem, 1vw, 0.6rem);
         border-radius: 10px;
         border: 2px solid #000;
+        font-size: clamp(0.8rem, 1.5vw, 1.15rem);
         &:focus {
           outline: 0;
         }
@@ -102,6 +104,14 @@ const StyledHint = styled.div`
         &:focus {
           outline: 0;
         }
+      }
+    }
+  }
+
+  @media (max-width: 450px) {
+    .formContainer {
+      form {
+        width: 80%;
       }
     }
   }

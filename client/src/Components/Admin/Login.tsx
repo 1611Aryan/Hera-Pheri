@@ -103,6 +103,16 @@ const StyledLogin = styled.section`
       }
     }
   }
+  @media (max-width: 650px) {
+    form {
+      width: 60%;
+    }
+  }
+  @media (max-width: 450px) {
+    form {
+      width: 80%;
+    }
+  }
 `;
 
 export default Login;

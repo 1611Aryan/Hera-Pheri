@@ -12,9 +12,10 @@ const RuleBook: React.FC<{
 
   return (
     <StyledRulebook>
-      <FontAwesomeIcon icon={faTimes} onClick={Close} />
-
-      <h1>Rulebook</h1>
+      <h1>
+        <span>Rulebook</span>
+        <FontAwesomeIcon icon={faTimes} onClick={Close} />
+      </h1>
       <ol>
         <li>
           You all are requested to follow all IIChE pages and login to the site.
@@ -61,39 +62,44 @@ const StyledRulebook = styled.div`
   height: 100vh;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(3px);
-  padding: 2rem;
+  padding: clamp(1rem, 3vw, 2rem);
   color: white;
-  ${Flex(1, "flex-start", "flex-start")}
-  svg {
-    position: absolute;
-    top: 1rem;
-    right: 2rem;
-    font-size: 2rem;
-    cursor: pointer;
-  }
+  ${Flex(1, "space-between", "space-between")}
+
   h1 {
-    font-size: 3rem;
+    font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 900;
+    ${Flex(0, "space-between", "align-items")}
+    svg {
+      font-size: clamp(2rem, 5vw, 3rem);
+      cursor: pointer;
+      &:hover {
+        color: #ff5555;
+      }
+    }
   }
   ol {
-    flex: 1;
+    width: 100%;
+    height: 80vh;
     list-style-position: inside;
     background: rgba(18, 28, 49, 0.8);
-    width: 100%;
-    height: auto;
-    padding: 2rem 1rem;
+
+    padding: 1rem;
     border-radius: 10px;
     overflow: hidden auto;
     border: 5px solid white;
     ${Flex(1, "space-evenly", "flex-start")}
     li {
-      font-size: 1.2rem;
-      flex: 1;
+      font-size: clamp(0.9rem, 3vw, 1.2rem);
+
       font-weight: 200;
     }
     li + li {
       margin-top: 1rem;
     }
+  }
+
+  @media (max-width: 450px) {
   }
 `;
 

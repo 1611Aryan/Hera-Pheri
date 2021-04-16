@@ -23,7 +23,7 @@ const Leaderboard: React.FC<{
         {teams &&
           teams.map((team, index) => (
             <li key={index}>
-              <span> Team Name: {team.teamName}</span>
+              <span> Team: {team.teamName}</span>
               <span> Score: {team.score}</span>
               <span>Leader: {team.leader.name}</span>
               <span>Phone : {team.leader.number}</span>
@@ -41,6 +41,7 @@ const StyledLeaderBoard = styled.div`
   color: #f05945;
   h1 {
     padding: 1rem;
+    font-size: clamp(1rem, 3vw, 2rem);
   }
   ul {
     border-top: 2px solid #5eaaa8;
@@ -50,8 +51,8 @@ const StyledLeaderBoard = styled.div`
   }
   li {
     border-bottom: 2px solid #5eaaa8;
-    padding: 1rem;
-    font-size: 1rem;
+    padding: clamp(0.5rem, 2vw, 1rem);
+    font-size: clamp(0.8rem, 2vw, 1rem);
 
     ${Flex()};
     flex-wrap: wrap;
