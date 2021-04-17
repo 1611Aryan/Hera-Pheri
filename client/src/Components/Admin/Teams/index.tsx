@@ -162,13 +162,13 @@ const StyledTeams = styled.div`
   }
 
   .team {
-    padding: 1rem;
+    padding: clamp(0.5rem, 2vw, 1rem);
     background: #fff;
     border-radius: 15px;
     border-top: 2px solid var(--secondary);
     border-bottom: 2px solid var(--secondary);
     margin-bottom: 2rem;
-    font-size: 1rem;
+    font-size: clamp(0.75rem, 2vw, 1rem);
     div + div {
       margin: 1rem 0;
     }
@@ -180,7 +180,7 @@ const StyledTeams = styled.div`
   h3 {
     width: 100%;
     height: auto;
-    font-size: 1.25rem;
+    font-size: clamp(0.9rem, 2vw, 1.25rem);
     font-weight: 500;
     ${Flex(0, "space-between", "center")}
 
@@ -193,7 +193,7 @@ const StyledTeams = styled.div`
   }
 
   h4 {
-    font-size: 1.25rem;
+    font-size: clamp(0.9rem, 2vw, 1.25rem);
     font-weight: 500;
     display: inline;
   }
@@ -201,8 +201,10 @@ const StyledTeams = styled.div`
   .infoContainer {
     width: 100%;
     ${Flex(0, "space-between", "center")}
+    margin: 0 !important;
     div {
       flex: 1;
+      margin: 0.5rem 0 !important;
     }
   }
 
@@ -215,11 +217,11 @@ const StyledTeams = styled.div`
     list-style-type: circle;
     li {
       margin-top: 0.25rem;
-      font-size: 0.9rem;
+      font-size: clamp(0.7rem, 1vw, 0.9rem);
       font-weight: 300;
       h5 {
-        font-size: 1rem;
-        font-weight: 500;
+        font-size: clamp(0.8rem, 1vw, 1rem);
+        font-weight: 400;
         display: inline;
       }
     }
