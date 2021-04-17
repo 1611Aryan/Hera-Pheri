@@ -6,9 +6,10 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
 interface req extends Request {
-  team: any;
+  team: any
   ans: boolean
   time: Date
+  ques: number
 }
 
 const generateSet = (num: number) => {
@@ -31,6 +32,22 @@ const generateSet = (num: number) => {
 };
 
 const randomCode = () => Math.random().toString(36).substring(2, 10);
+
+const calculateScore = (quesNumber: number, time: Date) => {
+  const prev = time;
+  const now = new Date();
+  const diff = Math.abs(Math.floor((now.valueOf() - prev.valueOf()) / (1000 * 60)))
+  if (quesNumber === 0 || diff <= 2) return 500;
+  else if (diff <= 4) return 400
+  else if (diff <= 6) return 300
+  else if (diff <= 8) return 200
+  else if (diff >= 10) return 100
+
+}
+
+const time = () => {
+  return (new Date().toLocaleString())
+}
 
 const quesURL =
   process.env.NODE_ENV === "production"
@@ -80,29 +97,14 @@ exports.create = async (req: req, res: Response) => {
         email,
         number,
       },
-      answers: [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-      ],
+
       password,
+      logs: [`Team Created at ${time()}`]
     });
     await Team.save();
     return res.status(201).send("Team Created");
   } catch (err) {
-    console.log(err);
+
     res.status(500).send(err)
   }
 };
@@ -121,6 +123,7 @@ exports.join = async (req: req, res: Response) => {
       {
         $push: {
           members: { name, email, number },
+          logs: `${name} joined on ${time()}`
         },
       }
     );
@@ -131,7 +134,6 @@ exports.join = async (req: req, res: Response) => {
 };
 
 exports.login = async (req: req, res: Response) => {
-
   const teamName = req.body.team;
   const password = req.body.password;
   try {
@@ -159,7 +161,7 @@ exports.view = async (req: req, res: Response) => {
     const teams = await Teams.find(
       {},
       { joinCode: 0, members: 0, answers: 0, password: 0, set: 0 }
-    ).sort({ score: -1 });
+    ).sort({ score: -1 }).limit(10);
     res.status(200).send(teams);
   } catch (err) {
     res.status(500).send(err);
@@ -175,7 +177,6 @@ exports.view = async (req: req, res: Response) => {
  */
 
 exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
-  const quesNumber = req.body.ques;
   const answer = req.body.ans;
   const id = req.team.team;
   try {
@@ -186,9 +187,10 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
 
     if (team) {
       const set = team.set;
+      req.ques = team.ques;
       const questions = await axios.get(`${quesURL}/${set}`);
       if (questions) {
-        if (questions.data.questions[quesNumber].ans === answer) {
+        if (questions.data.questions[team.ques].ans === answer) {
           req.time = team.updatedAt;
           req.ans = true;
           next()
@@ -205,20 +207,8 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
   }
 }
 
-const calculateScore = (quesNumber: number, time: Date) => {
-  const prev = time;
-  const now = new Date();
-  const diff = Math.abs(Math.floor((now.valueOf() - prev.valueOf()) / (1000 * 60)))
-  if (quesNumber === 0 || diff <= 2) return 500;
-  else if (diff <= 4) return 400
-  else if (diff <= 6) return 300
-  else if (diff <= 8) return 200
-  else if (diff >= 10) return 100
-
-}
-
 exports.changeScore = async (req: req, res: Response) => {
-  const quesNumber = req.body.ques;
+  const quesNumber = req.ques;
   const ans = req.ans;
   const id = req.team.team;
 
@@ -229,8 +219,11 @@ exports.changeScore = async (req: req, res: Response) => {
     const score = calculateScore(quesNumber, req.time);
 
     await Teams.updateOne({ _id: id }, {
-      $set: { [`answers.${quesNumber}`]: true }, $inc: {
+      $set: { ques: quesNumber + 1 }, $inc: {
         score
+      },
+      $push: {
+        logs: `Question Number ${quesNumber + 1} answered correctly on ${time()}`
       }
     })
 
@@ -245,12 +238,13 @@ exports.changeScore = async (req: req, res: Response) => {
 
 exports.teamByName = async (req: req, res: Response) => {
   const name = req.params.name;
+
   try {
-    const team = await Teams.findOne({ teamName: name })
+    const team = await Teams.find({ teamName: { $regex: `^${name}`, $options: 'i' } })
     if (team) return res.status(200).send({ message: true, team });
     else return res.send({ message: false, team: null })
   } catch (err) {
-    console.log(err)
+
     return res.status(500).send(err)
   }
 }

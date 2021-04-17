@@ -6,16 +6,20 @@ import axios from "axios";
 
 const SearchBar: React.FC<{
   setResult: React.Dispatch<
-    React.SetStateAction<{
-      leader: { name: string; email: string; number: string };
-      score: number;
-      hints: number;
-      members: { name: string; number: string; email: number }[];
-      logs: [any];
-      teamName: string;
-      set: string;
-      joinCode: string;
-    } | null>
+    React.SetStateAction<
+      | {
+          leader: { name: string; email: string; number: string };
+          score: number;
+          hints: number;
+          ques: number;
+          members: { name: string; number: string; email: number }[];
+          logs: [any];
+          teamName: string;
+          set: string;
+          joinCode: string;
+        }[]
+      | null
+    >
   >;
 }> = ({ setResult }) => {
   const URL =

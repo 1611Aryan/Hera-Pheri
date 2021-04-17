@@ -24,8 +24,10 @@ mongoose.connect(URI, {
   useCreateIndex: true,
   autoIndex: true,
 });
-const connection = mongoose.connection;
-connection.once("open", () => console.log("Database is Connected"));
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once("open", () => console.log("Database is Connected"));
+
 
 //Routers
 const TeamRouter = require(path.join(__dirname, "Routes", "team.routes"));

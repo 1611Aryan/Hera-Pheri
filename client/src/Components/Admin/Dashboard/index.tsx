@@ -5,7 +5,6 @@ import { Flex, Section } from "../../../Style";
 import Leaderboard from "../LeaderBoard/LeaderBoard";
 import Hint from "../Hints/Hint";
 import Teams from "../Teams";
-import ChangeScore from "../ScoreChange";
 
 const Dashboard = () => {
   //URL
@@ -17,14 +16,15 @@ const Dashboard = () => {
   const [teams, setTeams] = useState<
     | {
         _id: string;
-        teamName: string;
+        leader: { name: string; email: string; number: string };
         score: number;
         hints: number;
-        leader: {
-          name: string;
-          email: string;
-          number: string;
-        };
+        ques: number;
+        members: { name: string; number: string; email: number }[];
+        logs: [any];
+        teamName: string;
+        set: string;
+        joinCode: string;
       }[]
     | null
   >(null);
@@ -68,12 +68,6 @@ const Dashboard = () => {
           >
             Use Hint
           </li>
-          <li
-            className={selected === 3 ? "selected" : ""}
-            onClick={() => changeItem(3)}
-          >
-            Change Score Manually
-          </li>
         </ul>
       </div>
       <div className="right">
@@ -81,10 +75,8 @@ const Dashboard = () => {
           <Leaderboard teams={teams} />
         ) : selected === 1 ? (
           <Teams />
-        ) : selected === 2 ? (
-          <Hint teams={teams} />
         ) : (
-          <ChangeScore />
+          <Hint teams={teams} />
         )}
       </div>
     </StyledDashboard>

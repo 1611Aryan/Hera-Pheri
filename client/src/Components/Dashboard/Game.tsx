@@ -29,11 +29,8 @@ const Game: React.FC<{ UpdateData: () => Promise<void> }> = ({
 
   //Handlers
   const questionNumber = () => {
-    if (user)
-      for (let i = 0; i < 15; i++) {
-        if (user?.answers[i] === false) return i;
-      }
-    return 14;
+    if (user) return user?.ques;
+    return 0;
   };
 
   const ProgressHandler = () => {
@@ -57,7 +54,7 @@ const Game: React.FC<{ UpdateData: () => Promise<void> }> = ({
     try {
       const res = await axios.post(
         URL,
-        { ques: questionNumber(), ans: input },
+        { ans: input },
         { headers: { authToken: token } }
       );
       if (res.data === "Correct") UpdateData();

@@ -5,14 +5,15 @@ const Leaderboard: React.FC<{
   teams:
     | {
         _id: string;
-        teamName: string;
+        leader: { name: string; email: string; number: string };
         score: number;
         hints: number;
-        leader: {
-          name: string;
-          email: string;
-          number: string;
-        };
+        ques: number;
+        members: { name: string; number: string; email: number }[];
+        logs: [any];
+        teamName: string;
+        set: string;
+        joinCode: string;
       }[]
     | null;
 }> = ({ teams }) => {
@@ -26,7 +27,7 @@ const Leaderboard: React.FC<{
               <span> Team: {team.teamName}</span>
               <span> Score: {team.score}</span>
               <span>Leader: {team.leader.name}</span>
-              <span>Phone : {team.leader.number}</span>
+              <span>Question : {team.ques}</span>
             </li>
           ))}
       </ul>

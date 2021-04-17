@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const teamSchema = new Schema(
   {
-    teamName: { type: String, required: true },
+    teamName: { type: String, required: true, index: 'text' },
     joinCode: { type: String },
     set: { type: String, required: true },
     score: { type: Number, default: 0 },
@@ -22,8 +22,9 @@ const teamSchema = new Schema(
       type: String,
       required: true,
     },
-    answers: {
-      type: Array,
+    ques: {
+      type: Number,
+      default: 0
     },
     /*
      *  Date and time when Team was created

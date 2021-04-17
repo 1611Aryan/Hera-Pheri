@@ -16,7 +16,7 @@ interface user {
     };
     members: { name: string; email: string; number: string }[];
     password: string;
-    answers: boolean[];
+    ques: number;
   } | null;
   setUser: React.Dispatch<
     React.SetStateAction<{
@@ -33,7 +33,6 @@ interface user {
       };
       members: { name: string; email: string; number: string }[];
       password: string;
-      answers: boolean[];
     } | null>
   >;
   setScore: (i: number) => void;
