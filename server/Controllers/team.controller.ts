@@ -1,7 +1,7 @@
 export { };
 const Teams = require("./../Models/team.model");
 import { Request, Response, NextFunction } from "express-serve-static-core";
-import { nextTick } from "node:process";
+
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
@@ -241,3 +241,16 @@ exports.changeScore = async (req: req, res: Response) => {
   }
 
 };
+
+
+exports.teamByName = async (req: req, res: Response) => {
+  const name = req.params.name;
+  try {
+    const team = await Teams.findOne({ teamName: name })
+    if (team) return res.status(200).send({ message: true, team });
+    else return res.send({ message: false, team: null })
+  } catch (err) {
+    console.log(err)
+    return res.status(500).send(err)
+  }
+}

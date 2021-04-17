@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Flex } from "../../Style";
+import { Flex } from "../../../Style";
 
 const Leaderboard: React.FC<{
   teams:
@@ -38,10 +38,12 @@ const StyledLeaderBoard = styled.div`
   width: 100%;
   height: 100%;
   background: #f7f3e9;
-  color: #f05945;
+
+  padding: 1rem;
   h1 {
-    padding: 1rem;
     font-size: clamp(1rem, 3vw, 2rem);
+    color: #f05945;
+    margin-bottom: clamp(0.5rem, 2vw, 1rem);
   }
   ul {
     border-top: 2px solid #5eaaa8;
@@ -53,10 +55,8 @@ const StyledLeaderBoard = styled.div`
     border-bottom: 2px solid #5eaaa8;
     padding: clamp(0.5rem, 2vw, 1rem);
     font-size: clamp(0.8rem, 2vw, 1rem);
-
     ${Flex()};
     flex-wrap: wrap;
-
     span {
       width: 50%;
       padding: 0.5rem 0;

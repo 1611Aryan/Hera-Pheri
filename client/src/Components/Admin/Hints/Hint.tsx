@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { Flex } from "../../Style";
+import { Flex } from "../../../Style";
 
 const Hint: React.FC<{
   teams:
@@ -76,8 +76,8 @@ const StyledHint = styled.div`
       input {
         width: 100%;
         padding: clamp(0.4rem, 1vw, 0.6rem);
-        border-radius: 10px;
-        border: 2px solid #000;
+        border-radius: 5px;
+        border: 1px solid #474747;
         font-size: clamp(0.8rem, 1.5vw, 1.15rem);
         &:focus {
           outline: 0;
@@ -86,8 +86,8 @@ const StyledHint = styled.div`
       select {
         width: 100%;
         padding: clamp(0.4rem, 1vw, 0.6rem);
-        border-radius: 10px;
-        border: 2px solid #000;
+        border-radius: 5px;
+        border: 1px solid #474747;
         font-size: clamp(0.8rem, 1.5vw, 1.15rem);
         &:focus {
           outline: 0;

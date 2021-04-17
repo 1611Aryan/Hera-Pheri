@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Flex, Section } from "../../Style";
-import Leaderboard from "./LeaderBoard";
-import Hint from "./Hint";
+import { Flex, Section } from "../../../Style";
+import Leaderboard from "../LeaderBoard/LeaderBoard";
+import Hint from "../Hints/Hint";
+import Teams from "../Teams";
+import ChangeScore from "../ScoreChange";
 
 const Dashboard = () => {
   //URL
@@ -38,7 +40,6 @@ const Dashboard = () => {
       try {
         const res = await axios.get(URL);
         setTeams(res.data);
-        console.log(res.data);
       } catch (err) {
         console.log(err);
       }
@@ -79,11 +80,11 @@ const Dashboard = () => {
         {selected === 0 ? (
           <Leaderboard teams={teams} />
         ) : selected === 1 ? (
-          "Teams"
+          <Teams />
         ) : selected === 2 ? (
           <Hint teams={teams} />
         ) : (
-          "Change Score Manually"
+          <ChangeScore />
         )}
       </div>
     </StyledDashboard>

@@ -9,9 +9,12 @@ const {
   view,
   verifyAnswer,
   changeScore,
+  teamByName
 } = require("./../Controllers/team.controller");
 
 router.route("/").get(view);
+
+router.route('/:name').get(teamByName)
 
 router.route("/create").post(create);
 
