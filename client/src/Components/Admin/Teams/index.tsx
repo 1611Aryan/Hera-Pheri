@@ -1,23 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { Flex } from "../../../Style";
+import { team } from "./../interface";
 import SearchBar from "./SearchBar";
 
 const Teams: React.FC = () => {
-  const [result, setResult] = useState<
-    | {
-        leader: { name: string; email: string; number: string };
-        score: number;
-        hints: number;
-        ques: number;
-        members: { name: string; number: string; email: number }[];
-        logs: [any];
-        teamName: string;
-        set: string;
-        joinCode: string;
-      }[]
-    | null
-  >(null);
+  const [result, setResult] = useState<team[] | null>(null);
 
   return (
     <StyledTeams>
@@ -55,7 +43,8 @@ const Teams: React.FC = () => {
                       <h4>Set: </h4> {team.set}
                     </div>
                     <div>
-                      <h4>Hints:</h4> {team.hints}
+                      <h4>Hints:</h4>{" "}
+                      {team.hints.type1 + team.hints.type2 + team.hints.type3}
                     </div>
                   </div>
                   {

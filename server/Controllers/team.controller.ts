@@ -10,6 +10,10 @@ interface req extends Request {
   ans: boolean
   time: Date
   ques: number
+  hintFlag: {
+    used: boolean;
+    typeUsed?: string
+  }
 }
 
 const generateSet = (num: number) => {
@@ -32,18 +36,6 @@ const generateSet = (num: number) => {
 };
 
 const randomCode = () => Math.random().toString(36).substring(2, 10);
-
-const calculateScore = (quesNumber: number, time: Date) => {
-  const prev = time;
-  const now = new Date();
-  const diff = Math.abs(Math.floor((now.valueOf() - prev.valueOf()) / (1000 * 60)))
-  if (quesNumber === 0 || diff <= 2) return 500;
-  else if (diff <= 4) return 400
-  else if (diff <= 6) return 300
-  else if (diff <= 8) return 200
-  else if (diff >= 10) return 100
-
-}
 
 const time = () => {
   return (new Date().toLocaleString())
@@ -168,7 +160,6 @@ exports.view = async (req: req, res: Response) => {
   }
 };
 
-
 /*
  * Scoring Mechanic
  * First Verify Answer
@@ -188,6 +179,7 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
     if (team) {
       const set = team.set;
       req.ques = team.ques;
+      req.hintFlag = team.hintFlag
       const questions = await axios.get(`${quesURL}/${set}`);
       if (questions) {
         if (questions.data.questions[team.ques].ans === answer) {
@@ -207,19 +199,39 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
   }
 }
 
-exports.changeScore = async (req: req, res: Response) => {
-  const quesNumber = req.ques;
-  const ans = req.ans;
-  const id = req.team.team;
+const calculateScore = (quesNumber: number, time: Date, hintFlag: { used: boolean, typeUsed?: string }) => {
+  console.log(hintFlag)
+  if (hintFlag.used) {
+    console.log('abc')
+    if (hintFlag.typeUsed === 'type1') return 250
+    if (hintFlag.typeUsed === 'type2') return 0
+  }
+  console.log('bcd')
+  const prev = time;
+  const now = new Date();
+  const diff = Math.abs(Math.floor((now.valueOf() - prev.valueOf()) / (1000 * 60)))
+  if (quesNumber === 0 || diff <= 2) return 1000;
+  else if (diff <= 4) return 900
+  else if (diff <= 6) return 800
+  else if (diff <= 8) return 700
+  else if (diff >= 10) return 500
 
+}
+
+exports.changeScore = async (req: req, res: Response) => {
+
+  const ans = req.ans;
   if (!ans) return res.send('Incorrect')
 
+  const id = req.team.team;
+  const quesNumber = req.ques;
+  const hintFlag = req.hintFlag
+  console.log(hintFlag)
+
   try {
-
-    const score = calculateScore(quesNumber, req.time);
-
+    const score = calculateScore(quesNumber, req.time, hintFlag);
     await Teams.updateOne({ _id: id }, {
-      $set: { ques: quesNumber + 1 }, $inc: {
+      $set: { ques: quesNumber + 1, hintFlag: { used: false, typeUsed: null } }, $inc: {
         score
       },
       $push: {
@@ -235,7 +247,6 @@ exports.changeScore = async (req: req, res: Response) => {
 
 };
 
-
 exports.teamByName = async (req: req, res: Response) => {
   const name = req.params.name;
 
@@ -246,5 +257,34 @@ exports.teamByName = async (req: req, res: Response) => {
   } catch (err) {
 
     return res.status(500).send(err)
+  }
+}
+
+exports.useHint = async (req: req, res: Response) => {
+  const id = req.body.id;
+  const hintType = req.body.hintType
+  console.log(req.body)
+  try {
+    const team = await Teams.findOne({ _id: id })
+    if (team) {
+
+      if (team.hints[hintType] > 0) {
+        await Teams.updateOne({ _id: id }, {
+          $set: {
+            hintFlag: { used: true, typeUsed: hintType }
+          },
+          $inc: {
+            [`hints.${hintType}`]: - 1
+          },
+          $push: {
+            logs: `Hint ${hintType} used at ${time()}`
+          }
+        })
+        return res.status(200).send('Hint Used Successfully')
+      }
+      else return res.send(`No hint of type ${hintType} is left`)
+    } return res.sendStatus(404)
+  } catch (err) {
+    res.status(500).send(err)
   }
 }

@@ -82,7 +82,11 @@ const Game: React.FC<{ UpdateData: () => Promise<void> }> = ({
           Score: {user?.score}
           <FontAwesomeIcon icon={faInfoCircle} onClick={RulebookHandler} />
         </div>
-        <div>Hints Available: {user?.hints}</div>
+        <div>
+          Hints Available:{" "}
+          {user?.hints &&
+            user?.hints.type1 + user?.hints.type2 + user?.hints.type3}
+        </div>
       </div>
       <div className="progress">
         <div className="progressBar">

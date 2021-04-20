@@ -1,39 +1,73 @@
 import styled from "styled-components";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Flex } from "../../../Style";
+import axios from "axios";
+import { team } from "./../interface";
 
-const Hint: React.FC<{
-  teams:
-    | {
-        _id: string;
-        teamName: string;
-        score: number;
-        hints: number;
-        leader: {
-          name: string;
-          email: string;
-          number: string;
-        };
-      }[]
-    | null;
-}> = ({ teams }) => {
-  const [hints, setHints] = useState(0);
+const Hint: React.FC = () => {
+  const HintURL =
+    process.env.NODE_ENV === "production"
+      ? "/team/hint"
+      : "http://localhost:5000/team/hint";
+
+  const TeamURL =
+    process.env.NODE_ENV === "production"
+      ? "/team"
+      : "http://localhost:5000/team";
+
+  const [teams, setTeams] = useState<team[] | null>(null);
+  const [hints, setHints] = useState<string | null>(null);
+  const [selected, setSelected] = useState<team | null>(null);
+
+  //Component did mount
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios.get(TeamURL);
+        setTeams(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [TeamURL]);
 
   const ChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     let team = null;
     if (teams) {
       team = teams.filter(team => team.teamName === e.target.value);
-      team.length === 1 ? setHints(team[0].hints) : setHints(0);
+
+      if (team.length === 1) {
+        setSelected(team[0]);
+      } else {
+        setSelected(null);
+      }
     }
+  };
+
+  const ClickHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(HintURL, {
+        id: selected?._id,
+        hintType: hints,
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const HintSelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setHints(e.target.value);
   };
 
   return (
     <StyledHint>
       <h1>Hint</h1>
       <div className="formContainer">
-        <form>
+        <form onSubmit={ClickHandler}>
           <label htmlFor="team">Team</label>
-
           <select name="team" onChange={ChangeHandler}>
             <option value="default">...</option>
             {teams &&
@@ -44,7 +78,22 @@ const Hint: React.FC<{
               ))}
           </select>
           <label htmlFor="hint">No. of Hints Left:</label>
-          <input type="text" value={hints} readOnly />
+          <select name="team" onChange={HintSelector}>
+            <option value="default">...</option>
+            {selected && (
+              <>
+                {selected.hints.type1 === 1 && (
+                  <option value="type1">Type 1</option>
+                )}
+                {selected.hints.type2 === 1 && (
+                  <option value="type2">Type 2</option>
+                )}
+                {selected.hints.type3 === 1 && (
+                  <option value="type3">Type 3</option>
+                )}
+              </>
+            )}
+          </select>
           <button>Use a Hint</button>
         </form>
       </div>

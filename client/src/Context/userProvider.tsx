@@ -8,7 +8,7 @@ interface user {
     joinCode: string;
     set: string;
     score: number;
-    hints: number;
+    hints: { type1: number; type2: number; type3: number };
     leader: {
       name: string;
       email: string;
@@ -25,7 +25,7 @@ interface user {
       joinCode: string;
       set: string;
       score: number;
-      hints: number;
+      hints: { type1: number; type2: number; type3: number };
       leader: {
         name: string;
         email: string;

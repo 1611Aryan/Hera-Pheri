@@ -1,50 +1,16 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { Flex, Section } from "../../../Style";
 import Leaderboard from "../LeaderBoard/LeaderBoard";
 import Hint from "../Hints/Hint";
 import Teams from "../Teams";
 
 const Dashboard = () => {
-  //URL
-  const URL =
-    process.env.NODE_ENV === "production"
-      ? "/team"
-      : "http://localhost:5000/team";
-
-  const [teams, setTeams] = useState<
-    | {
-        _id: string;
-        leader: { name: string; email: string; number: string };
-        score: number;
-        hints: number;
-        ques: number;
-        members: { name: string; number: string; email: number }[];
-        logs: [any];
-        teamName: string;
-        set: string;
-        joinCode: string;
-      }[]
-    | null
-  >(null);
-
   const [selected, setSelected] = useState(0);
 
   const changeItem = (i: number) => {
     setSelected(i);
   };
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await axios.get(URL);
-        setTeams(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
-  }, [URL]);
 
   return (
     <StyledDashboard>
@@ -72,11 +38,11 @@ const Dashboard = () => {
       </div>
       <div className="right">
         {selected === 0 ? (
-          <Leaderboard teams={teams} />
+          <Leaderboard />
         ) : selected === 1 ? (
           <Teams />
         ) : (
-          <Hint teams={teams} />
+          <Hint />
         )}
       </div>
     </StyledDashboard>

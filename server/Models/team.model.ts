@@ -8,7 +8,12 @@ const teamSchema = new Schema(
     joinCode: { type: String },
     set: { type: String, required: true },
     score: { type: Number, default: 0 },
-    hints: { type: Number, default: 3 },
+    hints: {
+      type: {}, default: {
+        "type1": 1, "type2": 1, "type3": 1
+      }
+    },
+    hintFlag: { type: {}, default: { used: false, typeUsed: null } },
     leader: {
       name: { type: String, required: true },
       email: { type: String, required: true },

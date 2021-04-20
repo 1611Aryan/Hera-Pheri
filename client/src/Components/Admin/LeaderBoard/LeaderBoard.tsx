@@ -1,22 +1,28 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Flex } from "../../../Style";
+import { team } from "./../interface";
 
-const Leaderboard: React.FC<{
-  teams:
-    | {
-        _id: string;
-        leader: { name: string; email: string; number: string };
-        score: number;
-        hints: number;
-        ques: number;
-        members: { name: string; number: string; email: number }[];
-        logs: [any];
-        teamName: string;
-        set: string;
-        joinCode: string;
-      }[]
-    | null;
-}> = ({ teams }) => {
+const Leaderboard: React.FC = () => {
+  const URL =
+    process.env.NODE_ENV === "production"
+      ? "/team"
+      : "http://localhost:5000/team";
+
+  const [teams, setTeams] = useState<team[] | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios.get(URL);
+        setTeams(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [URL]);
+
   return (
     <StyledLeaderBoard>
       <h1>LeaderBoard</h1>

@@ -3,24 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
 import axios from "axios";
+import { team } from "./../interface";
 
 const SearchBar: React.FC<{
-  setResult: React.Dispatch<
-    React.SetStateAction<
-      | {
-          leader: { name: string; email: string; number: string };
-          score: number;
-          hints: number;
-          ques: number;
-          members: { name: string; number: string; email: number }[];
-          logs: [any];
-          teamName: string;
-          set: string;
-          joinCode: string;
-        }[]
-      | null
-    >
-  >;
+  setResult: React.Dispatch<React.SetStateAction<team[] | null>>;
 }> = ({ setResult }) => {
   const URL =
     process.env.NODE_ENV === "production"
@@ -37,6 +23,7 @@ const SearchBar: React.FC<{
     e.preventDefault();
     try {
       const res = await axios.get(`${URL}/${input}`);
+      console.log(res.data);
       if (res.data.message) {
         setResult(res.data.team);
       } else setResult(null);
