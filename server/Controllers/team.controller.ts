@@ -68,6 +68,19 @@ exports.getTeamData = async (req: req, res: Response) => {
   }
 };
 
+exports.teamByName = async (req: req, res: Response) => {
+  const name = req.params.name;
+
+  try {
+    const team = await Teams.find({ teamName: { $regex: `^${name}`, $options: 'i' } })
+    if (team) return res.status(200).send({ message: true, team });
+    else return res.send({ message: false, team: null })
+  } catch (err) {
+
+    return res.status(500).send(err)
+  }
+}
+
 exports.create = async (req: req, res: Response) => {
   const team = req.body.team;
   const name = req.body.name;
@@ -200,21 +213,22 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
 }
 
 const calculateScore = (quesNumber: number, time: Date, hintFlag: { used: boolean, typeUsed?: string }) => {
-  console.log(hintFlag)
+
   if (hintFlag.used) {
-    console.log('abc')
     if (hintFlag.typeUsed === 'type1') return 250
     if (hintFlag.typeUsed === 'type2') return 0
   }
-  console.log('bcd')
-  const prev = time;
-  const now = new Date();
-  const diff = Math.abs(Math.floor((now.valueOf() - prev.valueOf()) / (1000 * 60)))
-  if (quesNumber === 0 || diff <= 2) return 1000;
-  else if (diff <= 4) return 900
-  else if (diff <= 6) return 800
-  else if (diff <= 8) return 700
-  else if (diff >= 10) return 500
+
+  else {
+    const prev = time;
+    const now = new Date();
+    const diff = Math.abs(Math.floor((now.valueOf() - prev.valueOf()) / (1000 * 60)))
+    if (quesNumber === 0 || diff <= 2) return 1000;
+    else if (diff <= 4) return 900
+    else if (diff <= 6) return 800
+    else if (diff <= 8) return 700
+    else if (diff >= 10) return 500
+  }
 
 }
 
@@ -246,19 +260,6 @@ exports.changeScore = async (req: req, res: Response) => {
   }
 
 };
-
-exports.teamByName = async (req: req, res: Response) => {
-  const name = req.params.name;
-
-  try {
-    const team = await Teams.find({ teamName: { $regex: `^${name}`, $options: 'i' } })
-    if (team) return res.status(200).send({ message: true, team });
-    else return res.send({ message: false, team: null })
-  } catch (err) {
-
-    return res.status(500).send(err)
-  }
-}
 
 exports.useHint = async (req: req, res: Response) => {
   const id = req.body.id;

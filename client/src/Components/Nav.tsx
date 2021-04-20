@@ -28,16 +28,17 @@ const Nav: React.FC = () => {
           </picture>
           <h1>
             <Link to="/">
-              <span>H</span>
-              <span>e</span>
-              <span>r</span>
-              <span>a</span>
-              <span> </span>
-              <span>P</span>
+              <span>C</span>
               <span>h</span>
               <span>e</span>
-              <span>r</span>
+              <span>m</span>
+              <span>-</span>
               <span>i</span>
+              <span>-</span>
+              <span>l</span>
+              <span>e</span>
+              <span>o</span>
+              <span>n</span>
             </Link>
           </h1>
         </div>

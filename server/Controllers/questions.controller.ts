@@ -1,24 +1,7 @@
 const Questions = require("./../Models/questions.model");
+import { Request, Response, } from "express-serve-static-core";
 
-interface res {
-  send: (i: any) => { status: (i: any) => {} | {} };
-  status: (i: number) => { send: (i: any) => {} | {} };
-  sendStatus: (i: number) => {};
-}
-interface req {
-  body: {
-    set: string;
-    questions: {
-      ques: string;
-      ans: string;
-    }[];
-  };
-  params: {
-    set: string;
-  };
-}
-
-exports.getAll = async (req: req, res: res) => {
+exports.getAll = async (req: Request, res: Response) => {
   try {
     const questions = await Questions.find();
     res.status(200).send(questions);
@@ -27,7 +10,7 @@ exports.getAll = async (req: req, res: res) => {
   }
 };
 
-exports.getBySet = async (req: req, res: res) => {
+exports.getBySet = async (req: Request, res: Response) => {
   const set = req.params.set.toUpperCase();
   try {
     const questions = await Questions.findOne({ set });
@@ -37,7 +20,7 @@ exports.getBySet = async (req: req, res: res) => {
   }
 };
 
-exports.add = async (req: req, res: res) => {
+exports.add = async (req: Request, res: Response) => {
   const set = req.body.set;
   const questions = req.body.questions;
   try {
