@@ -68,7 +68,6 @@ const Game: React.FC<{ UpdateData: () => Promise<void> }> = ({
   //Component did mount
   useEffect(() => {
     ProgressHandler();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -122,9 +121,10 @@ const StyledGame = styled.section`
     width: 100%;
     svg {
       font-size: clamp(4rem, 5vw, 5rem);
-      color: #ffffff;
-      transition: transform ease 0.5s;
+      color: rgba(255, 255, 255, 0.8);
+      transition: transform ease 0.5s, color ease-out 0.3s;
       &:hover {
+        color: rgba(255, 255, 189, 0.8);
         transform: rotate(-360deg);
       }
     }
@@ -144,7 +144,7 @@ const StyledGame = styled.section`
     .progressBar {
       width: 50%;
       height: 20px;
-      background: #6c6c6c;
+      background: rgba(108, 108, 108, 0.6);
       border-radius: 10px;
       overflow: hidden;
       .slider {
@@ -152,7 +152,7 @@ const StyledGame = styled.section`
         transform: translateX(-100%);
         width: 100%;
         height: 100%;
-        background: teal;
+        background: #ffd1f0;
       }
     }
     p {
@@ -173,33 +173,35 @@ const StyledGame = styled.section`
     textarea {
       width: 100%;
       flex: 1;
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.8);
       border: 0;
       border-bottom: 2px solid teal;
       border-radius: 10px;
       font-size: 1rem;
       padding: 0.6rem;
       resize: none;
+      transition: background ease-out 0.3s;
       &:focus,
       &:hover {
         outline: 0;
-        background: #ffffbd;
+
+        background: rgba(255, 255, 189, 0.8);
       }
     }
     button {
       margin-top: 2rem;
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.8);
       border-radius: 10px;
       font-size: 1rem;
       padding: 0.6rem;
       align-self: center;
       border: 0;
       border-bottom: 2px solid teal;
-
+      transition: background ease-out 0.3s;
       &:focus,
       &:hover {
         outline: 0;
-        background: #ffffbd;
+        background: rgba(255, 255, 189, 0.8);
       }
     }
   }

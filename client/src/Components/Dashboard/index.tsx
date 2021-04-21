@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import styled from "styled-components";
-import { useLoader } from "../../Context/loaderProvider";
+
 import { useToken } from "../../Context/tokenProvider";
 import { Flex } from "../../Style";
 import { useUser } from "./../../Context/userProvider";
@@ -19,7 +19,6 @@ const Dashboard: React.FC = () => {
 
   const { user, setUser } = useUser();
   const { token } = useToken();
-  const { setLoader } = useLoader();
 
   const UpdateData = async () => {
     try {
@@ -38,7 +37,8 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const start = false;
+  const start = process.env.REACT_APP_ACTIVE;
+  console.log(start);
 
   return (
     <StyledDashboard>

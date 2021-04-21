@@ -12,7 +12,7 @@ import { useLoader } from "./Context/loaderProvider";
 import { useEffect } from "react";
 
 const App = () => {
-  const { loader, setLoader } = useLoader();
+  const { setLoader } = useLoader();
 
   //
   useEffect(() => {

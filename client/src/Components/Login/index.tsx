@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import { Section, Flex } from "../../Style";
 import { useUser } from "../../Context/userProvider";
 import { useToken } from "../../Context/tokenProvider";
-import { useLoader } from "../../Context/loaderProvider";
 
 const Login: React.FC = () => {
   //URL
@@ -26,7 +25,6 @@ const Login: React.FC = () => {
   const history = useHistory();
   const { setUser } = useUser();
   const { setToken } = useToken();
-  const { setLoader } = useLoader();
 
   //Handlers
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -157,8 +155,8 @@ const StyledLogin = styled.section`
     border-radius: 20px;
     padding: 1rem clamp(0.5rem, 3vw, 2rem);
     ${Flex(1, "space-evenly", "flex-start")};
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3),
-      5px -5px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 5px 5px 10px rgba(255, 255, 255, 0.35),
+      inset -5px -5px 10px rgba(255, 255, 255, 0.35);
     .err {
       color: red;
       font-size: clamp(0.6, 2vw, 0.8rem);
@@ -174,6 +172,8 @@ const StyledLogin = styled.section`
       border: 0;
       border-bottom: 3px solid #f5f23d;
       background: linear-gradient(to left, #fff, #eee);
+      box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2),
+        inset -1px -1px 3px rgba(0, 0, 0, 0.2);
       &:focus {
         outline: 0;
       }
@@ -185,6 +185,8 @@ const StyledLogin = styled.section`
       background: linear-gradient(to left, #fff, #eee);
       border: 0;
       border-bottom: 3px solid #f5f23d;
+      box-shadow: inset 1px 0.5px 2px rgba(0, 0, 0, 0.2),
+        inset -1px -0.5px 2px rgba(0, 0, 0, 0.2);
       &:focus {
         outline: 0;
       }

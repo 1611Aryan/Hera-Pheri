@@ -19,12 +19,14 @@ const Nav: React.FC = () => {
 
   return (
     <StyledHeader>
-      <nav>
+      <nav className={user ? "black" : "teal"}>
         <div className="logo">
           <picture>
             <source srcSet={logowebp} type="image/webp" />
             <source srcSet={logoPng} type="image/png" />
-            <img src={logoPng} alt="logo" />
+            <Link to="/">
+              <img src={logoPng} alt="logo" />
+            </Link>
           </picture>
           <h1>
             <Link to="/">
@@ -45,7 +47,14 @@ const Nav: React.FC = () => {
 
         <ul>
           {user ? (
-            <li onClick={logout}>Logout</li>
+            <li onClick={logout}>
+              <span>L</span>
+              <span>o</span>
+              <span>g</span>
+              <span>o</span>
+              <span>u</span>
+              <span>t</span>
+            </li>
           ) : (
             <li>
               <Link to="/register">Register</Link>
@@ -60,9 +69,14 @@ const Nav: React.FC = () => {
 const StyledHeader = styled.header`
   width: 100vw;
   background: linear-gradient(to right, #134e5e, #71b280);
-  background: #353535;
-  height: var(--navHeight);
 
+  height: var(--navHeight);
+  .teal {
+    background: teal;
+  }
+  .black {
+    background: #202020;
+  }
   nav {
     width: 100%;
     height: 100%;
@@ -88,10 +102,15 @@ const StyledHeader = styled.header`
       }
       h1 {
         font-size: clamp(1.45rem, 3vw, 1.95rem);
-        transition: color ease-out0.4s;
+
         span {
-          &:hover {
-            color: yellow;
+          transition: all ease-out 0.1s;
+          display: inline-block;
+          @media (hover: hover) {
+            &:hover {
+              transform: scale(1.2);
+              color: rgba(255, 255, 0, 0.7);
+            }
           }
         }
       }
@@ -106,6 +125,17 @@ const StyledHeader = styled.header`
       cursor: pointer;
       margin-right: 1rem;
       font-size: clamp(0.9rem, 3vw, 1.25rem);
+      transition: color ease-out 0.1s;
+      span {
+        transition: all ease-out 0.1s;
+        display: inline-block;
+        @media (hover: hover) {
+          &:hover {
+            transform: scale(1.2);
+            color: rgba(255, 255, 0, 0.7);
+          }
+        }
+      }
     }
   }
 `;
