@@ -8,7 +8,8 @@ import { useUser } from "./../../Context/userProvider";
 import Countdown from "./Countdown";
 import Game from "./Game";
 import Team from "./Team";
-import bg from "./../../Media/sunset.jpg";
+
+import { useState } from "react";
 
 const Dashboard: React.FC = () => {
   //URL
@@ -17,8 +18,13 @@ const Dashboard: React.FC = () => {
       ? "/team/dashboard"
       : "http://localhost:5000/team/dashboard";
 
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   const { token } = useToken();
+  const [start, setStart] = useState(false);
+
+  const toBool = (s: string) => {
+    return s === "true" ? true : false;
+  };
 
   const UpdateData = async () => {
     try {
@@ -31,20 +37,20 @@ const Dashboard: React.FC = () => {
           },
         }
       );
-      setUser(res.data.team);
+
+      return { data: res.data.team, active: toBool(res.data.active) };
     } catch (err) {
       console.log(err);
+    } finally {
+      console.log("Updated");
     }
   };
-
-  const start = process.env.REACT_APP_ACTIVE;
-  console.log(start);
 
   return (
     <StyledDashboard>
       <h1>Hello {user?.teamName}</h1>
       <div className="divider"></div>
-      <Team />
+      <Team UpdateData={UpdateData} setStart={setStart} />
       {start ? <Game UpdateData={UpdateData} /> : <Countdown />}
     </StyledDashboard>
   );
@@ -57,8 +63,6 @@ const StyledDashboard = styled.section`
   ${Flex(1, "flex-start", "flex-start")}
   font-family: var(--content);
   background: transparent;
-  /* background-image: url(${bg});
-  background-size: cover; */
   h1 {
     font-weight: 500;
     font-size: clamp(1.15rem, 3vw, 1.25rem);

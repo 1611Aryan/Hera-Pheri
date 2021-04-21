@@ -8,9 +8,15 @@ import RuleBook from "./RuleBook";
 import axios from "axios";
 import { useToken } from "../../Context/tokenProvider";
 
-const Game: React.FC<{ UpdateData: () => Promise<void> }> = ({
-  UpdateData,
-}) => {
+const Game: React.FC<{
+  UpdateData: () => Promise<
+    | {
+        data: any;
+        active: boolean;
+      }
+    | undefined
+  >;
+}> = ({ UpdateData }) => {
   //URL
   const URL =
     process.env.NODE_ENV === "production"
@@ -18,7 +24,7 @@ const Game: React.FC<{ UpdateData: () => Promise<void> }> = ({
       : "http://localhost:5000/team/answer";
 
   //
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const { token } = useToken();
   const progressRef = useRef<HTMLInputElement>(null);
 
@@ -57,8 +63,11 @@ const Game: React.FC<{ UpdateData: () => Promise<void> }> = ({
         { ans: input },
         { headers: { authToken: token } }
       );
-      if (res.data === "Correct") UpdateData();
-      else setMessage(res.data);
+      if (res.data === "Correct") {
+        await UpdateData().then(res => {
+          if (res) setUser(res.data);
+        });
+      } else setMessage(res.data);
       setTimeout(() => setMessage(""), 2500);
     } catch (err) {
       console.log(err);

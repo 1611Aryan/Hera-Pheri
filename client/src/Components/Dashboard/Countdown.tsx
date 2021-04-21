@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Flex } from "../../Style";
 
@@ -12,31 +12,36 @@ const Countdown: React.FC = () => {
   const [seconds, setSeconds] = useState(0);
 
   // CountDown Action
-  const x = setInterval(() => {
-    const now = new Date().getTime();
-    const distance = countDownDate - now;
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    let hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    setSeconds(Math.floor((distance % (1000 * 60)) / 1000));
 
-    if (days >= 0) {
-      setDays(days);
-    }
-    if (hours >= 0) {
-      setHours(hours);
-    }
-    if (minutes >= 0) {
-      setMinutes(minutes);
-    }
+  useEffect(() => {
+    const x = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = countDownDate - now;
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      let hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      setSeconds(Math.floor((distance % (1000 * 60)) / 1000));
 
-    if (distance < 0) {
+      if (days >= 0) {
+        setDays(days);
+      }
+      if (hours >= 0) {
+        setHours(hours);
+      }
+      if (minutes >= 0) {
+        setMinutes(minutes);
+      }
+
+      if (distance < 0) {
+        clearInterval(x);
+      }
+    }, 100);
+    return () => {
       clearInterval(x);
-    }
-  }, 100);
-
+    };
+  }, []);
   return (
     <StyledCountdown>
       <h1>The Hunt Starts in...</h1>

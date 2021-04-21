@@ -1,13 +1,9 @@
 const Admins = require("./../Models/admins.model");
 const bcrypt = require("bcrypt");
+import { Request, Response, NextFunction } from "express-serve-static-core";
 
-interface res {
-  send: (i: any) => { status: (i: any) => {} | {} };
-  status: (i: number) => { send: (i: any) => {} | {} };
-  sendStatus: (i: number) => {};
-}
 
-exports.get = async (req: any, res: res) => {
+exports.get = async (req: Request, res: Response) => {
   try {
     const Admin = await Admins.find();
     res.status(200).send(Admin);
@@ -16,7 +12,7 @@ exports.get = async (req: any, res: res) => {
   }
 };
 
-exports.create = async (req: any, res: res) => {
+exports.create = async (req: Request, res: Response) => {
   try {
     const admin = new Admins({
       name: req.body.name,
@@ -29,7 +25,7 @@ exports.create = async (req: any, res: res) => {
   }
 };
 
-exports.verify = async (req: any, res: res) => {
+exports.verify = async (req: Request, res: Response) => {
   const name = req.body.name;
   const password = req.body.password;
   try {

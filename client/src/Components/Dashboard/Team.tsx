@@ -6,10 +6,19 @@ import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import { useUser } from "./../../Context/userProvider";
 import { useEffect, useRef, useState } from "react";
 
-const Team = () => {
+const Team: React.FC<{
+  UpdateData: () => Promise<
+    | {
+        data: any;
+        active: boolean;
+      }
+    | undefined
+  >;
+  setStart: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ UpdateData, setStart }) => {
   const [copied, setCopied] = useState(false);
   const [teamStatus, setTeamStatus] = useState(false);
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const history = useHistory();
   const linkRef = useRef<HTMLInputElement>(null);
   const link =
@@ -23,6 +32,18 @@ const Team = () => {
     } else
       user?.members.length < 3 ? setTeamStatus(false) : setTeamStatus(true);
   }, [user, history]);
+
+  useEffect(() => {
+    (async () => {
+      UpdateData().then(data => {
+        if (data) {
+          setUser(data.data);
+          setStart(data.active);
+          console.log(data.active);
+        }
+      });
+    })();
+  }, []);
 
   const copy = () => {
     if (linkRef) {

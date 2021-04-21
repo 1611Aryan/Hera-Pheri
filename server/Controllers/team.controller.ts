@@ -59,9 +59,10 @@ exports.verifyToken = async (req: req, res: Response, next: NextFunction) => {
 };
 
 exports.getTeamData = async (req: req, res: Response) => {
+  console.log(process.env.ACTIVE)
   try {
     const team = await Teams.findOne({ _id: req.team.team }, { password: 0, logs: 0 });
-    if (team) return res.status(200).send({ team, auth: true });
+    if (team) return res.status(200).send({ team, auth: true, active: process.env.ACTIVE });
     return res.status(404).send("Team Not Found");
   } catch (err) {
     res.sendStatus(500);
