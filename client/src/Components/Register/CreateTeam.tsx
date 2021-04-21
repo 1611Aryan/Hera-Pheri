@@ -119,6 +119,7 @@ const StyledCreateTeam = styled.section`
   .left {
     ${Flex()}
     h1 {
+      font-family: var(--heading);
       ${Flex(1)};
       font-size: clamp(2.5rem, 5vw, 5rem);
       line-height: 1;
@@ -130,9 +131,12 @@ const StyledCreateTeam = styled.section`
     height: 60vh;
     background: rgba(158, 158, 158, 0.4);
     border-radius: 20px;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(2px);
     padding: 1rem clamp(1rem, 3vw, 2rem);
     ${Flex(1, "space-evenly", "flex-start")};
+    color: black;
+    border: 2px solid #fff;
+    box-shadow: inset 0px 0px 20px 2px rgba(0, 0, 0, 0.1);
     .row {
       ${Flex(0, "space-between")};
       width: 100%;

@@ -105,6 +105,8 @@ const StyledTeam = styled.section`
     ${Flex(1, "space-between", "flex-start")}
     .myTeam {
       font-size: clamp(1.45rem, 3vw, 2rem);
+      font-family: var(--heading);
+      font-weight: 700;
     }
     .teamMessage {
       margin-top: clamp(0.5rem, 2vw, 1rem);
@@ -115,7 +117,8 @@ const StyledTeam = styled.section`
       margin-top: 2.2rem;
       width: 85%;
       flex-grow: 1;
-      background: #fff;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(3px);
       border-radius: 0 25px 25px 0;
 
       ol {
@@ -160,7 +163,8 @@ const StyledTeam = styled.section`
         overflow: hidden;
         .link {
           width: 100%;
-          background: #fff;
+          background: rgba(255, 255, 255, 0.5);
+          backdrop-filter: blur(3px);
           padding: 0.5rem 0.5rem;
           font-size: clamp(0.8rem, 2vw, 1rem);
           border: 0;
@@ -197,12 +201,13 @@ const StyledTeam = styled.section`
   @media (max-width: 650px) {
     flex-direction: column;
     align-items: flex-start;
-
+    justify-content: space-between !important;
     .team {
       width: 100%;
       .members {
         width: 100%;
       }
+      margin-bottom: 1rem;
     }
     .share {
       width: 100%;

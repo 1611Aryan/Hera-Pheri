@@ -112,6 +112,7 @@ const StyledRegisterCard = styled.div`
     font-size: clamp(3rem, 5vw, 5rem);
   }
   h3 {
+    font-family: var(--heading);
     font-size: clamp(1.5rem, 3vw, 2rem);
   }
   @media (max-width: 650px) {

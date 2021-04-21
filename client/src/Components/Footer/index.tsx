@@ -8,6 +8,8 @@ import {
 import { useLocation } from "react-router-dom";
 import bg from "./../../Media/svg.png";
 
+import gradient from "./../../Media/sunset.jpg";
+
 const Footer: React.FC = () => {
   const location = useLocation();
 
@@ -29,7 +31,11 @@ const Footer: React.FC = () => {
     location.pathname === "/admin/dashboard" ? null : (
     <StyledFooter>
       <div className={`footer ${urlMatcher()}`}>
-        <img className="img" src={bg} alt="waves " />
+        <img
+          className="img"
+          src={urlMatcher() === "dashboard" ? gradient : bg}
+          alt="waves "
+        />
         <h1>
           <span>G</span>
           <span>e</span>
@@ -109,6 +115,7 @@ const StyledFooter = styled.footer`
     z-index: 2;
     h1 {
       font-size: clamp(2rem, 4vw, 3rem);
+      font-family: var(--heading);
       span {
         display: inline-block;
         transition: transform ease-in-out 0.1s;
@@ -202,7 +209,8 @@ const StyledFooter = styled.footer`
   }
 
   .dashboard {
-    background: #d0dffc;
+    background: transparent;
+
     h1 {
       color: black;
       z-index: 500;

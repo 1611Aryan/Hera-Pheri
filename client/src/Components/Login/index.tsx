@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { Section, Flex } from "../../Style";
 import { useUser } from "../../Context/userProvider";
 import { useToken } from "../../Context/tokenProvider";
+import { useLoader } from "../../Context/loaderProvider";
 
 const Login: React.FC = () => {
   //URL
@@ -25,6 +26,7 @@ const Login: React.FC = () => {
   const history = useHistory();
   const { setUser } = useUser();
   const { setToken } = useToken();
+  const { setLoader } = useLoader();
 
   //Handlers
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {

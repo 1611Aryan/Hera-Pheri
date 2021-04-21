@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
 import { AdminProvider } from "./Context/adminProvider";
+import { LoaderProvider } from "./Context/loaderProvider";
 import { TokenProvider } from "./Context/tokenProvider";
 import { UserProvider } from "./Context/userProvider";
 import GlobalStyle from "./GlobalStyle";
@@ -15,7 +16,9 @@ ReactDOM.render(
       <AdminProvider>
         <TokenProvider>
           <UserProvider>
-            <App />
+            <LoaderProvider>
+              <App />
+            </LoaderProvider>
           </UserProvider>
         </TokenProvider>
       </AdminProvider>

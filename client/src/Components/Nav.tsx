@@ -60,7 +60,7 @@ const Nav: React.FC = () => {
 const StyledHeader = styled.header`
   width: 100vw;
   background: linear-gradient(to right, #134e5e, #71b280);
-
+  background: #353535;
   height: var(--navHeight);
 
   nav {
@@ -87,7 +87,7 @@ const StyledHeader = styled.header`
         object-fit: cover;
       }
       h1 {
-        font-size: clamp(1.25rem, 3vw, 1.65rem);
+        font-size: clamp(1.45rem, 3vw, 1.95rem);
         transition: color ease-out0.4s;
         span {
           &:hover {

@@ -1,11 +1,14 @@
 import axios from "axios";
-import { useEffect } from "react";
+
 import styled from "styled-components";
+import { useLoader } from "../../Context/loaderProvider";
 import { useToken } from "../../Context/tokenProvider";
 import { Flex } from "../../Style";
 import { useUser } from "./../../Context/userProvider";
+import Countdown from "./Countdown";
 import Game from "./Game";
 import Team from "./Team";
+import bg from "./../../Media/sunset.jpg";
 
 const Dashboard: React.FC = () => {
   //URL
@@ -16,6 +19,7 @@ const Dashboard: React.FC = () => {
 
   const { user, setUser } = useUser();
   const { token } = useToken();
+  const { setLoader } = useLoader();
 
   const UpdateData = async () => {
     try {
@@ -34,17 +38,14 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    UpdateData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const start = false;
 
   return (
     <StyledDashboard>
       <h1>Hello {user?.teamName}</h1>
       <div className="divider"></div>
       <Team />
-      <Game UpdateData={UpdateData} />
+      {start ? <Game UpdateData={UpdateData} /> : <Countdown />}
     </StyledDashboard>
   );
 };
@@ -55,8 +56,9 @@ const StyledDashboard = styled.section`
   overflow: hidden;
   ${Flex(1, "flex-start", "flex-start")}
   font-family: var(--content);
-  background: #d0dffc;
-
+  background: transparent;
+  /* background-image: url(${bg});
+  background-size: cover; */
   h1 {
     font-weight: 500;
     font-size: clamp(1.15rem, 3vw, 1.25rem);

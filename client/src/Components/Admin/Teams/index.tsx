@@ -125,6 +125,7 @@ const StyledTeams = styled.div`
   padding: 1rem;
   ${Flex(1)}
   h1 {
+    font-family: var(--heading);
     width: 100%;
     font-size: clamp(1rem, 3vw, 2rem);
     margin-bottom: clamp(0.5rem, 2vw, 1rem);

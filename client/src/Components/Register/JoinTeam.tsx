@@ -130,6 +130,7 @@ const StyledJoinTeam = styled.section`
     ${Flex()}
     h1 {
       ${Flex(1)};
+      font-family: var(--heading);
       font-size: clamp(2.5rem, 5vw, 5rem);
       color: #2c2c2c;
     }
@@ -139,9 +140,12 @@ const StyledJoinTeam = styled.section`
     height: 60vh;
     background: rgba(158, 158, 158, 0.4);
     border-radius: 20px;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(2px);
     padding: 1rem clamp(1rem, 3vw, 2rem);
     ${Flex(1, "space-evenly", "flex-start")};
+    color: black;
+    border: 2px solid #fff;
+    box-shadow: inset 0px 0px 20px 2px rgba(0, 0, 0, 0.1);
     .err {
       color: red;
       font-size: 0.8rem;

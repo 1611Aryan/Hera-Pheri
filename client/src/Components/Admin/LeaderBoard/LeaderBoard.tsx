@@ -48,6 +48,7 @@ const StyledLeaderBoard = styled.div`
 
   padding: 1rem;
   h1 {
+    font-family: var(--heading);
     font-size: clamp(1rem, 3vw, 2rem);
     color: #f05945;
     margin-bottom: clamp(0.5rem, 2vw, 1rem);

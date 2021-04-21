@@ -107,6 +107,7 @@ const StyledHint = styled.div`
   background: #f7f3e9;
   color: #f05945;
   h1 {
+    font-family: var(--heading);
     padding: 1rem;
     font-size: 2rem;
   }

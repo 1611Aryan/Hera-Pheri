@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import bg from "./Media/sunset.jpg";
 
 const GlobalStyle = createGlobalStyle`
 *{
@@ -8,14 +9,20 @@ const GlobalStyle = createGlobalStyle`
 }
 :root{
     --heading:'Happy Monkey', cursive;
+     
+     --cursive:'AlexBrush',cursive;
     --content: 'Lato', sans-serif;
     --navHeight:10vh;
 }
+
+
 body{
     width:100vw;
     height:100%;
     overflow-x:hidden;
   font-family: 'Lato', sans-serif;
+  background-image: url(${bg});
+  background-size: cover;
 }
 a{
     text-decoration:none;
@@ -23,6 +30,9 @@ a{
 }
 button{
     cursor:pointer;
+}
+.loading{
+    opacity:1;
 }
 `;
 
