@@ -3,24 +3,22 @@ import React, { useEffect, useState } from "react";
 import { Flex } from "../../../Style";
 import axios from "axios";
 import { team } from "./../interface";
+import Modal from "./Modal";
 
 const Hint: React.FC = () => {
-  const HintURL =
-    process.env.NODE_ENV === "production"
-      ? "/team/hint"
-      : "http://localhost:5000/team/hint";
-
+  //URL
   const TeamURL =
     process.env.NODE_ENV === "production"
       ? "/team"
       : "http://localhost:5000/team";
 
+  //State
   const [teams, setTeams] = useState<team[] | null>(null);
   const [hints, setHints] = useState<string | null>(null);
   const [selected, setSelected] = useState<team | null>(null);
+  const [modalStatus, setModalStatus] = useState(false);
 
   //Component did mount
-
   useEffect(() => {
     (async () => {
       try {
@@ -32,6 +30,7 @@ const Hint: React.FC = () => {
     })();
   }, [TeamURL]);
 
+  //Handlers
   const ChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     let team = null;
     if (teams) {
@@ -41,32 +40,26 @@ const Hint: React.FC = () => {
         setSelected(team[0]);
       } else {
         setSelected(null);
+        setHints(null);
       }
     }
   };
 
-  const ClickHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const res = await axios.post(HintURL, {
-        id: selected?._id,
-        hintType: hints,
-      });
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
+    if (selected && hints) setModalStatus(true);
   };
 
   const HintSelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setHints(e.target.value);
+    if (e.target.value === "default") return setHints(null);
+    return setHints(e.target.value);
   };
 
   return (
     <StyledHint>
       <h1>Hint</h1>
       <div className="formContainer">
-        <form onSubmit={ClickHandler}>
+        <form onSubmit={submitHandler}>
           <label htmlFor="team">Team</label>
           <select name="team" onChange={ChangeHandler}>
             <option value="default">...</option>
@@ -94,9 +87,18 @@ const Hint: React.FC = () => {
               </>
             )}
           </select>
-          <button>Use a Hint</button>
+          <button className={selected && hints ? "" : "inactive"}>
+            Use a Hint
+          </button>
         </form>
       </div>
+      {modalStatus && (
+        <Modal
+          hints={hints}
+          selected={selected}
+          setModalStatus={setModalStatus}
+        />
+      )}
     </StyledHint>
   );
 };
@@ -151,8 +153,22 @@ const StyledHint = styled.div`
         padding: 0.6rem clamp(0.6rem, 3vw, 1rem);
         border-radius: 5px;
         border: 0;
-        &:focus {
+        transition: all 0.2s;
+        &:focus,
+        &:hover {
           outline: 0;
+          background: #ffffff;
+          color: #f05945;
+        }
+      }
+      .inactive {
+        background: #f17f70;
+        color: #ffffff;
+        cursor: default;
+        &:focus,
+        &:hover {
+          background: #f17f70;
+          color: #ffffff;
         }
       }
     }

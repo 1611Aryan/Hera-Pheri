@@ -7,7 +7,7 @@ import Admin from "./Components/Admin";
 import Nav from "./Components/Nav";
 import Register from "./Components/Register";
 import Footer from "./Components/Footer";
-import Loader from "./Components/Loader";
+import Loader from "./Components/StartLoader";
 import { useLoader } from "./Context/loaderProvider";
 import { useEffect } from "react";
 
