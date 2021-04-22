@@ -43,7 +43,7 @@ const time = () => {
 
 const quesURL =
   process.env.NODE_ENV === "production"
-    ? "/questions"
+    ? "https://chem-i-leon.herokuapp.com/questions"
     : "http://localhost:5000/questions";
 
 exports.verifyToken = async (req: req, res: Response, next: NextFunction) => {
