@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useLoader } from "../../Context/loaderProvider";
 import { Flex, Section } from "../../Style";
 
 const CreateTeam: React.FC = () => {
@@ -19,20 +20,31 @@ const CreateTeam: React.FC = () => {
     password: "",
   });
   const [message, setMessage] = useState<string | null>(null);
+  const [result, setResult] = useState(false);
+
+  //
+  const { setLoader } = useLoader();
 
   //Handlers
+
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoader(true);
+
     try {
       const res = await axios.post(URL, input);
       console.log(res.data);
-      setMessage(res.data);
+      setResult(true);
+      setMessage("Team created. Login to access the Dashboard");
     } catch (err) {
+      setResult(false);
       setMessage(err.response.data);
+    } finally {
+      setTimeout(() => setLoader(false), 500);
     }
   };
 
@@ -50,7 +62,7 @@ const CreateTeam: React.FC = () => {
       </div>
       <div className="column right">
         <form onSubmit={submitHandler}>
-          {message && <p className="err">{message}</p>}
+          {message && <p className={result ? "success" : "err"}>{message}</p>}
           <div className="row">
             <div>
               <label htmlFor="team">Team Name: </label>

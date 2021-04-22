@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { Section, Flex } from "../../Style";
 import { useUser } from "../../Context/userProvider";
 import { useToken } from "../../Context/tokenProvider";
+import { useLoader } from "../../Context/loaderProvider";
 
 const Login: React.FC = () => {
   //URL
@@ -25,6 +26,7 @@ const Login: React.FC = () => {
   const history = useHistory();
   const { setUser } = useUser();
   const { setToken } = useToken();
+  const { setLoader } = useLoader();
 
   //Handlers
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,16 +35,18 @@ const Login: React.FC = () => {
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoader(true);
     try {
       const res = await axios.post(URL, input);
       if (res.data.auth) {
-        console.log(res.data.team);
         setUser(res.data.team);
         setToken(res.headers.authtoken);
         history.push("/dashboard");
       }
     } catch (err) {
       setMessage(err.response.data);
+    } finally {
+      setTimeout(() => setLoader(false), 500);
     }
   };
 

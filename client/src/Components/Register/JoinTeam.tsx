@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Flex, Section } from "../../Style";
+import { useLoader } from "../../Context/loaderProvider";
 
 const JoinTeam: React.FC = () => {
   //URL
@@ -16,12 +17,14 @@ const JoinTeam: React.FC = () => {
     code: "",
     name: "",
     email: "",
-    number: "",
+    number: 0,
   });
   const [message, setMessage] = useState<string | null>(null);
+  const [result, setResult] = useState(false);
 
   //
   const { code } = useParams<{ code: string }>();
+  const { setLoader } = useLoader();
 
   //
   useEffect(() => {
@@ -32,21 +35,30 @@ const JoinTeam: React.FC = () => {
   }, []);
 
   //Handlers
+
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoader(true);
     if (input.code.length !== 8) {
       setMessage("Incorrect Team Code");
+      setTimeout(() => setLoader(false), 500);
       return;
     }
+
     try {
       const res = await axios.post(URL, input);
-      setMessage(res.data);
+      console.log(res.data);
+      setResult(true);
+      setMessage("Team Joined. Login to access the Dashboard");
     } catch (err) {
+      setResult(false);
       setMessage(err.response.data);
+    } finally {
+      setTimeout(() => setLoader(false), 500);
     }
   };
 
@@ -62,7 +74,7 @@ const JoinTeam: React.FC = () => {
       </div>
       <div className="column right">
         <form onSubmit={submitHandler}>
-          {message && <p className="err">{message}</p>}
+          {message && <p className={result ? "success" : "err"}>{message}</p>}
           <div className="row">
             <div className="fieldContainer">
               <label htmlFor="code">Team Code: </label>
@@ -149,6 +161,10 @@ const StyledJoinTeam = styled.section`
       inset -2px -2px 10px rgba(0, 0, 0, 0.1);
     .err {
       color: red;
+      font-size: 0.8rem;
+    }
+    .success {
+      color: green;
       font-size: 0.8rem;
     }
     .row {

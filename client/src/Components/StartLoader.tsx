@@ -1,11 +1,8 @@
 import styled from "styled-components";
-import { useLoader } from "../Context/loaderProvider";
 
-const Loader: React.FC = () => {
-  const { loader } = useLoader();
-
+const Loader: React.FC<{ loading: boolean }> = ({ loading }) => {
   return (
-    <StyledLoader className={loader ? "loading" : ""}>
+    <StyledLoader className={loading ? "loading" : ""}>
       <svg
         width="209"
         height="225"

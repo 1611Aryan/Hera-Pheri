@@ -8,19 +8,22 @@ import Nav from "./Components/Nav";
 import Register from "./Components/Register";
 import Footer from "./Components/Footer";
 import Loader from "./Components/StartLoader";
-import { useLoader } from "./Context/loaderProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Loading from "./Components/Loading";
 
 const App = () => {
-  const { setLoader } = useLoader();
+  //State
+  const [loading, setLoading] = useState(true);
 
-  //
+  //Component Did Mount
   useEffect(() => {
-    setTimeout(() => setLoader(false), 500);
+    setTimeout(() => setLoading(false), 500);
   });
+
   return (
     <div className="App">
-      <Loader />
+      <Loader loading={loading} />
+      <Loading />
       <Nav />
       <Switch>
         <NormalRoute path="/" exact>

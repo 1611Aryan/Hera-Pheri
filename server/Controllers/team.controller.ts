@@ -41,6 +41,19 @@ const time = () => {
   return (new Date().toLocaleString())
 }
 
+const sanitiseNumber = (num: string) => {
+  let value = num;
+  let mobile = "";
+  value = value.replace(/\s/g, "");
+  if (value.startsWith("+")) {
+    var temp = value.substring(3, value.length);
+    mobile = temp;
+  } else {
+    mobile = value;
+  }
+  return parseInt(mobile);
+};
+
 const quesURL =
   process.env.NODE_ENV === "production"
     ? "https://chem-i-leon.herokuapp.com/questions"
@@ -59,7 +72,6 @@ exports.verifyToken = async (req: req, res: Response, next: NextFunction) => {
 };
 
 exports.getTeamData = async (req: req, res: Response) => {
-  console.log(process.env.ACTIVE)
   try {
     const team = await Teams.findOne({ _id: req.team.team }, { password: 0, logs: 0 });
     if (team) return res.status(200).send({ team, auth: true, active: process.env.ACTIVE });
@@ -87,11 +99,19 @@ exports.create = async (req: req, res: Response) => {
   const team = req.body.team;
   const name = req.body.name;
   const email = req.body.email;
-  const number = req.body.number;
+  const number = sanitiseNumber((req.body.number).toString());
+
   try {
     let Team = await Teams.findOne({
-      $or: [{ teamName: team }, { "leader.email": email }],
+      $or: [{ teamName: team }, { "leader.email": email }, { 'leader.number': number }, {
+        members: {
+          $elemMatch: {
+            $or: [{ email }, { number }]
+          }
+        }
+      }],
     });
+
     if (Team) return res.status(409).send("Team Name/Email Already Exists");
     const set = generateSet(await Teams.countDocuments());
     const password = await bcrypt.hash(req.body.password, 10);
@@ -120,8 +140,18 @@ exports.join = async (req: req, res: Response) => {
   const code = req.body.code;
   const name = req.body.name;
   const email = req.body.email;
-  const number = req.body.number;
+  const number = sanitiseNumber((req.body.number).toString());
   try {
+    const existingTeam = await Teams.findOne({
+      $or: [{ "leader.email": email }, { 'leader.number': number }, {
+        members: {
+          $elemMatch: {
+            $or: [{ email }, { number }]
+          }
+        }
+      }],
+    });
+    if (existingTeam) return res.status(400).send("Email or number already registered");
     const Team = await Teams.findOne({ joinCode: code });
     if (Team == null) return res.status(400).send("Incorrect Team Code");
     if (Team.members.length >= 3) return res.status(400).send("Team is Full");
@@ -189,20 +219,20 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
   const answer = req.body.ans;
   const id = req.team.team;
   try {
-    console.log({ answer, id })
+
     const team = await Teams.findOne(
       { _id: id },
       { members: 0, password: 0, leader: 0 }
     );
 
     if (team) {
-      console.log({ team })
+
       const set = team.set;
       req.ques = team.ques;
       req.hintFlag = team.hintFlag
       const questions = await axios.get(`${quesURL}/${set}`);
       if (questions) {
-        console.log({ questions })
+
         if (questions.data.questions[team.ques].ans === answer) {
           req.time = team.updatedAt;
           req.ans = true;
@@ -248,7 +278,7 @@ exports.changeScore = async (req: req, res: Response) => {
   const id = req.team.team;
   const quesNumber = req.ques;
   const hintFlag = req.hintFlag
-  console.log(hintFlag)
+
 
   try {
     const score = calculateScore(quesNumber, req.time, hintFlag);
@@ -272,7 +302,7 @@ exports.changeScore = async (req: req, res: Response) => {
 exports.useHint = async (req: req, res: Response) => {
   const id = req.body.id;
   const hintType = req.body.hintType
-  console.log(req.body)
+
   try {
     const team = await Teams.findOne({ _id: id })
     if (team) {

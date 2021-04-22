@@ -61,13 +61,13 @@ const StyledRulebook = styled.div`
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(2px);
   padding: clamp(1rem, 3vw, 2rem);
   color: white;
-  ${Flex(1, "space-between", "space-between")}
+  ${Flex(1, "space-evenly", "space-between")}
 
   h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-size: clamp(2rem, 5vw, 3rem) !important;
     font-weight: 900;
     ${Flex(0, "space-between", "align-items")}
     svg {
@@ -83,7 +83,7 @@ const StyledRulebook = styled.div`
     height: 80vh;
     list-style-position: inside;
     background: rgba(18, 28, 49, 0.8);
-
+    backdrop-filter: blur(1px);
     padding: 1rem;
     border-radius: 10px;
     overflow: hidden auto;
@@ -97,9 +97,6 @@ const StyledRulebook = styled.div`
     li + li {
       margin-top: 1rem;
     }
-  }
-
-  @media (max-width: 450px) {
   }
 `;
 

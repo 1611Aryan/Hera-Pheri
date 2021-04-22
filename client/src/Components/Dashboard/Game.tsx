@@ -7,6 +7,7 @@ import { Flex } from "../../Style";
 import RuleBook from "./RuleBook";
 import axios from "axios";
 import { useToken } from "../../Context/tokenProvider";
+import { useLoader } from "../../Context/loaderProvider";
 
 const Game: React.FC<{
   UpdateData: () => Promise<
@@ -27,7 +28,7 @@ const Game: React.FC<{
   const { user, setUser } = useUser();
   const { token } = useToken();
   const progressRef = useRef<HTMLInputElement>(null);
-
+  const { setLoader } = useLoader();
   //Sttate
   const [rulebook, setRulebook] = useState(false);
   const [input, setInput] = useState<string | null>(null);
@@ -56,6 +57,7 @@ const Game: React.FC<{
 
   const SubmitAnswer = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoader(true);
     try {
       const res = await axios.post(
         URL,
@@ -67,10 +69,11 @@ const Game: React.FC<{
           if (res) setUser(res.data);
         });
       } else setMessage(res.data);
-      setTimeout(() => setMessage(""), 2500);
+      setTimeout(() => setMessage(""), 5000);
     } catch (err) {
       console.log(err);
     } finally {
+      setLoader(false);
       setInput(null);
     }
   };
@@ -178,7 +181,10 @@ const StyledGame = styled.section`
     flex-direction: column;
     align-items: flex-start;
     p {
-      height: 1.2rem;
+      height: 2rem;
+      font-size: 1.5rem;
+      color: red;
+      font-weight: 900;
     }
     textarea {
       width: 100%;

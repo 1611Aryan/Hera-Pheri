@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useState } from "react";
+import React, { useContext, createContext, useState, useEffect } from "react";
 
 interface loader {
   loader: boolean;
@@ -15,7 +15,9 @@ export const useLoader = () => useContext(LoaderContext);
 export const LoaderProvider: React.FC<{
   children: JSX.Element | JSX.Element[];
 }> = ({ children }) => {
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
+
+  useEffect(() => console.log("Loading"), [loader]);
 
   return (
     <LoaderContext.Provider value={{ loader, setLoader }}>

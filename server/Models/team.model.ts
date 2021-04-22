@@ -17,7 +17,7 @@ const teamSchema = new Schema(
     leader: {
       name: { type: String, required: true },
       email: { type: String, required: true },
-      number: { type: String, required: true },
+      number: { type: Number, required: true },
     },
     members: {
       type: Array,

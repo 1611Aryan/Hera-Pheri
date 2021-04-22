@@ -4,7 +4,7 @@ import { Flex } from "../../Style";
 
 const Countdown: React.FC = () => {
   // Set Date
-  const countDownDate = new Date("May 1, 2021 21:00:00").getTime();
+  const countDownDate = new Date("May 2, 2021 21:00:00").getTime();
 
   const [days, setDays] = useState(0);
   const [minutes, setMinutes] = useState(0);
@@ -41,7 +41,7 @@ const Countdown: React.FC = () => {
     return () => {
       clearInterval(x);
     };
-  }, []);
+  }, [countDownDate]);
   return (
     <StyledCountdown>
       <h1>The Hunt Starts in...</h1>
@@ -105,20 +105,23 @@ const StyledCountdown = styled.section`
     display: inline-block;
 
     ${Flex()};
-    font-size: clamp(1rem, 3vw, 2rem);
+    font-size: clamp(1.5rem, 3vw, 2rem);
     margin-bottom: 0.5rem;
   }
   .smalltext {
     color: white;
-    font-size: clamp(1rem, 3vw, 2rem);
+    font-size: clamp(1.2rem, 3vw, 2rem);
   }
   @media (max-width: 465px) {
     .counter {
+      flex: 0.75;
       padding: 0 3%;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
     }
     .counter > div {
-      width: 24%;
-      height: calc((90vw) / 4);
+      width: 45%;
+      height: calc((90vw) / (100 / 45));
     }
   }
 `;

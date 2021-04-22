@@ -39,10 +39,10 @@ const Team: React.FC<{
         if (data) {
           setUser(data.data);
           setStart(data.active);
-          console.log(data.active);
         }
       });
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const copy = () => {
@@ -63,7 +63,6 @@ const Team: React.FC<{
           text: `Join My Team ${user?.teamName}`,
           url: link,
         });
-        console.log("Successfully Shared");
       } else copy();
     } catch (err) {
       console.log(err);
@@ -229,6 +228,9 @@ const StyledTeam = styled.section`
         width: 100%;
       }
       margin-bottom: 1rem;
+    }
+    .invite {
+      margin-top: 1rem;
     }
     .share {
       width: 100%;

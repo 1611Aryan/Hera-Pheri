@@ -1,9 +1,12 @@
 import styled from "styled-components";
+import { useLoader } from "../Context/loaderProvider";
 import { Flex } from "../Style";
 
 const Loading = () => {
+  const { loader } = useLoader();
+
   return (
-    <StyledLoading>
+    <StyledLoading className={loader ? "loading" : ""}>
       <div className="lds-roller">
         <div></div>
         <div></div>
@@ -21,12 +24,15 @@ const Loading = () => {
 const StyledLoading = styled.section`
   width: 100vw;
   height: 100vh;
+  opacity: 0;
+  pointer-events: none;
   position: fixed;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.5);
   ${Flex()}
   backdrop-filter: blur(2px);
+  z-index: 1000000;
   .lds-roller {
     display: inline-block;
     position: relative;

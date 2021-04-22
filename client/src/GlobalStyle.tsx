@@ -9,7 +9,6 @@ const GlobalStyle = createGlobalStyle`
 }
 :root{
     --heading:'Happy Monkey', cursive;
-     
      --cursive:'AlexBrush',cursive;
     --content: 'Lato', sans-serif;
     --navHeight:10vh;
@@ -20,20 +19,25 @@ body{
     width:100vw;
     height:100%;
     overflow-x:hidden;
-  font-family: 'Lato', sans-serif;
-  background-image: url(${bg});
-  background-size: cover;
+    font-family: 'Lato', sans-serif;
+    background-image: url(${bg});
+    background-size: cover;
 }
+
 a{
     text-decoration:none;
     color:inherit;
 }
+
 button{
     cursor:pointer;
 }
+
 .loading{
-    opacity:1;
+    opacity: 1 !important;
+    pointer-events:auto !important;
 }
+
 `;
 
 export default GlobalStyle;
