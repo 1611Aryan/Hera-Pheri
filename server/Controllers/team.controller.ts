@@ -65,6 +65,7 @@ exports.getTeamData = async (req: req, res: Response) => {
     if (team) return res.status(200).send({ team, auth: true, active: process.env.ACTIVE });
     return res.status(404).send("Team Not Found");
   } catch (err) {
+    console.log({ getTeamData: err })
     res.sendStatus(500);
   }
 };
@@ -77,7 +78,7 @@ exports.teamByName = async (req: req, res: Response) => {
     if (team) return res.status(200).send({ message: true, team });
     else return res.send({ message: false, team: null })
   } catch (err) {
-
+    console.log({ teamByName: err })
     return res.status(500).send(err)
   }
 }
@@ -110,7 +111,7 @@ exports.create = async (req: req, res: Response) => {
     await Team.save();
     return res.status(201).send("Team Created");
   } catch (err) {
-
+    console.log({ create: err })
     res.status(500).send(err)
   }
 };
@@ -135,6 +136,7 @@ exports.join = async (req: req, res: Response) => {
     );
     res.status(200).send("Member Added");
   } catch (err) {
+    console.log({ join: err })
     res.status(500).send(err);
   }
 };
@@ -158,6 +160,7 @@ exports.login = async (req: req, res: Response) => {
     }
     return res.status(400).send("Team doesn't exist");
   } catch (err) {
+    console.log({ login: err })
     res.status(500).send(err);
   }
 };
@@ -170,6 +173,7 @@ exports.view = async (req: req, res: Response) => {
     ).sort({ score: -1 }).limit(10);
     res.status(200).send(teams);
   } catch (err) {
+    console.log({ view: err })
     res.status(500).send(err);
   }
 };
@@ -208,7 +212,7 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
       } else return res.sendStatus(500);
     } else return res.sendStatus(404);
   } catch (err) {
-
+    console.log({ verifyAnswer: err })
     res.status(500).send(err);
   }
 }
@@ -256,7 +260,7 @@ exports.changeScore = async (req: req, res: Response) => {
 
     return res.send('Correct')
   } catch (err) {
-
+    console.log({ changeScore: err })
     return res.status(500).send(err)
   }
 
@@ -287,6 +291,7 @@ exports.useHint = async (req: req, res: Response) => {
       else return res.send(`No hint of type ${hintType} is left`)
     } return res.sendStatus(404)
   } catch (err) {
+    console.log({ useHint: err })
     res.status(500).send(err)
   }
 }

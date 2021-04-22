@@ -23,7 +23,7 @@ const Team: React.FC<{
   const linkRef = useRef<HTMLInputElement>(null);
   const link =
     process.env.NODE_ENV === "production"
-      ? `https://hera-pheri.herokuapp.com/register/join/${user?.joinCode}`
+      ? `https://chem-i-leon.herokuapp.com/register/join/${user?.joinCode}`
       : `http://localhost:3000/register/join/${user?.joinCode}`;
 
   useEffect(() => {

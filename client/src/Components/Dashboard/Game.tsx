@@ -56,7 +56,6 @@ const Game: React.FC<{
 
   const SubmitAnswer = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setInput(null);
     try {
       const res = await axios.post(
         URL,
@@ -71,6 +70,8 @@ const Game: React.FC<{
       setTimeout(() => setMessage(""), 2500);
     } catch (err) {
       console.log(err);
+    } finally {
+      setInput(null);
     }
   };
 
