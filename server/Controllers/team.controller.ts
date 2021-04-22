@@ -189,17 +189,20 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
   const answer = req.body.ans;
   const id = req.team.team;
   try {
+    console.log({ answer, id })
     const team = await Teams.findOne(
       { _id: id },
       { members: 0, password: 0, leader: 0 }
     );
 
     if (team) {
+      console.log({ team })
       const set = team.set;
       req.ques = team.ques;
       req.hintFlag = team.hintFlag
       const questions = await axios.get(`${quesURL}/${set}`);
       if (questions) {
+        console.log({ questions })
         if (questions.data.questions[team.ques].ans === answer) {
           req.time = team.updatedAt;
           req.ans = true;
