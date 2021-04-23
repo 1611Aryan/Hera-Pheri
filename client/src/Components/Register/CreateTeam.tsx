@@ -36,6 +36,12 @@ const CreateTeam: React.FC = () => {
     setLoader(true);
 
     try {
+      if (input.password.length < 8) {
+        return setMessage("Password should have a minimum length of 8 digits");
+      }
+      if (input.number.toString().length < 10) {
+        return setMessage("Enter a Valid Phone Number");
+      }
       const res = await axios.post(URL, input);
       console.log(res.data);
       setResult(true);
@@ -44,7 +50,7 @@ const CreateTeam: React.FC = () => {
       setResult(false);
       setMessage(err.response.data);
     } finally {
-      setTimeout(() => setLoader(false), 500);
+      setLoader(false);
     }
   };
 
@@ -88,7 +94,12 @@ const CreateTeam: React.FC = () => {
 
           <div className="fieldContainer">
             <label htmlFor="email">Email: </label>
-            <input type="text" name="email" required onChange={changeHandler} />
+            <input
+              type="email"
+              name="email"
+              required
+              onChange={changeHandler}
+            />
           </div>
           <div className="fieldContainer">
             <label htmlFor="number">Phone Number: </label>

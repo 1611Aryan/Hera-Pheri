@@ -7,6 +7,7 @@ import bg from "./../../Media/svg.png";
 import Error from "../Error";
 import JoinTeam from "./JoinTeam";
 import CreateTeam from "./CreateTeam";
+import { useEffect } from "react";
 
 const Register: React.FC = () => {
   //
@@ -16,6 +17,11 @@ const Register: React.FC = () => {
   const clickHandler = (location: string) => {
     history.push(location);
   };
+
+  useEffect(() => {
+    const html = document.querySelector("html");
+    html?.setAttribute("theme", "teal");
+  }, [[]]);
 
   return (
     <StyledRegister>

@@ -6,6 +6,8 @@ const questionSchema = new Schema(
   {
     set: { type: String, required: true, unique: true, uppercase: true },
     questions: { type: [{}] },
+    specialQuestion: { type: Number },
+    img: { type: String }
   },
   {
     collection: "question-bank",

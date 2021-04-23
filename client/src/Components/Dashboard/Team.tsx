@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Flex } from "../../Style";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
+import { faInfo } from "@fortawesome/free-solid-svg-icons";
 import { useUser } from "./../../Context/userProvider";
 import { useEffect, useRef, useState } from "react";
 
@@ -34,6 +35,9 @@ const Team: React.FC<{
   }, [user, history]);
 
   useEffect(() => {
+    const html = document.querySelector("html");
+    html?.setAttribute("theme", "black");
+
     (async () => {
       UpdateData().then(data => {
         if (data) {
@@ -74,9 +78,13 @@ const Team: React.FC<{
       <div className="team">
         <span className="myTeam">My Team</span>
         {!teamStatus && (
-          <span className="teamMessage">
-            You need a full team of four to participate!
-          </span>
+          <p className="teamMessage">
+            <FontAwesomeIcon icon={faInfo} />
+            &nbsp; &nbsp;
+            <span>
+              A team of 4 would surely help but is not necessary to participate.
+            </span>
+          </p>
         )}
         <div className="members">
           <ol>
@@ -132,6 +140,7 @@ const StyledTeam = styled.section`
       margin-top: clamp(0.5rem, 2vw, 1rem);
       font-size: clamp(0.7rem, 1vw, 0.8rem);
       color: red;
+      ${Flex(0, "center", "center")}
     }
     .members {
       margin-top: 2.2rem;

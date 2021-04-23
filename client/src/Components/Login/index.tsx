@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -27,6 +27,13 @@ const Login: React.FC = () => {
   const { setUser } = useUser();
   const { setToken } = useToken();
   const { setLoader } = useLoader();
+
+  //
+
+  useEffect(() => {
+    const html = document.querySelector("html");
+    if (html) html.setAttribute("theme", "teal");
+  }, [[]]);
 
   //Handlers
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,13 +91,7 @@ const Login: React.FC = () => {
         <form onSubmit={submitHandler}>
           {message && <p className="err">{message}</p>}
           <label htmlFor="team">Team Name: </label>
-          <input
-            type="text"
-            name="team"
-            required
-            autoFocus
-            onChange={changeHandler}
-          />
+          <input type="text" name="team" required onChange={changeHandler} />
           <label htmlFor="password">Password:</label>
           <input
             type="password"

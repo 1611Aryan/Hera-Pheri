@@ -42,25 +42,39 @@ const Leaderboard: React.FC = () => {
 };
 
 const StyledLeaderBoard = styled.div`
+  --primary: #f05945;
+  --secondary: #5eaaa8;
+  --bg: #f7f3e9;
   width: 100%;
   height: 100%;
-  background: #f7f3e9;
-
+  background: var(--bg);
+  ${Flex(1)}
   padding: 1rem;
   h1 {
+    width: 100%;
     font-family: var(--heading);
     font-size: clamp(1rem, 3vw, 2rem);
-    color: #f05945;
+    color: var(--primary);
     margin-bottom: clamp(0.5rem, 2vw, 1rem);
+    text-align: left;
   }
   ul {
-    border-top: 2px solid #5eaaa8;
+    border-top: 2px solid var(--secondary);
     width: 100%;
-    height: auto;
+    font-size: flex(1);
     overflow: hidden auto;
+    ::-webkit-scrollbar {
+      background: var(--bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 5px;
+    }
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--bg);
   }
   li {
-    border-bottom: 2px solid #5eaaa8;
+    border-bottom: 2px solid var(--secondary);
     padding: clamp(0.5rem, 2vw, 1rem);
     font-size: clamp(0.8rem, 2vw, 1rem);
     ${Flex()};
@@ -68,6 +82,9 @@ const StyledLeaderBoard = styled.div`
     span {
       width: 50%;
       padding: 0.5rem 0;
+    }
+    &:last-child {
+      margin-bottom: 1rem;
     }
   }
 `;

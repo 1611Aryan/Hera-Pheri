@@ -43,13 +43,13 @@ const JoinTeam: React.FC = () => {
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoader(true);
-    if (input.code.length !== 8) {
-      setMessage("Incorrect Team Code");
-      setTimeout(() => setLoader(false), 500);
-      return;
-    }
-
     try {
+      if (input.code.length !== 8) {
+        return setMessage("Incorrect Team Code");
+      }
+      if (input.number.toString().length < 10) {
+        return setMessage("Enter a Valid Phone Number");
+      }
       const res = await axios.post(URL, input);
       console.log(res.data);
       setResult(true);
@@ -58,7 +58,7 @@ const JoinTeam: React.FC = () => {
       setResult(false);
       setMessage(err.response.data);
     } finally {
-      setTimeout(() => setLoader(false), 500);
+      setLoader(false);
     }
   };
 
@@ -102,7 +102,7 @@ const JoinTeam: React.FC = () => {
           <div className="fieldContainer">
             <label htmlFor="email">Email: </label>
             <input
-              type="text"
+              type="email"
               name="email"
               required
               onChange={changeHandler}
@@ -116,7 +116,7 @@ const JoinTeam: React.FC = () => {
               name="number"
               required
               onChange={changeHandler}
-              value={input.number}
+              value={input.number !== 0 ? input.number : ""}
             />
           </div>
           <button>Join Team</button>

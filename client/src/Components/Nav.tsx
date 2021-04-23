@@ -1,4 +1,4 @@
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useToken } from "../Context/tokenProvider";
 import { useUser } from "../Context/userProvider";
@@ -9,12 +9,26 @@ const Nav: React.FC = () => {
   const history = useHistory();
   const { user, setUser } = useUser();
   const { setToken } = useToken();
+  const location = useLocation();
 
   //Handlers
   const logout = () => {
     setUser(null);
     setToken(null);
     history.push("/");
+  };
+
+  const urlMatcher = () => {
+    const pattern = new RegExp("/register");
+
+    if (location.pathname === "/") return "login";
+    else if (pattern.test(location.pathname)) return "register";
+    else if (
+      location.pathname === "/dashboard" ||
+      location.pathname === "/admin/dashboard"
+    )
+      return "dashboard";
+    else return "hide";
   };
 
   return (
@@ -46,7 +60,7 @@ const Nav: React.FC = () => {
         </div>
 
         <ul>
-          {user ? (
+          {urlMatcher() === "dashboard" ? (
             <li onClick={logout}>
               <span>L</span>
               <span>o</span>
@@ -55,11 +69,15 @@ const Nav: React.FC = () => {
               <span>u</span>
               <span>t</span>
             </li>
-          ) : (
+          ) : urlMatcher() === "login" ? (
             <li>
               <Link to="/register">Register</Link>
             </li>
-          )}
+          ) : urlMatcher() === "register" ? (
+            <li>
+              <Link to="/">Login</Link>
+            </li>
+          ) : null}
         </ul>
       </nav>
     </StyledHeader>

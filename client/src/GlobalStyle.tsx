@@ -7,6 +7,7 @@ const GlobalStyle = createGlobalStyle`
     padding:0;
     box-sizing:border-box
 }
+
 :root{
     --heading:'Happy Monkey', cursive;
      --cursive:'AlexBrush',cursive;
@@ -22,7 +23,33 @@ body{
     font-family: 'Lato', sans-serif;
     background-image: url(${bg});
     background-size: cover;
+    
 }
+
+html{
+    scrollbar-width: thin;
+}
+
+::-webkit-scrollbar{
+background:#dddddd;
+width:7px;
+}
+
+html[theme="teal"]{
+    scrollbar-color: #dddddd  teal;
+    body::-webkit-scrollbar-thumb{
+        background:teal;
+    }
+}
+    
+html[theme="black"]{ 
+    scrollbar-color:  #dddddd #202020;
+    body::-webkit-scrollbar-thumb{
+        background:#202020;
+    }
+   
+}
+
 
 a{
     text-decoration:none;

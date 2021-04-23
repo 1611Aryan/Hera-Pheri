@@ -14,6 +14,10 @@ interface req extends Request {
     used: boolean;
     typeUsed?: string
   }
+  img: {
+    status: 'now' | 'idk';
+    src: string | null
+  }
 }
 
 const generateSet = (num: number) => {
@@ -100,7 +104,13 @@ exports.create = async (req: req, res: Response) => {
   const name = req.body.name;
   const email = req.body.email;
   const number = sanitiseNumber((req.body.number).toString());
-
+  let password = req.body.password
+  if (number.toString().length < 10) {
+    return res.status(400).send("Enter a Valid Phone Number")
+  }
+  if (password.length < 8) {
+    return res.status(400).send('Password should have a minimum length of 8 digits')
+  }
   try {
     let Team = await Teams.findOne({
       $or: [{ teamName: team }, { "leader.email": email }, { 'leader.number': number }, {
@@ -114,7 +124,7 @@ exports.create = async (req: req, res: Response) => {
 
     if (Team) return res.status(409).send("Team Name/Email Already Exists");
     const set = generateSet(await Teams.countDocuments());
-    const password = await bcrypt.hash(req.body.password, 10);
+    password = await bcrypt.hash(password, 10);
     Team = new Teams({
       teamName: team,
       set,
@@ -141,6 +151,10 @@ exports.join = async (req: req, res: Response) => {
   const name = req.body.name;
   const email = req.body.email;
   const number = sanitiseNumber((req.body.number).toString());
+  if (number.toString().length < 10) {
+    return res.status(400).send("Enter a Valid Phone Number")
+  }
+
   try {
     const existingTeam = await Teams.findOne({
       $or: [{ "leader.email": email }, { 'leader.number': number }, {
@@ -230,12 +244,16 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
       const set = team.set;
       req.ques = team.ques;
       req.hintFlag = team.hintFlag
+      req.img = { status: 'idk', src: null }
       const questions = await axios.get(`${quesURL}/${set}`);
       if (questions) {
 
         if (questions.data.questions[team.ques].ans === answer) {
           req.time = team.updatedAt;
           req.ans = true;
+          if (questions.data.specialQuestion === team.ques + 1) {
+            req.img = { status: 'now', src: questions.data.img }
+          }
           next()
         }
         else {
@@ -271,9 +289,10 @@ const calculateScore = (quesNumber: number, time: Date, hintFlag: { used: boolea
 }
 
 exports.changeScore = async (req: req, res: Response) => {
+  const specialQuestion = req.img
 
   const ans = req.ans;
-  if (!ans) return res.send('Incorrect')
+  if (!ans) return res.send({ message: 'Incorrect', special: specialQuestion })
 
   const id = req.team.team;
   const quesNumber = req.ques;
@@ -291,7 +310,7 @@ exports.changeScore = async (req: req, res: Response) => {
       }
     })
 
-    return res.send('Correct')
+    return res.send({ message: 'Correct', special: req.img })
   } catch (err) {
     console.log({ changeScore: err })
     return res.status(500).send(err)

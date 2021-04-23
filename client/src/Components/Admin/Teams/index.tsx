@@ -118,6 +118,7 @@ const Teams: React.FC = () => {
 const StyledTeams = styled.div`
   --primary: #f05945;
   --secondary: #5eaaa8;
+  --bg: #f7f3e9;
   width: 100%;
   height: 100%;
   background: #f7f3e9;
@@ -140,8 +141,16 @@ const StyledTeams = styled.div`
     width: 100%;
     border-radius: 5px;
     flex: 1;
-
     overflow: hidden auto;
+    ::-webkit-scrollbar {
+      background: var(--bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 5px;
+    }
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--bg);
   }
   ul {
     list-style-position: inside;

@@ -64,11 +64,15 @@ const Game: React.FC<{
         { ans: input },
         { headers: { authToken: token } }
       );
-      if (res.data === "Correct") {
+      if (res.data.message === "Correct") {
         await UpdateData().then(res => {
           if (res) setUser(res.data);
         });
-      } else setMessage(res.data);
+        if (res.data.special.status === "now") {
+          console.log("Img");
+        } else console.log("🤷🏻‍♂️");
+      } else setMessage(res.data.message);
+
       setTimeout(() => setMessage(""), 5000);
     } catch (err) {
       console.log(err);
@@ -180,11 +184,13 @@ const StyledGame = styled.section`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    ${Flex(1)}
     p {
       height: 2rem;
       font-size: 1.5rem;
       color: red;
       font-weight: 900;
+      width: 100%;
     }
     textarea {
       width: 100%;
