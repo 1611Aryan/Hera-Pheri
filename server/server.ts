@@ -52,6 +52,11 @@ if (process.env.NODE_ENV === "production") {
       path.join(__dirname, "..", "..", "client", "build", "static")
     )
   );
+  app.get('/loaderio-bb56aa455cac8977118162fdbfb5e54b/', (req: Request, res: Response) => {
+    res.sendFile("loaderio-bb56aa455cac8977118162fdbfb5e54b.txt", {
+      root: path.join(__dirname, "loadTest"),
+    });
+  })
   app.get("*", (req: Request, res: Response) => {
     res.sendFile("index.html", {
       root: path.join(__dirname, "..", "..", "client", "build"),
