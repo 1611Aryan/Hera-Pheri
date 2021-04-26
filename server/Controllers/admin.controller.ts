@@ -13,12 +13,21 @@ exports.get = async (req: Request, res: Response) => {
 };
 
 exports.create = async (req: Request, res: Response) => {
+
+  const code = req.body.code
+  const name = req.body.name
+
+  if (code !== process.env.ADMIN_TOKEN) return res.status(400).send('Invalid Code')
+
   try {
-    const admin = new Admins({
-      name: req.body.name,
+    const admin = await Admins.findOne({ name });
+    console.log(admin)
+    if (admin) return res.status(500).send('User Exists')
+    await new Admins({
+      name,
       password: await bcrypt.hash(req.body.password, 10),
-    });
-    await admin.save();
+    }).save()
+
     res.status(202).send("Created");
   } catch (err) {
     res.status(500).send(err);

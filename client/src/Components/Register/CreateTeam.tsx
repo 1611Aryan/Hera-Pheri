@@ -200,7 +200,42 @@ const StyledCreateTeam = styled.section`
       transition: all ease-out 0.1s;
       @media (hover: hover) {
         &:hover {
-          background: rgba(255, 255, 255);
+          animation: shake 0.5s ease infinite;
+        }
+        @keyframes shake {
+          0% {
+            transform: translate(1px, 1px) rotate(0deg);
+          }
+          10% {
+            transform: translate(-1px, -1.5px) rotate(-1deg);
+          }
+          20% {
+            transform: translate(-2px, 0px) rotate(2deg);
+          }
+          30% {
+            transform: translate(0px, 1px) rotate(0deg);
+          }
+          40% {
+            transform: translate(1px, -1px) rotate(1deg);
+          }
+          50% {
+            -webkit-transform: translate(-1px, 1px) rotate(-1deg);
+          }
+          60% {
+            transform: translate(-1px, 1px) rotate(0deg);
+          }
+          70% {
+            transform: translate(1px, 1px) rotate(-1deg);
+          }
+          80% {
+            transform: translate(-1px, -1px) rotate(3deg);
+          }
+          90% {
+            transform: translate(1px, 1px) rotate(0deg);
+          }
+          100% {
+            transform: translate(1px, -1px) rotate(-1deg);
+          }
         }
       }
     }

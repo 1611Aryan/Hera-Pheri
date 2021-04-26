@@ -112,6 +112,7 @@ exports.create = async (req: req, res: Response) => {
     return res.status(400).send('Password should have a minimum length of 8 digits')
   }
   try {
+    if (await Teams.countDocuments() >= process.env.No_of_Teams) { return res.status(406).send("Registrations have been closed") }
     let Team = await Teams.findOne({
       $or: [{ teamName: team }, { "leader.email": email }, { 'leader.number': number }, {
         members: {

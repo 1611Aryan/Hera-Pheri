@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import styled from "styled-components";
 import { Flex } from "../../../Style";
-import Loading from "./../../Loading";
+import Loading from "../../Loading/Loading";
 import { team } from "./../interface";
 
 const Modal: React.FC<{

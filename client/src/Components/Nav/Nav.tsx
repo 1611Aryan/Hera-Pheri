@@ -1,9 +1,9 @@
 import { Link, useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { useToken } from "../Context/tokenProvider";
-import { useUser } from "../Context/userProvider";
-import logoPng from "./../Media/Logo.png";
-import logowebp from "./../Media/Logo.webp";
+import { useToken } from "../../Context/tokenProvider";
+import { useUser } from "../../Context/userProvider";
+import logoPng from "./../../Media/Logo.png";
+import logowebp from "./../../Media/Logo.webp";
 
 const Nav: React.FC = () => {
   const history = useHistory();
@@ -117,6 +117,13 @@ const StyledHeader = styled.header`
       img {
         height: 100%;
         object-fit: cover;
+        @media (hover: hover) {
+          display: inline-block;
+          transition: all ease-out 0.1s;
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
       }
       h1 {
         font-size: clamp(1.45rem, 3vw, 1.95rem);
@@ -128,6 +135,7 @@ const StyledHeader = styled.header`
             &:hover {
               transform: scale(1.2);
               color: rgba(255, 255, 0, 0.7);
+              filter: brightness(200%) saturate(150%);
             }
           }
         }

@@ -8,6 +8,7 @@ import RuleBook from "./RuleBook";
 import axios from "axios";
 import { useToken } from "../../Context/tokenProvider";
 import { useLoader } from "../../Context/loaderProvider";
+import Button from "../Button";
 
 const Game: React.FC<{
   UpdateData: () => Promise<
@@ -33,6 +34,10 @@ const Game: React.FC<{
   const [rulebook, setRulebook] = useState(false);
   const [input, setInput] = useState<string | null>(null);
   const [message, setMessage] = useState<string>(" ");
+  const [specialQuestion, setSpecialQuestion] = useState({
+    status: false,
+    src: "",
+  });
 
   //Handlers
   const questionNumber = () => {
@@ -69,7 +74,8 @@ const Game: React.FC<{
           if (res) setUser(res.data);
         });
         if (res.data.special.status === "now") {
-          console.log("Img");
+          setSpecialQuestion({ status: true, src: res.data.special.src });
+          console.log(res.data.special);
         } else console.log("🤷🏻‍♂️");
       } else setMessage(res.data.message);
 
@@ -94,9 +100,19 @@ const Game: React.FC<{
         <FontAwesomeIcon icon={faTrophy} />
       </h1>
       <div className="score">
-        <div>
-          Score: {user?.score}
-          <FontAwesomeIcon icon={faInfoCircle} onClick={RulebookHandler} />
+        <div className="scoreInfo">
+          <svg
+            className="border"
+            height="60"
+            width="320"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect className="shape" height="60" width="320" />
+          </svg>
+          <div className="text">
+            Score: {user?.score}
+            <FontAwesomeIcon icon={faInfoCircle} onClick={RulebookHandler} />
+          </div>
         </div>
         <div>
           Hints Available:{" "}
@@ -110,6 +126,11 @@ const Game: React.FC<{
         </div>
         <p> Currently on Question Number: {questionNumber() + 1}</p>
       </div>
+      {specialQuestion.status && (
+        <div className="special">
+          <img src={specialQuestion.src} alt="" />
+        </div>
+      )}
       <form className="answer" onSubmit={SubmitAnswer}>
         <p>{message}</p>
         <textarea
@@ -119,7 +140,9 @@ const Game: React.FC<{
           value={input || ""}
           required
         ></textarea>
-        <button>Submit Answer</button>
+        <Button>
+          <span>Submit</span>
+        </Button>
       </form>
       {rulebook && <RuleBook setRulebook={setRulebook} />}
     </StyledGame>
@@ -133,6 +156,7 @@ const StyledGame = styled.section`
   flex-direction: column;
   justify-content: space-around;
   padding: 1rem;
+  position: relative;
   h1 {
     padding: 0;
     width: 100%;
@@ -147,16 +171,54 @@ const StyledGame = styled.section`
     }
   }
   .score {
-    font-size: clamp(1rem, 3vw, 1.5rem);
     ${Flex(0, "space-between")}
-    svg {
-      margin-left: 0.5rem;
-      cursor: pointer;
-      &:hover {
-        color: #5c5c5c;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    .shape {
+      display: none;
+    }
+
+    .text {
+      line-height: clamp(1.2rem, 3vw, 1.7rem);
+
+      z-index: 4;
+      svg {
+        margin-left: 0.5rem;
+        cursor: pointer;
+        &:hover {
+          color: #5c5c5c;
+        }
+      }
+    }
+    @media (min-width: 950px) {
+      .scoreInfo {
+        position: relative;
+        width: 320px;
+        .text {
+          position: absolute;
+          top: 50%;
+          left: 5%;
+          transform: translate(0%, -50%);
+        }
+        .shape {
+          display: block;
+          stroke-dasharray: 155 535;
+          stroke-dashoffset: -530;
+          stroke-width: 8px;
+          fill: transparent;
+          stroke: #ffffff;
+          border-bottom: 5px solid black;
+          transition: stroke-width 1s, stroke-dashoffset 1s, stroke-dasharray 1s;
+          z-index: 2;
+        }
+        &:hover .shape {
+          //stroke-width: 2px;
+          stroke-dashoffset: 0;
+          stroke-dasharray: 760;
+        }
       }
     }
   }
+
   .progress {
     .progressBar {
       width: 50%;
@@ -174,6 +236,26 @@ const StyledGame = styled.section`
     }
     p {
       padding: 1.5rem 0 0 0;
+    }
+  }
+
+  //Anim incididunt amet elit incididunt nulla irure ipsum non consectetur cillum sint cupidatat.
+
+  .special {
+    z-index: -1;
+    position: absolute;
+    top: 30%;
+    right: 5%;
+    width: 30%;
+    height: 30%;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    @media (max-width: 450px) {
+      width: 40%;
+      height: 20%;
     }
   }
 
@@ -212,18 +294,19 @@ const StyledGame = styled.section`
     }
     button {
       margin-top: 2rem;
-      background: rgba(255, 255, 255, 0.8);
+      background: #fff;
       border-radius: 10px;
-      font-size: 1rem;
-      padding: 0.6rem;
+      font-size: 1.25rem;
+      padding: 0.8rem 1.5rem;
       align-self: center;
-      border: 0;
-      border-bottom: 2px solid teal;
-      transition: background ease-out 0.3s;
-      &:focus,
+      span {
+        z-index: 2;
+        color: #efefef;
+      }
       &:hover {
-        outline: 0;
-        background: rgba(255, 255, 189, 0.8);
+        span {
+          color: black;
+        }
       }
     }
   }

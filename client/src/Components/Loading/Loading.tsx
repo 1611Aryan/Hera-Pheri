@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useLoader } from "../Context/loaderProvider";
-import { Flex } from "../Style";
+import { useLoader } from "../../Context/loaderProvider";
+import { Flex } from "../../Style";
 
 const Loading = () => {
   const { loader } = useLoader();

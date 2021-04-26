@@ -4,12 +4,12 @@ import Dashboard from "./Components/Dashboard";
 import Error from "./Components/Error";
 import Login from "./Components/Login";
 import Admin from "./Components/Admin";
-import Nav from "./Components/Nav";
+import Nav from "./Components/Nav/Nav";
 import Register from "./Components/Register";
 import Footer from "./Components/Footer";
-import Loader from "./Components/StartLoader";
+import Loader from "./Components/Loading/StartLoader";
 import { useEffect, useState } from "react";
-import Loading from "./Components/Loading";
+import Loading from "./Components/Loading/Loading";
 
 const App = () => {
   //State

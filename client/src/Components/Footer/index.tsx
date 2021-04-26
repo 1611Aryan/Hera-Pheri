@@ -28,7 +28,8 @@ const Footer: React.FC = () => {
   };
 
   return location.pathname === "/admin" ||
-    location.pathname === "/admin/dashboard" ? null : (
+    location.pathname === "/admin/dashboard" ||
+    location.pathname === "/admin/register" ? null : (
     <StyledFooter>
       <div className={`footer ${urlMatcher()}`}>
         <img
@@ -151,8 +152,10 @@ const StyledFooter = styled.footer`
         padding: 1rem 2rem 1rem 0;
         color: teal;
         transition: all ease 0.3s;
-        &:hover {
-          transform: scale(1.5);
+        @media (hover: hover) {
+          &:hover {
+            transform: scale(1.5);
+          }
         }
       }
       li + li {
@@ -202,6 +205,8 @@ const StyledFooter = styled.footer`
       }
     }
     .socials {
+      position: relative;
+      z-index: 555;
       li {
         color: #2d2d2d;
       }
@@ -221,6 +226,9 @@ const StyledFooter = styled.footer`
     .socials {
       li {
         color: #2d2d2d;
+        @media (max-width: 450px) {
+          color: #dadada;
+        }
       }
     }
   }
