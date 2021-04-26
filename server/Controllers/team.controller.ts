@@ -280,11 +280,13 @@ const calculateScore = (quesNumber: number, time: Date, hintFlag: { used: boolea
     const prev = time;
     const now = new Date();
     const diff = Math.abs(Math.floor((now.valueOf() - prev.valueOf()) / (1000 * 60)))
-    if (quesNumber === 0 || diff <= 2) return 1000;
-    else if (diff <= 4) return 900
-    else if (diff <= 6) return 800
-    else if (diff <= 8) return 700
-    else if (diff >= 10) return 500
+    if (quesNumber === 0) return 1000
+    else if (diff <= 2) return (1000 - diff * 100 / 4);
+    else if (diff <= 4) return (1000 - diff * 100 / 4)
+    else if (diff <= 6) return (1000 - diff * 200 / 6)
+    else if (diff <= 8) return (1000 - diff * 300 / 8)
+    else if (diff < 10) return (1000 - diff * 500 / 10)
+    else if (diff >= 10) return (500)
   }
 
 }
@@ -307,7 +309,7 @@ exports.changeScore = async (req: req, res: Response) => {
         score
       },
       $push: {
-        logs: `Question Number ${quesNumber + 1} answered correctly on ${time()}`
+        logs: `Question Number ${quesNumber + 1} answered correctly on ${time()} and earned ${score} points`
       }
     })
 

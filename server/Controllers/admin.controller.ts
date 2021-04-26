@@ -21,7 +21,7 @@ exports.create = async (req: Request, res: Response) => {
 
   try {
     const admin = await Admins.findOne({ name });
-    console.log(admin)
+
     if (admin) return res.status(500).send('User Exists')
     await new Admins({
       name,
