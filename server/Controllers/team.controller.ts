@@ -279,7 +279,7 @@ const calculateScore = (quesNumber: number, time: Date, hintFlag: { used: boolea
   else {
     const prev = time;
     const now = new Date();
-    const diff = Math.abs(Math.floor((now.valueOf() - prev.valueOf()) / (1000 * 60)))
+    const diff = ((now.valueOf() - prev.valueOf()) / (1000 * 60))
     if (quesNumber === 0) return 1000
     else if (diff <= 2) return (1000 - diff * 100 / 4);
     else if (diff <= 4) return (1000 - diff * 100 / 4)
