@@ -52,10 +52,10 @@ if (process.env.NODE_ENV === "production") {
       path.join(__dirname, "..", "..", "client", "build", "static")
     )
   );
-  //Loader.io config
-  // app.get('/loaderio-bb56aa455cac8977118162fdbfb5e54b', (req: Request, res: Response) => {
-  //   res.send('loaderio-bb56aa455cac8977118162fdbfb5e54b')
-  // })
+
+  app.get('/loaderio-bb56aa455cac8977118162fdbfb5e54b', (req: Request, res: Response) => {
+    res.send('loaderio-bb56aa455cac8977118162fdbfb5e54b')
+  })
   app.get("*", (req: Request, res: Response) => {
     res.sendFile("index.html", {
       root: path.join(__dirname, "..", "..", "client", "build"),
