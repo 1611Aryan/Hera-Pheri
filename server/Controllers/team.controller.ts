@@ -280,12 +280,13 @@ const calculateScore = (quesNumber: number, time: Date, hintFlag: { used: boolea
     const prev = time;
     const now = new Date();
     const diff = parseFloat(((now.valueOf() - prev.valueOf()) / (1000 * 60)).toFixed(2))
+    console.log(diff)
     if (quesNumber === 0) return 1000
-    else if (diff <= 2) return (1000 - diff * 100 / 4);
-    else if (diff <= 4) return (1000 - diff * 100 / 4)
-    else if (diff <= 6) return (1000 - diff * 200 / 6)
-    else if (diff <= 8) return (1000 - diff * 300 / 8)
-    else if (diff < 10) return (1000 - diff * 500 / 10)
+    else if (diff <= 2) return Math.round(1000 - diff * 100 / 4);
+    else if (diff <= 4) return Math.round(1000 - diff * 100 / 4)
+    else if (diff <= 6) return Math.round(1000 - diff * 200 / 6)
+    else if (diff <= 8) return Math.round(1000 - diff * 300 / 8)
+    else if (diff < 10) return Math.round(1000 - diff * 500 / 10)
     else if (diff >= 10) return (500)
   }
 
