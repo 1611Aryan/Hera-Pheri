@@ -63,4 +63,4 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(PORT, () => console.log(`Server running on Port ${PORT}.\nCurrently in ${process.env.NODE_ENV}.\nRegsitration Allowed: ${process.env.REGISTRATION_ALLOW}.\nGame Active: ${process.env.ACTIVE}`));
+app.listen(PORT, () => console.log(`Server running on Port ${PORT}.\nCurrently in ${process.env.NODE_ENV}.\nRegsitration Allowed: ${process.env.REGISTRATION_ALLOW}.\nJoining Allowed: ${process.env.JOIN_ALLOW}.\nGame Active: ${process.env.ACTIVE}`));

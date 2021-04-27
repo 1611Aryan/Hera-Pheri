@@ -155,6 +155,9 @@ exports.create = async (req: req, res: Response) => {
 };
 
 exports.join = async (req: req, res: Response) => {
+
+  if (!toBool(process.env.JOIN_ALLOW)) return res.sendStatus(403)
+
   const code = req.body.code;
   const name = req.body.name;
   const email = req.body.email;
