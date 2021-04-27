@@ -58,6 +58,10 @@ const sanitiseNumber = (num: string) => {
   return parseInt(mobile);
 };
 
+const toBool = (s: string) => {
+  return s === "true" ? true : false;
+};
+
 const quesURL =
   process.env.NODE_ENV === "production"
     ? "https://chem-i-leon.herokuapp.com/questions"
@@ -100,6 +104,9 @@ exports.teamByName = async (req: req, res: Response) => {
 }
 
 exports.create = async (req: req, res: Response) => {
+
+  if (!toBool(process.env.REGISTRATION_ALLOW)) return res.sendStatus(403)
+
   const team = req.body.team;
   const name = req.body.name;
   const email = req.body.email;
@@ -233,6 +240,7 @@ exports.view = async (req: req, res: Response) => {
 exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
   const answer = req.body.ans;
   const id = req.team.team;
+  if (!toBool(process.env.ACTIVE)) return res.sendStatus(403)
   try {
 
     const team = await Teams.findOne(
@@ -293,8 +301,9 @@ const calculateScore = (quesNumber: number, time: Date, hintFlag: { used: boolea
 }
 
 exports.changeScore = async (req: req, res: Response) => {
-  const specialQuestion = req.img
+  if (!toBool(process.env.ACTIVE)) return res.sendStatus(403)
 
+  const specialQuestion = req.img
   const ans = req.ans;
   if (!ans) return res.send({ message: 'Incorrect', special: specialQuestion })
 
@@ -323,6 +332,8 @@ exports.changeScore = async (req: req, res: Response) => {
 };
 
 exports.useHint = async (req: req, res: Response) => {
+  if (!toBool(process.env.ACTIVE)) return res.sendStatus(403)
+
   const id = req.body.id;
   const hintType = req.body.hintType
 

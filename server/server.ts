@@ -52,9 +52,10 @@ if (process.env.NODE_ENV === "production") {
       path.join(__dirname, "..", "..", "client", "build", "static")
     )
   );
-  app.get('/loaderio-bb56aa455cac8977118162fdbfb5e54b', (req: Request, res: Response) => {
-    res.send('loaderio-bb56aa455cac8977118162fdbfb5e54b')
-  })
+  //Loader.io config
+  // app.get('/loaderio-bb56aa455cac8977118162fdbfb5e54b', (req: Request, res: Response) => {
+  //   res.send('loaderio-bb56aa455cac8977118162fdbfb5e54b')
+  // })
   app.get("*", (req: Request, res: Response) => {
     res.sendFile("index.html", {
       root: path.join(__dirname, "..", "..", "client", "build"),
@@ -62,4 +63,4 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(PORT, () => console.log(`Server running on Port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on Port ${PORT}.\nCurrently in ${process.env.NODE_ENV}.\nRegsitration Allowed: ${process.env.REGISTRATION_ALLOW}.\nGame Active: ${process.env.ACTIVE}`));

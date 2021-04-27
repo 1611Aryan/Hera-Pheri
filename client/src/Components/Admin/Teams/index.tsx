@@ -4,6 +4,10 @@ import { Flex } from "../../../Style";
 import { team } from "./../interface";
 import SearchBar from "./SearchBar";
 
+import Logs from "./Logs";
+import Members from "./Members";
+import Leader from "./Leader";
+
 const Teams: React.FC = () => {
   const [result, setResult] = useState<team[] | null>(null);
 
@@ -47,63 +51,9 @@ const Teams: React.FC = () => {
                       {team.hints.type1 + team.hints.type2 + team.hints.type3}
                     </div>
                   </div>
-                  {
-                    //?Leader
-                  }
-                  <div>
-                    <ul className="leader">
-                      <h3>
-                        <span>Leader</span>
-                        <div className="line"></div>
-                      </h3>
-                      <li>Name: {team.leader.name}</li>
-                      <li>Email: {team.leader.email}</li>
-                      <li>Number: {team.leader.number}</li>
-                    </ul>
-                  </div>
-                  {
-                    //?Logs
-                  }
-                  <div>
-                    <ul className="logs">
-                      <h3>
-                        <span>Logs: </span>
-                        <div className="line"></div>
-                      </h3>
-                      {team.logs.map((data, ind) => (
-                        <li key={ind}>{data}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  {
-                    //?Members
-                  }
-                  <div>
-                    <h3>
-                      <span> Members:</span>
-                      <div className="line"></div>
-                    </h3>
-                    <ul className="members">
-                      {team.members.map((data, ind) => (
-                        <li key={ind}>
-                          Member {ind + 1}:
-                          <ul className="membersData">
-                            <li>
-                              <h5>Name: </h5>
-                              {data.name}
-                            </li>
-                            <li>
-                              <h5>Number: </h5>
-                              {data.number}
-                            </li>
-                            <li>
-                              <h5>Email: </h5> {data.email}
-                            </li>
-                          </ul>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <Leader team={team} />
+                  <Logs team={team} />
+                  <Members team={team} />
                 </li>
               ))}
           </ul>
@@ -182,7 +132,13 @@ const StyledTeams = styled.div`
     font-size: clamp(0.9rem, 2vw, 1.25rem);
     font-weight: 500;
     ${Flex(0, "space-between", "center")}
-
+    span {
+      ${Flex()}
+      svg {
+        margin-left: 0.5rem;
+        cursor: pointer;
+      }
+    }
     .line {
       margin-left: 0.5rem;
       width: 100%;
