@@ -16,12 +16,12 @@ const Teams: React.FC = () => {
       <h1>Teams</h1>
       <SearchBar setResult={setResult} />
       <div className="divider"></div>
-      <div className="result">
+      <StyledResult>
         {result ? (
           <ul className="details">
             {result &&
               result.map((team, index) => (
-                <li key={index} className="team">
+                <StyledTeam key={index}>
                   <div className="infoContainer">
                     <div>
                       <h4>Team Name: </h4>
@@ -54,13 +54,13 @@ const Teams: React.FC = () => {
                   <Leader team={team} />
                   <Logs team={team} />
                   <Members team={team} />
-                </li>
+                </StyledTeam>
               ))}
           </ul>
         ) : (
           "No Team Found"
         )}
-      </div>
+      </StyledResult>
     </StyledTeams>
   );
 };
@@ -81,49 +81,24 @@ const StyledTeams = styled.div`
     font-size: clamp(1rem, 3vw, 2rem);
     margin-bottom: clamp(0.5rem, 2vw, 1rem);
   }
+
   .divider {
     width: 100%;
     height: 2px;
     background: var(--secondary);
     margin: clamp(0.5rem, 2vw, 1rem) 0;
   }
-  .result {
-    width: 100%;
-    border-radius: 5px;
-    flex: 1;
-    overflow: hidden auto;
-    ::-webkit-scrollbar {
-      background: var(--bg);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--primary);
-      border-radius: 5px;
-    }
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary) var(--bg);
-  }
+
   ul {
     list-style-position: inside;
   }
+
   .details {
     width: 100%;
     list-style-type: none;
   }
 
   .team {
-    padding: clamp(0.5rem, 2vw, 1rem);
-    background: #fff;
-    border-radius: 15px;
-    border-top: 2px solid var(--secondary);
-    border-bottom: 2px solid var(--secondary);
-    margin-bottom: 2rem;
-    font-size: clamp(0.75rem, 2vw, 1rem);
-    div + div {
-      margin: 1rem 0;
-    }
-    li {
-      margin-top: 0.5rem;
-    }
   }
 
   h3 {
@@ -152,7 +127,38 @@ const StyledTeams = styled.div`
     font-weight: 500;
     display: inline;
   }
+`;
 
+const StyledResult = styled.div`
+  width: 100%;
+  border-radius: 5px;
+  flex: 1;
+  overflow: hidden auto;
+  ::-webkit-scrollbar {
+    background: var(--bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 5px;
+  }
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--bg);
+`;
+
+const StyledTeam = styled.li`
+  padding: clamp(0.5rem, 2vw, 1rem);
+  background: #fff;
+  border-radius: 15px;
+  border-top: 2px solid var(--secondary);
+  border-bottom: 2px solid var(--secondary);
+  margin-bottom: 2rem;
+  font-size: clamp(0.75rem, 2vw, 1rem);
+  div + div {
+    margin: 1rem 0;
+  }
+  li {
+    margin-top: 0.5rem;
+  }
   .infoContainer {
     width: 100%;
     ${Flex(0, "space-between", "center")}
@@ -160,25 +166,6 @@ const StyledTeams = styled.div`
     div {
       flex: 1;
       margin: 0.5rem 0 !important;
-    }
-  }
-
-  .members {
-    list-style-type: none;
-    padding: 0 1rem;
-  }
-
-  .membersData {
-    list-style-type: circle;
-    li {
-      margin-top: 0.25rem;
-      font-size: clamp(0.7rem, 1vw, 0.9rem);
-      font-weight: 300;
-      h5 {
-        font-size: clamp(0.8rem, 1vw, 1rem);
-        font-weight: 400;
-        display: inline;
-      }
     }
   }
 `;

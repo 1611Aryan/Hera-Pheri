@@ -3,6 +3,8 @@ import { team } from "./../interface";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import Member from "./Member";
+import styled from "styled-components";
 
 const Members: React.FC<{ team: team }> = ({ team }) => {
   const [members, setMembers] = useState(false);
@@ -12,7 +14,7 @@ const Members: React.FC<{ team: team }> = ({ team }) => {
   };
 
   return (
-    <div>
+    <StyledMembers>
       <h3>
         <span>
           Members:
@@ -26,25 +28,17 @@ const Members: React.FC<{ team: team }> = ({ team }) => {
       <ul className="members">
         {members &&
           team.members.map((data, ind) => (
-            <li key={ind}>
-              Member {ind + 1}:
-              <ul className="membersData">
-                <li>
-                  <h5>Name: </h5>
-                  {data.name}
-                </li>
-                <li>
-                  <h5>Number: </h5>
-                  {data.number}
-                </li>
-                <li>
-                  <h5>Email: </h5> {data.email}
-                </li>
-              </ul>
-            </li>
+            <Member key={ind} data={data} ind={ind} />
           ))}
       </ul>
-    </div>
+    </StyledMembers>
   );
 };
+
+const StyledMembers = styled.div`
+  .members {
+    list-style-type: none;
+    padding: 0 1rem;
+  }
+`;
 export default Members;
