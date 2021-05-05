@@ -1,15 +1,34 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Flex, Section } from "../../../Style";
 import Leaderboard from "../LeaderBoard/LeaderBoard";
 import Hint from "../Hints/Hint";
 import Teams from "../Teams";
+import io from "socket.io-client";
+
+let socket: SocketIOClient.Socket;
+const ENDPOINT =
+  process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000";
 
 const Dashboard = () => {
   const [selected, setSelected] = useState(0);
 
   const changeItem = (i: number) => {
     setSelected(i);
+  };
+
+  useEffect(() => {
+    socket = io(ENDPOINT, {
+      transports: ["websocket"],
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  });
+
+  const activateHint = (team: { code: string; hintUsed: string }) => {
+    socket.emit("hint", team);
   };
 
   return (
@@ -42,7 +61,7 @@ const Dashboard = () => {
         ) : selected === 1 ? (
           <Teams />
         ) : (
-          <Hint />
+          <Hint activateHint={activateHint} />
         )}
       </div>
     </StyledDashboard>

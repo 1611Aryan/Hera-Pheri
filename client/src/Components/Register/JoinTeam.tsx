@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Flex, Section } from "../../Style";
 import { useLoader } from "../../Context/loaderProvider";
+import io from "socket.io-client";
+
+let socket: SocketIOClient.Socket;
+const ENDPOINT =
+  process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000";
 
 const JoinTeam: React.FC = () => {
   //URL
@@ -28,11 +33,21 @@ const JoinTeam: React.FC = () => {
 
   //
   useEffect(() => {
-    if (code) {
-      setInput({ ...input, code });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    socket = io(ENDPOINT, {
+      transports: ["websocket"],
+    });
+    return () => {
+      socket.disconnect();
+    };
   }, []);
+
+  useEffect(() => {
+    if (code) {
+      setInput(input => {
+        return { ...input, code };
+      });
+    }
+  }, [code, setInput]);
 
   //Handlers
 
@@ -54,6 +69,7 @@ const JoinTeam: React.FC = () => {
       console.log(res.data);
       setResult(true);
       setMessage("Team Joined. Login to access the Dashboard");
+      socket.emit("join", input);
     } catch (err) {
       setResult(false);
       setMessage(err.response.data);

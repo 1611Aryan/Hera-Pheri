@@ -1,4 +1,5 @@
 import { Route, Switch } from "react-router";
+
 import { AdminRoute } from "../../PrivateRoutes";
 import Dashboard from "./Dashboard";
 import Login from "./Login";

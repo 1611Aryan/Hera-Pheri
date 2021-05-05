@@ -224,7 +224,7 @@ exports.view = async (req: req, res: Response) => {
   try {
     const teams = await Teams.find(
       {},
-      { joinCode: 0, members: 0, answers: 0, password: 0, set: 0 }
+      { members: 0, answers: 0, password: 0, set: 0 }
     ).sort({ score: -1 }).limit(10);
     res.status(200).send(teams);
   } catch (err) {
@@ -291,7 +291,7 @@ const calculateScore = (quesNumber: number, time: Date, hintFlag: { used: boolea
     const prev = time;
     const now = new Date();
     const diff = parseFloat(((now.valueOf() - prev.valueOf()) / (1000 * 60)).toFixed(2))
-    console.log(diff)
+
     if (quesNumber === 0) return 1000
     else if (diff <= 2) return Math.round(1000 - diff * 100 / 4);
     else if (diff <= 4) return Math.round(1000 - diff * 100 / 4)
@@ -358,7 +358,7 @@ exports.useHint = async (req: req, res: Response) => {
         })
         return res.status(200).send('Hint Used Successfully')
       }
-      else return res.send(`No hint of type ${hintType} is left`)
+      else return res.status(403).send(`No hint of type ${hintType} is left`)
     } return res.sendStatus(404)
   } catch (err) {
     console.log({ useHint: err })

@@ -1,18 +1,34 @@
-const express = require("express");
-const path = require("path");
-const mongoose = require("mongoose");
-const cors = require("cors");
+import express = require("express");
+import path = require("path");
+import mongoose = require("mongoose");
+import cors = require("cors");
 import { Request, Response, NextFunction } from "express-serve-static-core";
+import { Server } from 'socket.io'
+import http = require('http')
+
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
 const PORT = process.env.PORT || 5000;
 const URI = process.env.MONGO_URI;
 
-const app = express();
+
 
 const corsOptions = {
   exposedHeaders: "authToken",
 };
+const app = express();
+
+const server = http.createServer(app)
+
+const io = new Server(server, {
+  cors: {
+    origin: process.env.NODE_ENV === 'production' ? 'https://chem-i-leon.herokuapp.com/' : 'http://localhost:3000',
+    methods: ['Get', 'POST']
+  }
+})
+
+
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -25,9 +41,44 @@ mongoose.connect(URI, {
   useCreateIndex: true,
   autoIndex: true,
 });
+
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once("open", () => console.log("Database is Connected"));
+
+//Web Sockets
+io.on('connection', (socket) => {
+
+
+  socket.on('login', room => socket.join(room))
+
+  socket.on('join', (user) => {
+    const payload = {
+      name: user.name,
+      email: user.email,
+      number: user.number
+    }
+
+    socket.broadcast.to(user.code).emit('join', payload)
+  })
+
+  socket.on('answer', (data: {
+    room: string;
+    status: boolean;
+    src: string
+  }) => {
+
+    socket.broadcast.to(data.room).emit('answer', { status: data.status, src: data.src })
+  })
+
+  socket.on('hint', res => {
+
+    socket.to(res.code).emit('hint', res.hintUsed);
+  })
+
+  // socket.on('disconnect', () => console.log('Disconnected'))
+
+})
 
 
 //Routers
@@ -52,7 +103,7 @@ if (process.env.NODE_ENV === "production") {
       path.join(__dirname, "..", "..", "client", "build", "static")
     )
   );
-
+  //Loader.io
   app.get('/loaderio-bb56aa455cac8977118162fdbfb5e54b', (req: Request, res: Response) => {
     res.send('loaderio-bb56aa455cac8977118162fdbfb5e54b')
   })
@@ -63,4 +114,4 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(PORT, () => console.log(`Server running on Port ${PORT}.\nCurrently in ${process.env.NODE_ENV}.\nRegsitration Allowed: ${process.env.REGISTRATION_ALLOW}.\nJoining Allowed: ${process.env.JOIN_ALLOW}.\nGame Active: ${process.env.ACTIVE}`));
+server.listen(PORT, () => console.log(`Server running on Port ${PORT}.\nCurrently in ${process.env.NODE_ENV}.\nRegsitration Allowed: ${process.env.REGISTRATION_ALLOW}.\nJoining Allowed: ${process.env.JOIN_ALLOW}.\nGame Active: ${process.env.ACTIVE}`));

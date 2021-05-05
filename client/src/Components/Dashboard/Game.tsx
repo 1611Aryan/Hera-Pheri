@@ -18,7 +18,18 @@ const Game: React.FC<{
       }
     | undefined
   >;
-}> = ({ UpdateData }) => {
+  correctAnswer: (status: boolean, src: string | null) => void;
+  setSpecialQuestion: (
+    value: React.SetStateAction<{
+      status: boolean;
+      src: string | null;
+    }>
+  ) => void;
+  specialQuestion: {
+    status: boolean;
+    src: string | null;
+  };
+}> = ({ UpdateData, correctAnswer, setSpecialQuestion, specialQuestion }) => {
   //URL
   const URL =
     process.env.NODE_ENV === "production"
@@ -34,10 +45,8 @@ const Game: React.FC<{
   const [rulebook, setRulebook] = useState(false);
   const [input, setInput] = useState<string | null>(null);
   const [message, setMessage] = useState<string>(" ");
-  const [specialQuestion, setSpecialQuestion] = useState({
-    status: false,
-    src: "",
-  });
+
+  const [hover, setHover] = useState(false);
 
   //Handlers
   const questionNumber = () => {
@@ -75,8 +84,12 @@ const Game: React.FC<{
         });
         if (res.data.special.status === "now") {
           setSpecialQuestion({ status: true, src: res.data.special.src });
-          console.log(res.data.special);
-        } else console.log("🤷🏻‍♂️");
+          correctAnswer(true, res.data.special.src);
+        } else {
+          setSpecialQuestion({ status: false, src: null });
+          correctAnswer(false, null);
+          console.log("🤷🏻‍♂️");
+        }
       } else setMessage(res.data.message);
 
       setTimeout(() => setMessage(""), 5000);
@@ -114,10 +127,25 @@ const Game: React.FC<{
             <FontAwesomeIcon icon={faInfoCircle} onClick={RulebookHandler} />
           </div>
         </div>
-        <div>
-          Hints Available:{" "}
-          {user?.hints &&
-            user?.hints.type1 + user?.hints.type2 + user?.hints.type3}
+
+        <div className="hints">
+          <p
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            onTouchStart={() => setHover(true)}
+            onTouchEnd={() => setHover(true)}
+          >
+            Hints Available:{" "}
+            {user?.hints &&
+              user?.hints.type1 + user?.hints.type2 + user?.hints.type3}
+          </p>
+          {hover && (
+            <ul className="hintInfo">
+              <li>Type1: {user?.hints.type1}</li>
+              <li>Type2: {user?.hints.type2}</li>
+              <li>Type3: {user?.hints.type3}</li>
+            </ul>
+          )}
         </div>
       </div>
       <div className="progress">
@@ -126,7 +154,7 @@ const Game: React.FC<{
         </div>
         <p> Currently on Question Number: {questionNumber() + 1}</p>
       </div>
-      {specialQuestion.status && (
+      {specialQuestion.status && specialQuestion.src && (
         <div className="special">
           <img src={specialQuestion.src} alt="" />
         </div>
@@ -173,7 +201,7 @@ const StyledGame = styled.section`
   .score {
     ${Flex(0, "space-between")}
     font-size: clamp(1rem, 3vw, 1.5rem);
-    .shape {
+    .border {
       display: none;
     }
 
@@ -199,8 +227,10 @@ const StyledGame = styled.section`
           left: 5%;
           transform: translate(0%, -50%);
         }
-        .shape {
+        .border {
           display: block;
+        }
+        .shape {
           stroke-dasharray: 155 535;
           stroke-dashoffset: -530;
           stroke-width: 8px;
@@ -216,6 +246,34 @@ const StyledGame = styled.section`
           stroke-dasharray: 760;
         }
       }
+    }
+  }
+  .hints {
+    position: relative;
+  }
+  .hintInfo {
+    position: absolute;
+    top: 100%;
+    right: 0%;
+    margin-top: clamp(0.5rem, 1vw, 1rem);
+    width: 80%;
+    background: rgba(63, 63, 63, 0.4);
+    list-style-type: none;
+    border-radius: 10px;
+    font-size: 0.7em;
+    padding: 0.5rem clamp(0.5rem, 3vw, 1rem);
+    backdrop-filter: blur(2px);
+    &::before {
+      content: "";
+      position: absolute;
+      top: -0.5rem;
+      right: 1.5rem;
+      width: 0;
+      height: 0;
+      border-left: 0.5rem solid transparent;
+      border-right: 0.5rem solid transparent;
+      border-bottom: 0.5rem solid rgba(63, 63, 63, 0.4);
+      backdrop-filter: blur(2px);
     }
   }
 
@@ -238,8 +296,6 @@ const StyledGame = styled.section`
       padding: 1.5rem 0 0 0;
     }
   }
-
-  //Anim incididunt amet elit incididunt nulla irure ipsum non consectetur cillum sint cupidatat.
 
   .special {
     z-index: -1;

@@ -9,7 +9,8 @@ const Modal: React.FC<{
   hints: string | null;
   selected: team | null;
   setModalStatus: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ hints, selected, setModalStatus }) => {
+  activateHint: (team: { code: string; hintUsed: string }) => void;
+}> = ({ hints, selected, setModalStatus, activateHint }) => {
   //URL
   const HintURL =
     process.env.NODE_ENV === "production"
@@ -22,20 +23,22 @@ const Modal: React.FC<{
   //Handlers
   const submit = async () => {
     setLoading(true);
-    try {
-      const res = await axios.post(HintURL, {
-        id: selected?._id,
-        hintType: hints,
-      });
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setTimeout(() => {
-        setLoading(false);
-        setModalStatus(false);
-      }, 500);
-    }
+    if (selected && hints)
+      try {
+        const res = await axios.post(HintURL, {
+          id: selected._id,
+          hintType: hints,
+        });
+        activateHint({ code: selected.joinCode, hintUsed: hints });
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setTimeout(() => {
+          setLoading(false);
+          setModalStatus(false);
+        }, 500);
+      }
   };
 
   const cancel = () => {

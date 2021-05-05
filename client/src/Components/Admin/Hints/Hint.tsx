@@ -5,7 +5,9 @@ import axios from "axios";
 import { team } from "./../interface";
 import Modal from "./Modal";
 
-const Hint: React.FC = () => {
+const Hint: React.FC<{
+  activateHint: (team: { code: string; hintUsed: string }) => void;
+}> = ({ activateHint }) => {
   //URL
   const TeamURL =
     process.env.NODE_ENV === "production"
@@ -97,6 +99,7 @@ const Hint: React.FC = () => {
           hints={hints}
           selected={selected}
           setModalStatus={setModalStatus}
+          activateHint={activateHint}
         />
       )}
     </StyledHint>

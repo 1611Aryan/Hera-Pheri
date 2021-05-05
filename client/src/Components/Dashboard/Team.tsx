@@ -87,12 +87,14 @@ const Team: React.FC<{
           </p>
         )}
         <div className="members">
-          <ol>
-            <li>{user?.leader.name}</li>
-            <li>{user?.members[0] ? user?.members[0].name : "Empty"}</li>
-            <li>{user?.members[1] ? user?.members[1].name : "Empty"}</li>
-            <li>{user?.members[2] ? user?.members[2].name : "Empty"}</li>
-          </ol>
+          {user && (
+            <ol>
+              <li>{user.leader.name}</li>
+              <li>{user.members[0] ? user.members[0].name : "Empty"}</li>
+              <li>{user.members[1] ? user.members[1].name : "Empty"}</li>
+              <li>{user.members[2] ? user.members[2].name : "Empty"}</li>
+            </ol>
+          )}
         </div>
       </div>
       <div className="share">
