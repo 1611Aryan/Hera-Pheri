@@ -241,7 +241,7 @@ exports.view = async (req: req, res: Response) => {
  */
 
 exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
-  const answer = req.body.ans;
+  const answer = req.body.ans.trim();
   const id = req.team.team;
   if (!toBool(process.env.ACTIVE)) return res.sendStatus(403)
   try {
@@ -260,7 +260,7 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
       const questions = await axios.get(`${quesURL}/${set}`);
       if (questions) {
 
-        if (questions.data.questions[team.ques].ans === answer) {
+        if (questions.data.questions[team.ques].ans.trim() === answer) {
           req.time = team.updatedAt;
           req.ans = true;
           if (questions.data.specialQuestion === team.ques + 1) {
