@@ -2,7 +2,7 @@ import express = require("express");
 import path = require("path");
 import mongoose = require("mongoose");
 import cors = require("cors");
-import { Request, Response, NextFunction } from "express-serve-static-core";
+import { Request, Response } from "express-serve-static-core";
 import { Server } from 'socket.io'
 import http = require('http')
 

@@ -1,6 +1,6 @@
 export { };
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose = require("mongoose");
+import Schema = mongoose.Schema;
 
 const teamSchema = new Schema(
   {

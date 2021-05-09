@@ -4,7 +4,7 @@ import { Flex } from "../../Style";
 
 const Countdown: React.FC = () => {
   // Set Date
-  const countDownDate = new Date("May 2, 2021 21:00:00").getTime();
+  const countDownDate = new Date("May 15, 2021 18:00:00").getTime();
 
   const [days, setDays] = useState(0);
   const [minutes, setMinutes] = useState(0);
