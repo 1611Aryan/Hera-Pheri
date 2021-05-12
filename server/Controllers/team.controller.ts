@@ -2,9 +2,9 @@ export { };
 const Teams = require("./../Models/team.model");
 import { Request, Response, NextFunction } from "express-serve-static-core";
 
-import jwt = require("jsonwebtoken");
-import bcrypt = require("bcrypt");
-import axios = require("axios");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const axios = require("axios");
 interface req extends Request {
   team: any
   ans: boolean
