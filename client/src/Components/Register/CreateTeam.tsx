@@ -37,15 +37,17 @@ const CreateTeam: React.FC = () => {
 
     try {
       if (input.password.length < 8) {
-        return setMessage("Password should have a minimum length of 8 digits");
+        return setMessage(
+          "Password should have a minimum length of 8 digits ಠ_ಠ"
+        );
       }
       if (input.number.toString().length < 10) {
-        return setMessage("Enter a Valid Phone Number");
+        return setMessage("Enter a Valid Phone Number (⌐■_■)");
       }
       const res = await axios.post(URL, input);
       console.log(res.data);
       setResult(true);
-      setMessage("Team created. Login to access the Dashboard");
+      setMessage("Team created. Login to access the Dashboard (☞ﾟヮﾟ)☞");
     } catch (err) {
       setResult(false);
       setMessage(err.response.data);

@@ -57,7 +57,7 @@ const Game: React.FC<{
   const ProgressHandler = () => {
     if (progressRef.current)
       progressRef.current.style.transform = `translateX(${
-        (50 / 7) * (questionNumber() - 14)
+        (100 / 15) * (questionNumber() - 15)
       }%)`;
   };
 
@@ -152,7 +152,12 @@ const Game: React.FC<{
         <div className="progressBar">
           <div ref={progressRef} className="slider"></div>
         </div>
-        <p> Currently on Question Number: {questionNumber() + 1}</p>
+        <p>
+          {" "}
+          {questionNumber() + 1 < 16
+            ? `Currently on Question Number: ${questionNumber() + 1}`
+            : "Completed✨✨"}
+        </p>
       </div>
       {specialQuestion.status && specialQuestion.src && (
         <div className="special">

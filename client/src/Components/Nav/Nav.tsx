@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useToken } from "../../Context/tokenProvider";
@@ -28,8 +29,13 @@ const Nav: React.FC = () => {
       location.pathname === "/admin/dashboard"
     )
       return "dashboard";
+    else if (location.pathname === "/admin/add") return "admin-add";
     else return "hide";
   };
+
+  useEffect(() => {
+    console.log(urlMatcher());
+  }, [location]);
 
   return (
     <StyledHeader>
@@ -76,6 +82,10 @@ const Nav: React.FC = () => {
           ) : urlMatcher() === "register" ? (
             <li>
               <Link to="/">Login</Link>
+            </li>
+          ) : urlMatcher() === "admin-add" ? (
+            <li>
+              <Link to="/admin">Login</Link>
             </li>
           ) : null}
         </ul>

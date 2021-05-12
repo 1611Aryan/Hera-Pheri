@@ -25,7 +25,10 @@ const Leaderboard: React.FC = () => {
 
   return (
     <StyledLeaderBoard>
-      <h1>LeaderBoard</h1>
+      <header>
+        <h1>LeaderBoard</h1>
+      </header>
+
       <ul>
         {teams &&
           teams.map((team, index) => (
@@ -50,18 +53,23 @@ const StyledLeaderBoard = styled.div`
   background: var(--bg);
   ${Flex(1)}
   padding: 1rem;
-  h1 {
+
+  header {
     width: 100%;
-    font-family: var(--heading);
-    font-size: clamp(1rem, 3vw, 2rem);
-    color: var(--primary);
+    h1 {
+      font-family: var(--heading);
+      font-size: clamp(1rem, 3vw, 2rem);
+      color: var(--primary);
+    }
     margin-bottom: clamp(0.5rem, 2vw, 1rem);
-    text-align: left;
   }
+
   ul {
     border-top: 2px solid var(--secondary);
     width: 100%;
-    font-size: flex(1);
+
+    flex: 1;
+
     overflow: hidden auto;
     ::-webkit-scrollbar {
       background: var(--bg);

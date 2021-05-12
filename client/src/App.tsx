@@ -17,7 +17,7 @@ const App = () => {
 
   //Component Did Mount
   useEffect(() => {
-    setTimeout(() => setLoading(false), 500);
+    setTimeout(() => setLoading(false), 100);
   });
 
   return (

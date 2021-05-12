@@ -2,9 +2,9 @@ export { };
 const Teams = require("./../Models/team.model");
 import { Request, Response, NextFunction } from "express-serve-static-core";
 
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const axios = require("axios");
+import jwt = require("jsonwebtoken");
+import bcrypt = require("bcrypt");
+import axios = require("axios");
 interface req extends Request {
   team: any
   ans: boolean
@@ -21,7 +21,7 @@ interface req extends Request {
 }
 
 const generateSet = (num: number) => {
-  switch (num % 6) {
+  switch (num % parseInt(process.env.SETS)) {
     case 0:
       return "A";
     case 1:
@@ -55,7 +55,7 @@ const sanitiseNumber = (num: string) => {
   } else {
     mobile = value;
   }
-  return parseInt(mobile);
+  return (mobile);
 };
 
 const toBool = (s: string) => {
@@ -90,13 +90,38 @@ exports.getTeamData = async (req: req, res: Response) => {
   }
 };
 
-exports.teamByName = async (req: req, res: Response) => {
-  const name = req.params.name;
+exports.teamBySet = async (req: req, res: Response) => {
+
+  const set = req.params.set.toUpperCase()
 
   try {
-    const team = await Teams.find({ teamName: { $regex: `^${name}`, $options: 'i' } })
-    if (team) return res.status(200).send({ message: true, team });
-    else return res.send({ message: false, team: null })
+    const teams = await Teams.find({ set })
+
+    if (teams.length >= 1) {
+      return res.status(200).send({ message: true, team: teams });
+    }
+    else
+      return res.send({ message: false, team: null })
+  } catch (err) {
+    console.log({ getTeamBySet: err })
+    return res.status(500).send(err)
+  }
+}
+
+exports.teamByName = async (req: req, res: Response) => {
+  const name = req.params.name;
+  try {
+    let teams;
+
+    (name === 'all') ?
+      teams = await Teams.find({}, { password: 0 }) :
+      teams = await Teams.find({ teamName: { $regex: `^${name}`, $options: 'i' } }, { password: 0 })
+
+    if (teams.length >= 1)
+      return res.status(200).send({ message: true, team: teams });
+    else
+      return res.send({ message: false, team: null })
+
   } catch (err) {
     console.log({ teamByName: err })
     return res.status(500).send(err)
@@ -107,21 +132,21 @@ exports.create = async (req: req, res: Response) => {
 
   if (!toBool(process.env.REGISTRATION_ALLOW)) return res.sendStatus(403)
 
-  const team = req.body.team;
-  const name = req.body.name;
-  const email = req.body.email;
-  const number = sanitiseNumber((req.body.number).toString());
-  let password = req.body.password
+  const team = req.body.team.trim()
+  const name = req.body.name.trim()
+  const email = req.body.email.trim()
+  const number = sanitiseNumber((req.body.number).toString()).trim()
+  let password = req.body.password.trim()
   if (number.toString().length < 10) {
-    return res.status(400).send("Enter a Valid Phone Number")
+    return res.status(400).send("Enter a Valid Phone Number (⌐■_■)")
   }
   if (password.length < 8) {
-    return res.status(400).send('Password should have a minimum length of 8 digits')
+    return res.status(400).send('Password should have a minimum length of 8 digits ಠ_ಠ')
   }
   try {
-    if (await Teams.countDocuments() >= process.env.No_of_Teams) { return res.status(406).send("Registrations have been closed") }
+    if (await Teams.countDocuments() >= parseInt(process.env.No_of_Teams)) { return res.status(406).send("Registrations have been closed (⊙_⊙;)") }
     let Team = await Teams.findOne({
-      $or: [{ teamName: team }, { "leader.email": email }, { 'leader.number': number }, {
+      $or: [{ teamName: { $regex: `^${team}`, $options: 'i' } }, { "leader.email": email }, { 'leader.number': number }, {
         members: {
           $elemMatch: {
             $or: [{ email }, { number }]
@@ -130,7 +155,7 @@ exports.create = async (req: req, res: Response) => {
       }],
     });
 
-    if (Team) return res.status(409).send("Team Name/Email Already Exists");
+    if (Team) return res.status(409).send("Team Name/Email Already Exists (•_•)");
     const set = generateSet(await Teams.countDocuments());
     password = await bcrypt.hash(password, 10);
     Team = new Teams({
@@ -158,15 +183,21 @@ exports.join = async (req: req, res: Response) => {
 
   if (!toBool(process.env.JOIN_ALLOW)) return res.sendStatus(403)
 
-  const code = req.body.code;
-  const name = req.body.name;
-  const email = req.body.email;
-  const number = sanitiseNumber((req.body.number).toString());
+  const code = req.body.code.trim();
+  const name = req.body.name.trim();
+  const email = req.body.email.trim();
+  const number = sanitiseNumber((req.body.number).toString()).trim();
   if (number.toString().length < 10) {
-    return res.status(400).send("Enter a Valid Phone Number")
+    return res.status(400).send("Enter a Valid Phone Number (⌐■_■)")
   }
 
   try {
+    //Check if code is correct
+    const Team = await Teams.findOne({ joinCode: code });
+    if (Team == null)
+      return res.status(400).send("Incorrect Team Code (⊙_⊙;)");
+
+    //Check if email or phone number is already in use
     const existingTeam = await Teams.findOne({
       $or: [{ "leader.email": email }, { 'leader.number': number }, {
         members: {
@@ -176,10 +207,13 @@ exports.join = async (req: req, res: Response) => {
         }
       }],
     });
-    if (existingTeam) return res.status(400).send("Email or number already registered");
-    const Team = await Teams.findOne({ joinCode: code });
-    if (Team == null) return res.status(400).send("Incorrect Team Code");
-    if (Team.members.length >= 3) return res.status(400).send("Team is Full");
+    if (existingTeam)
+      return res.status(400).send("Email or number already registered (•_•)");
+
+    //Check if the team is full
+    if (Team.members.length >= 3)
+      return res.status(400).send("Team is Full  (┬┬﹏┬┬)");
+
     await Teams.updateOne(
       { joinCode: code },
       {
@@ -189,6 +223,7 @@ exports.join = async (req: req, res: Response) => {
         },
       }
     );
+
     res.status(200).send("Member Added");
   } catch (err) {
     console.log({ join: err })
@@ -197,8 +232,8 @@ exports.join = async (req: req, res: Response) => {
 };
 
 exports.login = async (req: req, res: Response) => {
-  const teamName = req.body.team;
-  const password = req.body.password;
+  const teamName = req.body.team.trim();
+  const password = req.body.password.trim();
   try {
     const team = await Teams.findOne({ teamName });
     if (team) {
@@ -241,7 +276,7 @@ exports.view = async (req: req, res: Response) => {
  */
 
 exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
-  const answer = req.body.ans.trim();
+  const answer = req.body.ans.trim().toLowerCase();
   const id = req.team.team;
   if (!toBool(process.env.ACTIVE)) return res.sendStatus(403)
   try {
@@ -257,10 +292,11 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
       req.ques = team.ques;
       req.hintFlag = team.hintFlag
       req.img = { status: 'idk', src: null }
-      const questions = await axios.get(`${quesURL}/${set}`);
+
+      const questions = await axios.default.get(`${quesURL}/${set}`);
       if (questions) {
 
-        if (questions.data.questions[team.ques].ans.trim() === answer) {
+        if (questions.data.questions[team.ques].ans.trim().toLowerCase() === answer) {
           req.time = team.updatedAt;
           req.ans = true;
           if (questions.data.specialQuestion === team.ques + 1) {
@@ -282,24 +318,40 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
 
 const calculateScore = (quesNumber: number, time: Date, hintFlag: { used: boolean, typeUsed?: string }) => {
 
-  if (hintFlag.used) {
-    if (hintFlag.typeUsed === 'type1') return 250
-    if (hintFlag.typeUsed === 'type2') return 0
-  }
 
-  else {
-    const prev = time;
-    const now = new Date();
-    const diff = parseFloat(((now.valueOf() - prev.valueOf()) / (1000 * 60)).toFixed(2))
+  /* 
+  *If hint used is of type 1 score is 250
+  *If hint used is of type 2 score is 0
+  *If hint used is of type 3 then the scoring mechanic is time based i.e 500 =< score =< 1000
+  */
+  if (hintFlag.used && hintFlag.typeUsed === 'type1')
+    return 250
+  if (hintFlag.used && hintFlag.typeUsed === 'type2')
+    return 0
 
-    if (quesNumber === 0) return 1000
-    else if (diff <= 2) return Math.round(1000 - diff * 100 / 4);
-    else if (diff <= 4) return Math.round(1000 - diff * 100 / 4)
-    else if (diff <= 6) return Math.round(1000 - diff * 200 / 6)
-    else if (diff <= 8) return Math.round(1000 - diff * 300 / 8)
-    else if (diff < 10) return Math.round(1000 - diff * 500 / 10)
-    else if (diff >= 10) return (500)
-  }
+  const prev = time;
+  const now = new Date();
+  const diff = parseFloat(((now.valueOf() - prev.valueOf()) / (1000 * 60)).toFixed(2))
+
+  if (quesNumber === 0)
+    return 1000
+  else if (diff <= 2)
+    //lowesr 900
+    return Math.round(1000 - diff * 100 / 2);
+  else if (diff <= 4)
+    //lowest 800
+    return Math.round(1000 - diff * 100 / 2)
+  else if (diff <= 6)
+    //lowest 700
+    return Math.round(1000 - diff * 100 / 2)
+  else if (diff <= 8)
+    //lowest 600  
+    return Math.round(1000 - diff * 100 / 2)
+  else if (diff < 10)
+    //lowest 500
+    return Math.round(1000 - diff * 500 / 10)
+  else if (diff >= 10) return (500)
+
 
 }
 
@@ -317,6 +369,7 @@ exports.changeScore = async (req: req, res: Response) => {
 
   try {
     const score = calculateScore(quesNumber, req.time, hintFlag);
+
     await Teams.updateOne({ _id: id }, {
       $set: { ques: quesNumber + 1, hintFlag: { used: false, typeUsed: null } }, $inc: {
         score

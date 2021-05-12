@@ -1,6 +1,12 @@
 {
   "compilerOptions": {
-    "types": ["node", "express"],
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "esnext",
+    "moduleResolution": "node",
+    "sourceMap": true,
     "outDir": "build"
   }
 }

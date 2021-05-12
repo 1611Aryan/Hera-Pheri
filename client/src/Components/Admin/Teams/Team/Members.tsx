@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { team } from "./../interface";
+import { team } from "./../../interface";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";

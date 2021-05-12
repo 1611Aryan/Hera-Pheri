@@ -11,7 +11,7 @@ const Admin = () => {
       <Route path="/admin" exact>
         <Login />
       </Route>
-      <Route path="/admin/register" exact>
+      <Route path="/admin/add" exact>
         <Regsiter />
       </Route>
       <AdminRoute path="/admin/dashboard">

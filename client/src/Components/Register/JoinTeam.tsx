@@ -60,15 +60,15 @@ const JoinTeam: React.FC = () => {
     setLoader(true);
     try {
       if (input.code.length !== 8) {
-        return setMessage("Incorrect Team Code");
+        return setMessage("Incorrect Team Code (⊙_⊙;)");
       }
       if (input.number.toString().length < 10) {
-        return setMessage("Enter a Valid Phone Number");
+        return setMessage("Enter a Valid Phone Number (⌐■_■)");
       }
       const res = await axios.post(URL, input);
       console.log(res.data);
       setResult(true);
-      setMessage("Team Joined. Login to access the Dashboard");
+      setMessage("Team Joined. Login to access the Dashboard (☞ﾟヮﾟ)☞");
       socket.emit("join", input);
     } catch (err) {
       setResult(false);

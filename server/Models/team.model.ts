@@ -1,6 +1,5 @@
-export { };
 import mongoose = require("mongoose");
-import Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 const teamSchema = new Schema(
   {
@@ -17,7 +16,7 @@ const teamSchema = new Schema(
     leader: {
       name: { type: String, required: true },
       email: { type: String, required: true },
-      number: { type: Number, required: true },
+      number: { type: String, required: true },
     },
     members: {
       type: Array,
@@ -31,11 +30,6 @@ const teamSchema = new Schema(
       type: Number,
       default: 0
     },
-    /*
-     *  Date and time when Team was created
-     *  Members joined
-     *  Transaction History
-     */
     logs: {
       type: Array,
       default: [],
@@ -46,4 +40,4 @@ const teamSchema = new Schema(
 
 const Teams = mongoose.model("Teams", teamSchema);
 
-module.exports = Teams;
+export = Teams;

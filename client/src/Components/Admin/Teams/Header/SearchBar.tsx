@@ -1,17 +1,22 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import React, { useState } from "react";
-import axios from "axios";
-import { team } from "./../interface";
+import React, { useEffect, useState } from "react";
+import axios, { AxiosResponse } from "axios";
+import { team } from "../../interface";
 
 const SearchBar: React.FC<{
   setResult: React.Dispatch<React.SetStateAction<team[] | null>>;
-}> = ({ setResult }) => {
+  filter: "name" | "set";
+}> = ({ setResult, filter }) => {
   const URL =
-    process.env.NODE_ENV === "production"
-      ? "/team/"
-      : "http://localhost:5000/team/";
+    filter === "name"
+      ? process.env.NODE_ENV === "production"
+        ? "/team/"
+        : "http://localhost:5000/team/"
+      : process.env.NODE_ENV === "production"
+      ? "/team/set"
+      : "http://localhost:5000/team/set";
 
   const [input, setInput] = useState("");
 
@@ -19,11 +24,12 @@ const SearchBar: React.FC<{
     setInput(e.target.value);
   };
 
-  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const getTeamData = async () => {
     try {
-      const res = await axios.get(`${URL}/${input}`);
-      console.log(res.data);
+      let res: AxiosResponse<any>;
+      input === "" && filter === "name"
+        ? (res = await axios.get(`${URL}/all`))
+        : (res = await axios.get(`${URL}/${input}`));
       if (res.data.message) {
         setResult(res.data.team);
       } else setResult(null);
@@ -32,13 +38,22 @@ const SearchBar: React.FC<{
     }
   };
 
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await getTeamData();
+  };
+
+  useEffect(() => {
+    if (input) getTeamData();
+    else setResult([]);
+  }, [filter]);
+
   return (
     <StyledSearchBar onSubmit={submitHandler}>
       <input
         type="text"
         placeholder="Search..."
         autoFocus
-        required
         value={input}
         onChange={changeHandler}
       />
