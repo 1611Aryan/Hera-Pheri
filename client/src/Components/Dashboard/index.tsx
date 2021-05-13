@@ -34,6 +34,7 @@ const Dashboard: React.FC = () => {
     status: false,
     src: null,
   });
+  const [message, setMessage] = useState<string>(" ");
 
   const toBool = (s: string) => {
     return s === "true" ? true : false;
@@ -54,13 +55,12 @@ const Dashboard: React.FC = () => {
       return { data: res.data.team, active: toBool(res.data.active) };
     } catch (err) {
       console.log(err);
-    } finally {
-      console.log("Updated");
     }
   };
 
   //Connection
   useEffect(() => {
+    document.title = "Chem-i-Leon | Dashboard";
     socket = io(ENDPOINT, {
       transports: ["websocket"],
       query: { room: user?.joinCode },
@@ -78,7 +78,6 @@ const Dashboard: React.FC = () => {
       (joinedUser: { name: string; email: string; number: string }) =>
         setUser(user => {
           if (user) {
-            console.log("Added");
             const mem = user.members;
             return { ...user, members: [...mem, joinedUser] };
           } else return null;
@@ -99,9 +98,7 @@ const Dashboard: React.FC = () => {
   }, [setUser]);
 
   useEffect(() => {
-    console.log("answered");
     socket.on("answer", async (payload: { status: boolean; src: string }) => {
-      console.log({ a: 1 });
       await UpdateData().then(res => {
         if (res) setUser(res.data);
       });
@@ -109,9 +106,17 @@ const Dashboard: React.FC = () => {
     });
   }, [setUser]);
 
+  useEffect(() => {
+    socket.on("platformHintUsed", (res: { message: string }) => {
+      setMessage(res.message);
+    });
+  }, []);
+
   const correctAnswer = (status: boolean, src: string | null) => {
-    console.log("asd");
     if (user) socket.emit("answer", { room: user.joinCode, status, src });
+  };
+  const platformHintUsed = (message: string) => {
+    if (user) socket.emit("platformHintUsed", { room: user.joinCode, message });
   };
 
   return (
@@ -125,6 +130,9 @@ const Dashboard: React.FC = () => {
           correctAnswer={correctAnswer}
           setSpecialQuestion={setSpecialQuestion}
           specialQuestion={specialQuestion}
+          message={message}
+          setMessage={setMessage}
+          platformHintUsed={platformHintUsed}
         />
       ) : (
         <Countdown />

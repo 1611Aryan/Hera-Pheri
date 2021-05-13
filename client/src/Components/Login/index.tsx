@@ -31,6 +31,7 @@ const Login: React.FC = () => {
   //
 
   useEffect(() => {
+    document.title = "Chem-i-Leon";
     const html = document.querySelector("html");
     if (html) html.setAttribute("theme", "teal");
   }, [[]]);

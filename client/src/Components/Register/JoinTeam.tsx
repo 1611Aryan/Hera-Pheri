@@ -33,6 +33,7 @@ const JoinTeam: React.FC = () => {
 
   //
   useEffect(() => {
+    document.title = "Chem-i-Leon | Join";
     socket = io(ENDPOINT, {
       transports: ["websocket"],
     });

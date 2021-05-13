@@ -22,6 +22,7 @@ const Hint: React.FC<{
 
   //Component did mount
   useEffect(() => {
+    document.title = "Chem-i-Leon | Admin-Hints";
     (async () => {
       try {
         const res = await axios.get(TeamURL);

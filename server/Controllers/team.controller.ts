@@ -14,6 +14,7 @@ interface req extends Request {
     used: boolean;
     typeUsed?: string
   }
+  platformHint: '' | 'deduct'
   img: {
     status: 'now' | 'idk';
     src: string | null
@@ -291,6 +292,7 @@ exports.verifyAnswer = async (req: req, res: Response, next: NextFunction) => {
       const set = team.set;
       req.ques = team.ques;
       req.hintFlag = team.hintFlag
+      req.platformHint = team.platformHint[team.ques] ? '' : 'deduct'
       req.img = { status: 'idk', src: null }
 
       const questions = await axios.default.get(`${quesURL}/${set}`);
@@ -355,6 +357,8 @@ const calculateScore = (quesNumber: number, time: Date, hintFlag: { used: boolea
 
 }
 
+
+
 exports.changeScore = async (req: req, res: Response) => {
   if (!toBool(process.env.ACTIVE)) return res.sendStatus(403)
 
@@ -368,8 +372,13 @@ exports.changeScore = async (req: req, res: Response) => {
 
 
   try {
-    const score = calculateScore(quesNumber, req.time, hintFlag);
-
+    let score = calculateScore(quesNumber, req.time, hintFlag);
+    if (req.platformHint === 'deduct') {
+      score -= 100;
+      if (score < 0) {
+        score = 0;
+      }
+    }
     await Teams.updateOne({ _id: id }, {
       $set: { ques: quesNumber + 1, hintFlag: { used: false, typeUsed: null } }, $inc: {
         score
@@ -417,4 +426,53 @@ exports.useHint = async (req: req, res: Response) => {
     console.log({ useHint: err })
     res.status(500).send(err)
   }
+}
+
+exports.platformHint = async (req: req, res: Response) => {
+
+  const id = req.team.team;
+
+  try {
+
+    const team = await Teams.findOne({ _id: id }, { members: 0, password: 0, leader: 0 })
+
+    if (team) {
+
+      const currentQuestion = team.ques
+      const set = team.set;
+
+      if (team.platformHint[currentQuestion]) {
+
+        const questions = await axios.default.get(`${quesURL}/${set}`);
+
+        if (questions) {
+
+          const platform = questions.data.questions[currentQuestion].platform
+          await Teams.updateOne({ _id: id }, {
+            $set: { [`platformHint.${currentQuestion}`]: false },
+            $push: {
+              logs: `platform hint for question ${currentQuestion + 1} used at ${time()}`
+            }
+          })
+          return res.status(200).send({
+            allow: true,
+            message: `The Answer lies on ${platform}`
+          })
+        }
+      }
+
+      else
+        return res.status(403).send({
+          allow: false,
+          message: 'Platform Hint Already Used o(一︿一+)o'
+        })
+    }
+    else
+      return res.sendStatus(500)
+
+  } catch (err) {
+    console.log({ platformHint: err })
+    return res.status(500).send(err)
+  }
+
 }

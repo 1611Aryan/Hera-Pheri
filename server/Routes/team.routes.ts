@@ -11,7 +11,8 @@ const {
   changeScore,
   teamByName,
   teamBySet,
-  useHint
+  useHint,
+  platformHint
 } = require("./../Controllers/team.controller");
 
 //?All Teams
@@ -40,6 +41,9 @@ router.route("/dashboard").post(verifyToken, getTeamData);
 
 //?Answer
 router.route("/answer").post(verifyToken, verifyAnswer, changeScore);
+
+//?Platform Hint
+router.route('/platformHint').post(verifyToken, platformHint)
 
 //?Hint
 router.route("/hint").post(useHint);

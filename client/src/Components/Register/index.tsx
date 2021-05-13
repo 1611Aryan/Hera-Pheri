@@ -19,6 +19,7 @@ const Register: React.FC = () => {
   };
 
   useEffect(() => {
+    document.title = "Chem-i-Leon | Register";
     const html = document.querySelector("html");
     html?.setAttribute("theme", "teal");
   }, [[]]);

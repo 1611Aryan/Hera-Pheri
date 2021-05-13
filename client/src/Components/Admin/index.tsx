@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Route, Switch } from "react-router";
 
 import { AdminRoute } from "../../PrivateRoutes";
@@ -6,6 +7,9 @@ import Login from "./Login";
 import Regsiter from "./Regsiter";
 
 const Admin = () => {
+  useEffect(() => {
+    document.title = "Chem-i-Leon | Admin";
+  }, []);
   return (
     <Switch>
       <Route path="/admin" exact>

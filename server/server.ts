@@ -66,15 +66,11 @@ io.on('connection', (socket) => {
     room: string;
     status: boolean;
     src: string
-  }) => {
+  }) => socket.broadcast.to(data.room).emit('answer', { status: data.status, src: data.src }))
 
-    socket.broadcast.to(data.room).emit('answer', { status: data.status, src: data.src })
-  })
+  socket.on('hint', res => socket.to(res.code).emit('hint', res.hintUsed))
 
-  socket.on('hint', res => {
-
-    socket.to(res.code).emit('hint', res.hintUsed);
-  })
+  socket.on('platformHintUsed', res => socket.broadcast.to(res.room).emit('platformHintUsed', { message: res.message }))
 
   // socket.on('disconnect', () => console.log('Disconnected'))
 

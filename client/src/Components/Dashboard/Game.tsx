@@ -29,12 +29,28 @@ const Game: React.FC<{
     status: boolean;
     src: string | null;
   };
-}> = ({ UpdateData, correctAnswer, setSpecialQuestion, specialQuestion }) => {
+  message: string;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  platformHintUsed: (message: string) => void;
+}> = ({
+  UpdateData,
+  correctAnswer,
+  setSpecialQuestion,
+  specialQuestion,
+  message,
+  setMessage,
+  platformHintUsed,
+}) => {
   //URL
   const URL =
     process.env.NODE_ENV === "production"
       ? "/team/answer"
       : "http://localhost:5000/team/answer";
+
+  const platformHintURL =
+    process.env.NODE_ENV === "production"
+      ? "/team/platformHint"
+      : "http://localhost:5000/team/platformHint";
 
   //
   const { user, setUser } = useUser();
@@ -44,7 +60,6 @@ const Game: React.FC<{
   //Sttate
   const [rulebook, setRulebook] = useState(false);
   const [input, setInput] = useState<string | null>(null);
-  const [message, setMessage] = useState<string>(" ");
 
   const [hover, setHover] = useState(false);
 
@@ -90,6 +105,7 @@ const Game: React.FC<{
           correctAnswer(false, null);
           console.log("🤷🏻‍♂️");
         }
+        setMessage("");
       } else setMessage(res.data.message);
 
       setTimeout(() => setMessage(""), 5000);
@@ -98,6 +114,21 @@ const Game: React.FC<{
     } finally {
       setLoader(false);
       setInput(null);
+    }
+  };
+
+  const platformHintHandler = async () => {
+    try {
+      const res = await axios.post(
+        platformHintURL,
+        {},
+        { headers: { authToken: token } }
+      );
+      setMessage(res.data.message);
+      platformHintUsed(res.data.message);
+    } catch (err) {
+      setMessage(err.response.data.message);
+      console.log({ err, message: err.response.data });
     }
   };
 
@@ -153,7 +184,6 @@ const Game: React.FC<{
           <div ref={progressRef} className="slider"></div>
         </div>
         <p>
-          {" "}
           {questionNumber() + 1 < 16
             ? `Currently on Question Number: ${questionNumber() + 1}`
             : "Completed✨✨"}
@@ -173,9 +203,18 @@ const Game: React.FC<{
           value={input || ""}
           required
         ></textarea>
-        <Button>
-          <span>Submit</span>
-        </Button>
+        <div className="buttonContainer">
+          <Button>
+            <span>Submit</span>
+          </Button>
+          <Button
+            type="button"
+            className="platformHint"
+            onClick={platformHintHandler}
+          >
+            <span>Platform Hint</span>
+          </Button>
+        </div>
       </form>
       {rulebook && <RuleBook setRulebook={setRulebook} />}
     </StyledGame>
@@ -351,6 +390,17 @@ const StyledGame = styled.section`
         outline: 0;
 
         background: rgba(255, 255, 189, 0.8);
+      }
+    }
+    .buttonContainer {
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      .platformHint {
+        .clip {
+          background: coral;
+        }
       }
     }
     button {

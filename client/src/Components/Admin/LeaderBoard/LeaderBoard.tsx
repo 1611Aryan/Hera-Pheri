@@ -13,6 +13,7 @@ const Leaderboard: React.FC = () => {
   const [teams, setTeams] = useState<team[] | null>(null);
 
   useEffect(() => {
+    document.title = "Chem-i-Leon | Admin-Leaderboard";
     (async () => {
       try {
         const res = await axios.get(URL);

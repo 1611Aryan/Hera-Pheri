@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLoader } from "../../Context/loaderProvider";
 import { Flex, Section } from "../../Style";
@@ -24,6 +24,11 @@ const CreateTeam: React.FC = () => {
 
   //
   const { setLoader } = useLoader();
+
+  //Effect
+  useEffect(() => {
+    document.title = "Chem-i-Leon | Create";
+  }, []);
 
   //Handlers
 

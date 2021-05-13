@@ -3,9 +3,12 @@ import { Flex } from "../Style";
 
 const Button: React.FC<{
   children?: JSX.Element;
-}> = ({ children }) => {
+  type?: "submit" | "button";
+  onClick?: () => {};
+  className?: string;
+}> = ({ children, type, onClick, className }) => {
   return (
-    <StyledButton>
+    <StyledButton type={type} onClick={onClick} className={className}>
       <div className="clip"></div>
       {children}
     </StyledButton>
@@ -26,6 +29,7 @@ const StyledButton = styled.button`
     top: 0;
     left: 0;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: scale(1.5);
     width: 100%;
     height: 100%;
     background: teal;

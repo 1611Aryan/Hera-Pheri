@@ -12,6 +12,7 @@ const teamSchema = new Schema(
         "type1": 1, "type2": 1, "type3": 1
       }
     },
+    platformHint: { type: Array, default: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true] },
     hintFlag: { type: {}, default: { used: false, typeUsed: null } },
     leader: {
       name: { type: String, required: true },

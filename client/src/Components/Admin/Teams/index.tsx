@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Flex } from "../../../Style";
 import { team } from "./../interface";
@@ -8,6 +8,10 @@ import Team from "./Team";
 
 const Teams: React.FC = () => {
   const [result, setResult] = useState<team[] | null>(null);
+
+  useEffect(() => {
+    document.title = "Chem-i-Leon | Admin-Teams";
+  }, []);
 
   return (
     <StyledTeams>

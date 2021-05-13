@@ -14,8 +14,8 @@ exports.get = async (req: Request, res: Response) => {
 
 exports.create = async (req: Request, res: Response) => {
 
-  const code = req.body.code
-  const name = req.body.name
+  const code = req.body.code.trim()
+  const name = req.body.name.trim()
 
   if (code !== process.env.ADMIN_TOKEN) return res.status(400).send('Invalid Code')
 
@@ -35,8 +35,8 @@ exports.create = async (req: Request, res: Response) => {
 };
 
 exports.verify = async (req: Request, res: Response) => {
-  const name = req.body.name;
-  const password = req.body.password;
+  const name = req.body.name.trim();
+  const password = req.body.password.trim();
   try {
     const admin = await Admins.findOne({ name });
     if (admin) {
