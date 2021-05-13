@@ -322,10 +322,11 @@ const calculateScore = (quesNumber: number, time: Date, hintFlag: { used: boolea
 
 
   /* 
-  *If hint used is of type 1 score is 250
+  *If hint used is of type 1 score is 250  i.e min score=250
   *If hint used is of type 2 score is 0
   *If hint used is of type 3 then the scoring mechanic is time based i.e 500 =< score =< 1000
   */
+
   if (hintFlag.used && hintFlag.typeUsed === 'type1')
     return 250
   if (hintFlag.used && hintFlag.typeUsed === 'type2')
@@ -448,6 +449,11 @@ exports.platformHint = async (req: req, res: Response) => {
         if (questions) {
 
           const platform = questions.data.questions[currentQuestion].platform
+          if (platform === 'null')
+            return res.status(200).send({
+              allow: false,
+              message: `Platform Hint not Allowed for this question (⊙_⊙;)`
+            })
           await Teams.updateOne({ _id: id }, {
             $set: { [`platformHint.${currentQuestion}`]: false },
             $push: {
