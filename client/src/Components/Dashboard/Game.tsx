@@ -167,9 +167,9 @@ const Game: React.FC<{
           </p>
           {hover && (
             <ul className="hintInfo">
-              <li>Type1: {user?.hints.type1}</li>
-              <li>Type2: {user?.hints.type2}</li>
-              <li>Type3: {user?.hints.type3}</li>
+              <li>Dhamaal: {user?.hints.type1}</li>
+              <li>Tamasha: {user?.hints.type2}</li>
+              <li>Golmaal: {user?.hints.type3}</li>
             </ul>
           )}
         </div>

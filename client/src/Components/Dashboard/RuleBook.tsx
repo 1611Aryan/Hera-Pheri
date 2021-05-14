@@ -18,35 +18,31 @@ const RuleBook: React.FC<{
       </h1>
       <ol>
         <li>
-          You all are requested to follow all IIChE pages and login to the site.
+          You all have to follow all IIChE social media handles to progress
+          further into the game and log in to the site.
         </li>
         <li>
-          This game involves puzzles and hints After solving them you will be
-          able to reach the other riddle.
+          The game involves puzzles and hints After solving each riddle you will
+          be able to progress to the next riddle.
         </li>
         <li>
-          All the riddles are scattered in internet you have to reach it
-          yourself.
+          Answers to all the riddles are scattered on the internet, you have to
+          search for them by surfing different social medias
         </li>
         <li>There are only 5 social media to be used in this game</li>
-        <li>Only official pages are used in these media.</li>
+        <li>Only official verified pages are used in these media.</li>
         <li>
-          First hint will be public and will be provided by your respective
-          supervisor.
+          Your respective supervisors will provide you with all the questions
+          and the Hints.
         </li>
         <li>
-          After solving try reaching the second riddle and paste the link of
-          that post to your leaderboard to see the score.
+          After solving a question try reaching the answer to the riddle and
+          type the date of that post in the format '13 May' on the site to see
+          the score.
         </li>
-        <li>Repeat for other riddles and reach the final page.</li>
         <li>
-          Score is time based as fast as you solve you will be awarded maximum
-          marks.
-        </li>
-        <li>First one to reach the final page will be announce as winner.</li>
-        <li>
-          If no team reaches the final page the team with maximum points will be
-          announced winner.
+          The score is time-based. The faster you solve more points you'll
+          Achieve
         </li>
       </ol>
     </StyledRulebook>

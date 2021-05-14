@@ -57,7 +57,6 @@ const Footer: React.FC = () => {
           <li>Anushka Khera: 6283729736</li>
           <li>Prachi Bhardwaj: 7814217576</li>
           <li>Aryan Gupta: 8146740057</li>
-          <li>Pratham Thakur: 9760398187</li>
         </ul>
         <div>
           <ul className="socials">
