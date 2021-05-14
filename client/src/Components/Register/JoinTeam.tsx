@@ -71,6 +71,12 @@ const JoinTeam: React.FC = () => {
       setResult(true);
       setMessage("Team Joined. Login to access the Dashboard (☞ﾟヮﾟ)☞");
       socket.emit("join", input);
+      setInput({
+        code: "",
+        name: "",
+        email: "",
+        number: 0,
+      });
     } catch (err) {
       setResult(false);
       setMessage(err.response.data);

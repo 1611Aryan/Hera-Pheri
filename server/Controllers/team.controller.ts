@@ -43,7 +43,7 @@ const generateSet = (num: number) => {
 const randomCode = () => Math.random().toString(36).substring(2, 10);
 
 const time = () => {
-  return (new Date().toLocaleString())
+  return (new Date().toLocaleString("en-IN"))
 }
 
 const sanitiseNumber = (num: string) => {
@@ -358,8 +358,6 @@ const calculateScore = (quesNumber: number, time: Date, hintFlag: { used: boolea
 
 }
 
-
-
 exports.changeScore = async (req: req, res: Response) => {
   if (!toBool(process.env.ACTIVE)) return res.sendStatus(403)
 
@@ -403,11 +401,14 @@ exports.useHint = async (req: req, res: Response) => {
   const id = req.body.id;
   const hintType = req.body.hintType
 
+  const changedHintType = hintType === 'type1' ? 'Dhamaal' : hintType === 'type2' ? 'Tamasha' : 'Golmaal'
+
   try {
     const team = await Teams.findOne({ _id: id })
     if (team) {
 
       if (team.hints[hintType] > 0) {
+
         await Teams.updateOne({ _id: id }, {
           $set: {
             hintFlag: { used: true, typeUsed: hintType }
@@ -416,12 +417,12 @@ exports.useHint = async (req: req, res: Response) => {
             [`hints.${hintType}`]: - 1
           },
           $push: {
-            logs: `Hint ${hintType} used at ${time()}`
+            logs: `Hint ${changedHintType} used at ${time()}`
           }
         })
         return res.status(200).send('Hint Used Successfully')
       }
-      else return res.status(403).send(`No hint of type ${hintType} is left`)
+      else return res.status(403).send(`No hint of type ${changedHintType} is left`)
     } return res.sendStatus(404)
   } catch (err) {
     console.log({ useHint: err })

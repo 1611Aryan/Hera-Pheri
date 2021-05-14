@@ -25,8 +25,8 @@ const Hint: React.FC<{
     document.title = "Chem-i-Leon | Admin-Hints";
     (async () => {
       try {
-        const res = await axios.get(TeamURL);
-        setTeams(res.data);
+        const res = await axios.get(`${TeamURL}/all`);
+        setTeams(res.data.team);
       } catch (err) {
         console.log(err);
       }
@@ -79,13 +79,13 @@ const Hint: React.FC<{
             {selected && (
               <>
                 {selected.hints.type1 === 1 && (
-                  <option value="type1">Type 1</option>
+                  <option value="type1">Dhamaal</option>
                 )}
                 {selected.hints.type2 === 1 && (
-                  <option value="type2">Type 2</option>
+                  <option value="type2">Tamasha</option>
                 )}
                 {selected.hints.type3 === 1 && (
-                  <option value="type3">Type 3</option>
+                  <option value="type3">Golmaal</option>
                 )}
               </>
             )}

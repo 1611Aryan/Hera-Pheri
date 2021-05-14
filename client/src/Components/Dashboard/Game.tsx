@@ -19,26 +19,18 @@ const Game: React.FC<{
     | undefined
   >;
   correctAnswer: (status: boolean, src: string | null) => void;
-  setSpecialQuestion: (
-    value: React.SetStateAction<{
-      status: boolean;
-      src: string | null;
-    }>
-  ) => void;
-  specialQuestion: {
-    status: boolean;
-    src: string | null;
-  };
-  message: string;
-  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  setStoredQues: any;
+  storedQues: any;
+  platformHint: any;
+  setPlatformHint: any;
   platformHintUsed: (message: string) => void;
 }> = ({
   UpdateData,
   correctAnswer,
-  setSpecialQuestion,
-  specialQuestion,
-  message,
-  setMessage,
+  storedQues,
+  setStoredQues,
+  platformHint,
+  setPlatformHint,
   platformHintUsed,
 }) => {
   //URL
@@ -60,7 +52,7 @@ const Game: React.FC<{
   //Sttate
   const [rulebook, setRulebook] = useState(false);
   const [input, setInput] = useState<string | null>(null);
-
+  const [message, setMessage] = useState<string>(" ");
   const [hover, setHover] = useState(false);
 
   //Handlers
@@ -98,14 +90,15 @@ const Game: React.FC<{
           if (res) setUser(res.data);
         });
         if (res.data.special.status === "now") {
-          setSpecialQuestion({ status: true, src: res.data.special.src });
+          setStoredQues({ status: true, src: res.data.special.src });
           correctAnswer(true, res.data.special.src);
         } else {
-          setSpecialQuestion({ status: false, src: null });
+          setStoredQues({ status: false, src: null });
           correctAnswer(false, null);
           console.log("🤷🏻‍♂️");
         }
         setMessage("");
+        setPlatformHint(null);
       } else setMessage(res.data.message);
 
       setTimeout(() => setMessage(""), 5000);
@@ -124,17 +117,19 @@ const Game: React.FC<{
         {},
         { headers: { authToken: token } }
       );
-      setMessage(res.data.message);
+      setPlatformHint(res.data.message);
       platformHintUsed(res.data.message);
     } catch (err) {
       setMessage(err.response.data.message);
       console.log({ err, message: err.response.data });
+      setTimeout(() => setMessage(""), 1500);
     }
   };
 
   //Component did mount
   useEffect(() => {
     ProgressHandler();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -189,12 +184,13 @@ const Game: React.FC<{
             : "Completed✨✨"}
         </p>
       </div>
-      {specialQuestion.status && specialQuestion.src && (
+      {storedQues && storedQues.status && storedQues.src && (
         <div className="special">
-          <img src={specialQuestion.src} alt="" />
+          <img src={storedQues.src} alt="" />
         </div>
       )}
       <form className="answer" onSubmit={SubmitAnswer}>
+        <p className="platformHint"> {platformHint}</p>
         <p>{message}</p>
         <textarea
           name=""
@@ -209,7 +205,7 @@ const Game: React.FC<{
           </Button>
           <Button
             type="button"
-            className="platformHint"
+            className="hintButton"
             onClick={platformHintHandler}
           >
             <span>Platform Hint</span>
@@ -367,12 +363,16 @@ const StyledGame = styled.section`
     flex-direction: column;
     align-items: flex-start;
     ${Flex(1)}
-    p {
-      height: 2rem;
-      font-size: 1.5rem;
-      color: red;
-      font-weight: 900;
+    .platformHint {
       width: 100%;
+      display: inline-block;
+      padding-top: 1em;
+      font-size: 1.25em;
+      text-align: center;
+      color: black !important;
+    }
+    p {
+      color: red;
     }
     textarea {
       width: 100%;
@@ -397,7 +397,7 @@ const StyledGame = styled.section`
       display: flex;
       justify-content: space-evenly;
       align-items: center;
-      .platformHint {
+      .hintButton {
         .clip {
           background: coral;
         }

@@ -10,6 +10,7 @@ import Footer from "./Components/Footer";
 import Loader from "./Components/Loading/StartLoader";
 import { useEffect, useState } from "react";
 import Loading from "./Components/Loading/Loading";
+import ForgotPassword from "./Components/ForgotPassword";
 
 const App = () => {
   //State
@@ -38,6 +39,9 @@ const App = () => {
         <Route path="/admin">
           <Admin />
         </Route>
+        <NormalRoute path="/uh-oh" exact>
+          <ForgotPassword />
+        </NormalRoute>
         <Route path="/">
           <Error />
         </Route>

@@ -11,6 +11,7 @@ import Game from "./Game";
 import Team from "./Team";
 
 import { useEffect, useState } from "react";
+import useLocalStorage from "../../Hooks/useLocalStorage";
 
 let socket: SocketIOClient.Socket;
 
@@ -27,14 +28,10 @@ const Dashboard: React.FC = () => {
   const { user, setUser } = useUser();
   const { token } = useToken();
   const [start, setStart] = useState(false);
-  const [specialQuestion, setSpecialQuestion] = useState<{
-    status: boolean;
-    src: string | null;
-  }>({
-    status: false,
-    src: null,
-  });
-  const [message, setMessage] = useState<string>(" ");
+
+  const [storedQues, setStoredQues] = useLocalStorage("ques", null);
+
+  const [platformHint, setPlatformHint] = useLocalStorage("hint", null);
 
   const toBool = (s: string) => {
     return s === "true" ? true : false;
@@ -85,6 +82,7 @@ const Dashboard: React.FC = () => {
     );
   }, [setUser]);
 
+  //Hint Used i.e Changes the number of hints Available
   useEffect(() => {
     socket.on("hint", (hintUsed: string) => {
       setUser(user => {
@@ -97,18 +95,25 @@ const Dashboard: React.FC = () => {
     });
   }, [setUser]);
 
+  /*
+    !Upon answering updates the data via http request such that score changes
+    !try to send the payload in websocket sonly about the necesary data
+    !Increasing efficiency
+  */
   useEffect(() => {
     socket.on("answer", async (payload: { status: boolean; src: string }) => {
       await UpdateData().then(res => {
         if (res) setUser(res.data);
       });
-      setSpecialQuestion({ status: payload.status, src: payload.src });
+      setStoredQues({ status: payload.status, src: payload.src });
+      setPlatformHint(null);
     });
   }, [setUser]);
 
+  //!Displays the platform hint used
   useEffect(() => {
     socket.on("platformHintUsed", (res: { message: string }) => {
-      setMessage(res.message);
+      setPlatformHint(res.message);
     });
   }, []);
 
@@ -128,10 +133,10 @@ const Dashboard: React.FC = () => {
         <Game
           UpdateData={UpdateData}
           correctAnswer={correctAnswer}
-          setSpecialQuestion={setSpecialQuestion}
-          specialQuestion={specialQuestion}
-          message={message}
-          setMessage={setMessage}
+          setStoredQues={setStoredQues}
+          storedQues={storedQues}
+          setPlatformHint={setPlatformHint}
+          platformHint={platformHint}
           platformHintUsed={platformHintUsed}
         />
       ) : (

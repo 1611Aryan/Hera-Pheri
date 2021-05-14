@@ -53,6 +53,13 @@ const CreateTeam: React.FC = () => {
       console.log(res.data);
       setResult(true);
       setMessage("Team created. Login to access the Dashboard (☞ﾟヮﾟ)☞");
+      setInput({
+        team: "",
+        name: "",
+        email: "",
+        number: 0,
+        password: "",
+      });
     } catch (err) {
       setResult(false);
       setMessage(err.response.data);

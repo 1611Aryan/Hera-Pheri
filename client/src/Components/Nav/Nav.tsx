@@ -23,7 +23,8 @@ const Nav: React.FC = () => {
     const pattern = new RegExp("/register");
 
     if (location.pathname === "/") return "login";
-    else if (pattern.test(location.pathname)) return "register";
+    else if (pattern.test(location.pathname) || location.pathname === "/uh-oh")
+      return "register";
     else if (
       location.pathname === "/dashboard" ||
       location.pathname === "/admin/dashboard"

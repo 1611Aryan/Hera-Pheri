@@ -34,7 +34,7 @@ const Login: React.FC = () => {
     document.title = "Chem-i-Leon";
     const html = document.querySelector("html");
     if (html) html.setAttribute("theme", "teal");
-  }, [[]]);
+  }, []);
 
   //Handlers
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
