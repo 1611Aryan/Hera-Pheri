@@ -269,6 +269,47 @@ exports.view = async (req: req, res: Response) => {
   }
 };
 
+exports.forgotPassword = async (req: req, res: Response) => {
+  let team = req.body.team
+  if (team)
+    team = team.toString().trim()
+  let newPassword = req.body.newPassword
+  if (newPassword)
+    newPassword = newPassword.toString().trim()
+
+  try {
+
+    if (team && newPassword) {
+      const hashedPassword = await bcrypt.hash(newPassword, 10)
+      console.log('Password Change')
+      const existingTeam = await Teams.findOne({ teamName: team }, { members: 0, logs: 0, leader: 0, hints: 0 })
+      if (existingTeam)
+        if (existingTeam.forgotPasswordFlag) {
+          await Teams.updateOne({ teamName: team }, {
+            $set: {
+              password: hashedPassword,
+              forgotPasswordFlag: false
+            },
+            $push: {
+              logs: `Password Changed at ${time()}`
+            }
+          })
+          return res.status(200).send('Password Changed!!!')
+        }
+        else
+          return res.status(403).send("You don't have permission to change the password ")
+    }
+
+    else
+      return res.status(404).send('No team Found ಠ_ಠ')
+  } catch (err) {
+    console.log({ forgot: err })
+    res.status(500).send(err)
+  }
+
+
+}
+
 /*
  * Scoring Mechanic
  * First Verify Answer

@@ -27,6 +27,9 @@ const teamSchema = new Schema(
       type: String,
       required: true,
     },
+    forgotPasswordFlag: {
+      type: Boolean
+    },
     ques: {
       type: Number,
       default: 0

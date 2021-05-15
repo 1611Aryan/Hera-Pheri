@@ -10,7 +10,8 @@ const Modal: React.FC<{
   selected: team | null;
   setModalStatus: React.Dispatch<React.SetStateAction<boolean>>;
   activateHint: (team: { code: string; hintUsed: string }) => void;
-}> = ({ hints, selected, setModalStatus, activateHint }) => {
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ hints, selected, setModalStatus, activateHint, setMessage }) => {
   //URL
   const HintURL =
     process.env.NODE_ENV === "production"
@@ -30,14 +31,15 @@ const Modal: React.FC<{
           hintType: hints,
         });
         activateHint({ code: selected.joinCode, hintUsed: hints });
-        console.log(res);
+        setMessage(res.data);
       } catch (err) {
         console.log(err);
+        setMessage(err.response.data);
       } finally {
         setTimeout(() => {
           setLoading(false);
           setModalStatus(false);
-        }, 500);
+        }, 150);
       }
   };
 

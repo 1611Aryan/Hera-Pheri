@@ -16,9 +16,10 @@ const Hint: React.FC<{
 
   //State
   const [teams, setTeams] = useState<team[] | null>(null);
-  const [hints, setHints] = useState<string | null>(null);
+  const [hints, setHints] = useState<"type1" | "type2" | "type3" | null>(null);
   const [selected, setSelected] = useState<team | null>(null);
   const [modalStatus, setModalStatus] = useState(false);
+  const [message, setMessage] = useState("");
 
   //Component did mount
   useEffect(() => {
@@ -55,7 +56,12 @@ const Hint: React.FC<{
 
   const HintSelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "default") return setHints(null);
-    return setHints(e.target.value);
+    if (
+      e.target.value === "type1" ||
+      e.target.value === "type2" ||
+      e.target.value === "type3"
+    )
+      return setHints(e.target.value);
   };
 
   return (
@@ -63,6 +69,7 @@ const Hint: React.FC<{
       <h1>Hint</h1>
       <div className="formContainer">
         <form onSubmit={submitHandler}>
+          <p> {message}</p>
           <label htmlFor="team">Team</label>
           <select name="team" onChange={ChangeHandler}>
             <option value="default">...</option>
@@ -101,6 +108,7 @@ const Hint: React.FC<{
           selected={selected}
           setModalStatus={setModalStatus}
           activateHint={activateHint}
+          setMessage={setMessage}
         />
       )}
     </StyledHint>
@@ -126,6 +134,10 @@ const StyledHint = styled.div`
       width: 60%;
       height: 40%;
       ${Flex(1, "space-between", "flex-start")};
+      p {
+        font-size: clamp(1rem, 3vw, 1.5rem);
+        color: red;
+      }
       label {
         font-size: clamp(1rem, 2vw, 1.25rem);
       }

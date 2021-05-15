@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useToken } from "../../Context/tokenProvider";
@@ -11,6 +11,7 @@ const Nav: React.FC = () => {
   const { user, setUser } = useUser();
   const { setToken } = useToken();
   const location = useLocation();
+  const [navParameter, setNavParameter] = useState("hide");
 
   //Handlers
   const logout = () => {
@@ -19,23 +20,19 @@ const Nav: React.FC = () => {
     history.push("/");
   };
 
-  const urlMatcher = () => {
+  useEffect(() => {
     const pattern = new RegExp("/register");
 
-    if (location.pathname === "/") return "login";
+    if (location.pathname === "/") setNavParameter("login");
     else if (pattern.test(location.pathname) || location.pathname === "/uh-oh")
-      return "register";
+      setNavParameter("register");
     else if (
       location.pathname === "/dashboard" ||
       location.pathname === "/admin/dashboard"
     )
-      return "dashboard";
-    else if (location.pathname === "/admin/add") return "admin-add";
-    else return "hide";
-  };
-
-  useEffect(() => {
-    console.log(urlMatcher());
+      setNavParameter("dashboard");
+    else if (location.pathname === "/admin/add") setNavParameter("admin-add");
+    else setNavParameter("hide");
   }, [location]);
 
   return (
@@ -67,7 +64,7 @@ const Nav: React.FC = () => {
         </div>
 
         <ul>
-          {urlMatcher() === "dashboard" ? (
+          {navParameter === "dashboard" ? (
             <li onClick={logout}>
               <span>L</span>
               <span>o</span>
@@ -76,15 +73,15 @@ const Nav: React.FC = () => {
               <span>u</span>
               <span>t</span>
             </li>
-          ) : urlMatcher() === "login" ? (
+          ) : navParameter === "login" ? (
             <li>
               <Link to="/register">Register</Link>
             </li>
-          ) : urlMatcher() === "register" ? (
+          ) : navParameter === "register" ? (
             <li>
               <Link to="/">Login</Link>
             </li>
-          ) : urlMatcher() === "admin-add" ? (
+          ) : navParameter === "admin-add" ? (
             <li>
               <Link to="/admin">Login</Link>
             </li>

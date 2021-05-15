@@ -12,7 +12,8 @@ const {
   teamByName,
   teamBySet,
   useHint,
-  platformHint
+  platformHint,
+  forgotPassword
 } = require("./../Controllers/team.controller");
 
 //?All Teams
@@ -33,6 +34,8 @@ router.route("/join").post(join);
 //?Login
 router.route("/login").post(login);
 
+//?Forgot Password
+router.route('/forgot').post(forgotPassword);
 //?
 router.route("/authenticate").post(verifyToken, getTeamData);
 

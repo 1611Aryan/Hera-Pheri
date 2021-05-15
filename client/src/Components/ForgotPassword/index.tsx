@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
 
 import { Section, Flex } from "../../Style";
 
@@ -9,7 +8,7 @@ const ForgotPassword: React.FC = () => {
   const URL =
     process.env.NODE_ENV === "production"
       ? "/team/forgot"
-      : "/localhost:5000/team/forgot";
+      : "http:///localhost:5000/team/forgot";
 
   //State
   const [input, setInput] = useState({
@@ -40,7 +39,8 @@ const ForgotPassword: React.FC = () => {
         team: input.team,
         newPassword: input.password,
       });
-      setMessage(res.data.message);
+      console.log(res.data);
+      setMessage(res.data);
     } catch (err) {
       setMessage(err.response.data);
     }
