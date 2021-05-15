@@ -52,7 +52,7 @@ const Footer: React.FC = () => {
           <span>h</span>
         </h1>
         <ul className="numbers">
-          <li>Anmol Ghai: 7589205575</li>
+          <li>Utkarsh Sharma: 9555544457</li>
           <li>Parth Sood: 7986810284</li>
           <li>Anushka Khera: 6283729736</li>
           <li>Prachi Bhardwaj: 7814217576</li>
